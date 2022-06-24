@@ -1,0 +1,390 @@
+::ng-deep ion-content {
+  --background: #7e7e7e!important;
+  --background-size: 400% 400% !important;
+  animation: gradient 15s ease infinite !important;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.input {
+  width: 100%;
+}
+
+.form {
+  width: 100%;
+}
+
+.item-native::part(native) {
+  border: none !important;
+}
+
+.select-class {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #ccc;
+  height: 5vh;
+  border-radius: 6px;
+  color: #fff;
+  outline: none;
+}
+
+ion-input {
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  color: #fff !important;
+}
+
+.search-row {
+  margin-bottom: 3vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accordion-grp {
+  padding: 3vh;
+
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.input-box {
+  height: 5vh;
+  margin-bottom: 0.3rem;
+}
+
+.accordion {
+  border: 2px solid #fff;
+  border-radius: 5px;
+  background: transparent;
+}
+
+.accordion-label {
+  color: #fff !important;
+}
+
+.list {
+  background: transparent;
+}
+
+.search-box {
+  margin-top: 3vh;
+  color: #fff;
+}
+
+ion-accordion-group {
+  ion-accordion {
+    .ion-accordion-toggle-icon {
+      font-size: 50px;
+      color: red;
+    }
+  }
+}
+
+.update::part(native) {
+  background: rgb(194, 65, 65) !important;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+}
+
+.save-btn {
+  text-align: center;
+}
+
+.no-saved-presets {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ margin-right: 2rem;
+}
+.save-btn1 {
+  ion-button {
+    font-size: large;
+    --background:#535353;
+    margin-left: 1rem;
+    }
+  .plus-button::part(native) {
+    border-radius: 50%;
+    height: 40px;
+    width: 20px;
+  }
+}
+.select-search {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
+  gap: 1rem;
+}
+.search-row-select {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-right: 3rem;
+  .select-class {
+    width: 100%;
+  }
+  .save-btn1 {
+    margin-left: 1rem;
+  }
+  .select-item {
+    width: 40%;
+    margin-right: 2rem;
+  }
+}
+.find-item {
+  // margin-right: 30%;
+}
+
+// .search-row1 {
+//   width: 60%;
+//   margin: auto;
+//   justify-content: end;
+// }
+
+.modi-btn{
+  text-align: center;
+  // background-color: green;
+  margin:1rem;
+  padding :10px;
+} 
+.btn-group {
+  display: flex !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  margin: 0.5rem 0px;
+}
+
+.clear-filter {
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
+.apply-filter {
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+
+.clear-btn::part(native) {
+  background: rgb(47, 214, 225);
+  padding: 1rem !important;
+}
+
+.apply-btn::part(native) {
+  background: rgb(203, 35, 203);
+  padding: 1rem !important;
+}
+
+.save::part(native) {
+  background: green;
+}
+
+.item-interactive::part(native) {
+  border: 0px !important;
+  background: transparent;
+  border: none !important;
+
+}
+
+ion-item::part(native) {
+  background: transparent !important;
+  border: none !important;
+}
+
+.search-select {
+  text-align: center;
+  font-size: 2vh;
+  color: #fff !important;
+}
+
+.select-options {
+  color: #000 !important;
+}
+
+input::placeholder {
+  color: red;
+}
+
+ion-item:not(.item-label) .sc-ion-input-md-h {
+  --padding-start: 1vh;
+  --color: white !important;
+  caret-color: black !important;
+}
+
+.no-presets {
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+}
+
+.item-native::part(native) {
+  display: flex !important;
+  flex-direction: column !important;
+  border: none !important;
+  margin-top: 4vh;
+}
+
+.item-bottom::part(native) {
+  display: none !important;
+}
+
+.form-wrapper {
+  display: block !important;
+  flex-direction: column !important;
+}
+
+.abc {
+  width: 100%;
+}
+
+.row-add {
+  text-align: right;
+}
+
+.save-row {
+  width: 100%;
+  border: none !important;
+}
+.selectbtn{
+  background-color:#008000;
+  color:#ffffff;
+  padding: 0.5rem 0.7rem;
+  border-radius:4px;
+  font-size: 14px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  opacity: 0;
+  cursor: grabbing;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box {
+  cursor: grab;
+}
+
+.success {
+  color: #008000;
+}
+
+.error {
+  color: red !important;
+  border: 1px solid red !important;
+}
+
+.warning {
+  color: orange;
+}
+
+.delete-preset::part(native) {
+  background-color: red;
+  color: white;
+  // padding: 1rem;
+}
+
+
+label {
+  display: block;
+  font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+  margin: .4rem 0;
+}
+
+#start {
+  padding: 7px 10px !important;
+  background: transparent;
+  border: 1px solid #d0c9c9;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  margin-top: 0px !important;
+  color: white !important;
+  // background: black;
+  height: 5vh;
+}
+
+#end {
+  padding: 7px 10px !important;
+  background: transparent;
+  border: 1px solid #d0c9c9;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  margin-top: 0px !important;
+  color: white !important;
+  background: transparent !important;
+  height: 5vh;
+}
+
+.mat-form ::ng-deep .mat-calendar-body-cell-container {
+  // width: 100px !important;
+  background-color: pink !important;
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.range-picker ::ng-deep .mat-calendar-body-cell-container {
+  // width: 100px !important;
+  background-color: rgb(192, 255, 219) !important;
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.date-input {
+  background: #000;
+}
+
+.toggle ::ng-deep .mat-calendar-body-cell-container {
+  // width: 100px !important;
+  background-color: rgb(214, 18, 51) !important;
+  width: 100px !important;
+  height: 100px !important;
+}
+
+::ng-deep.easepick-wrapper {
+  .container {
+    background-color: red
+  }
+}
+
+ul li ul {
+  display: none; /* Hide the nested list first */
+}
+ul li.active ul {
+  display: block; /* Show the list when class 'active' is added to the li */ 
+  color: red;
+}
