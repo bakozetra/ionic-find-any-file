@@ -1,5 +1,5 @@
 ::ng-deep ion-content {
-  --background: #7e7e7e!important;
+  --background: #535353!important;
   --background-size: 400% 400% !important;
   animation: gradient 15s ease infinite !important;
 }
@@ -113,12 +113,14 @@ ion-accordion-group {
  align-items: center;
  justify-content: space-between;
  margin-right: 2rem;
+ .plus-button {
+  margin-left: 1rem;
+ }
 }
 .save-btn1 {
   ion-button {
     font-size: large;
-    --background:#535353;
-    margin-left: 1rem;
+    --background:#7e7e7e;
     }
   .plus-button::part(native) {
     border-radius: 50%;
@@ -126,6 +128,27 @@ ion-accordion-group {
     width: 20px;
   }
 }
+select::-ms-expand {
+  display: none;
+}
+.select-item select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Safari, Chrome, Opera */
+  -webkit-appearance: none;
+    // background-image: url("https://image.flaticon.com/icons/svg/60/60993.svg") 0 0 / 20px 30px repeat;
+    background-image:
+                      url("../../assets/icon/arro-up.svg"),
+                      url("../../assets/icon/arrow-down.svg");
+    // background-position: absolute;
+    background-position:  98% -5%,
+      98% 100%
+      ;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
+
 .select-search {
   display: flex;
   width: 100%;
@@ -133,6 +156,9 @@ ion-accordion-group {
   align-items: center;
   gap: 1rem;
 }
+
+
+
 .search-row-select {
   width: 100%;
   display: flex;
@@ -150,10 +176,15 @@ ion-accordion-group {
   .select-item {
     width: 40%;
     margin-right: 2rem;
+    select {
+      height: 35px;
+      border:none;
+      background-color:#7e7e7e;
+    }
   }
 }
 .find-item {
-  // margin-right: 30%;
+  // margin-righ
 }
 
 // .search-row1 {
