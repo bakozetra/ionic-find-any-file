@@ -1,32 +1,36 @@
 <!-- Basic -->
+<!-- There is a list of the next features and bug fixes to implement:
+- move all UI components inside of the collapsable panel
+- initial state of the search is empty with only add filter button "+" visible and drop-down selector of saved presets
+- add clear filter button that removes all filters and turns search panel to initial state
+- "+" button should insert filter before the current filter. additional "+" button should be in the very bottom of filters list that adds a filter after all current
+- track and check user input and remember if anything was actually changed in filters
+- if filters was changed, then show user a confirmation before clearing filters or loading another saved preset
+- sometimes click on save button is ignored even if the name of preset is set - debug and fix
+- do not save empty filter preset, preset name should be 1+ char long
+- if user tries to save preset with the same name - ask for confirmation
+- remove a line that changes color when you enter text field in the very bottom of the filters list -->
 <ion-content [fullscreen]="true" class="content">
   <ion-accordion-group class="accordion-grp">
     <ion-accordion value="colors" class="accordion">
       <ion-item slot="header">
-        <ion-label class="accordion-label">Filters</ion-label>
+        <ion-label class="accordion-label">Search</ion-label>
       </ion-item>
       <ion-list slot="content" class="list">
         <div
           *ngIf="preSelectList.length > 0 else emptyList"
           class="search-row search-row-select"
         >
-          <div class="save-btn1">
-            <ion-button
-              class="plus-button"
-              *ngIf="allSearch()?.controls && allSearch()?.controls.length === 0"
-              (click)="addRow(true)"
-              >+</ion-button
-            >
-          </div>
           <div class="select-search">
-            <div class="search-select find-item">Search Select:</div>
             <div class="select-item">
               <select
                 class="select-class"
                 [(ngModel)]="presetSelected"
                 (change)="onPreselectDDLChange($event)"
               >
-                <option class="select-options" value="" selected>Select</option>
+                <option class="select-options" value="" selected>
+                  Presets
+                </option>
                 <option
                   class="select-options"
                   [value]="pre?.id"
@@ -37,6 +41,18 @@
               </select>
             </div>
           </div>
+          <div class="save-btn1">
+            <ion-button
+              class="plus-button"
+              *ngIf="allSearch()?.controls && allSearch()?.controls.length === 0"
+              (click)="addRow(true)"
+            >
+              <ion-icon
+                slot="icon-only"
+                src="../../assets/icon/dots.svg"
+              ></ion-icon>
+            </ion-button>
+          </div>
         </div>
         <ng-template #emptyList>
           <div class="no-saved-presets">
@@ -45,15 +61,19 @@
                 class="plus-button"
                 *ngIf="allSearch()?.controls && allSearch()?.controls.length === 0"
                 (click)="addRow(true)"
-                >+</ion-button
               >
+                <ion-icon
+                  slot="icon-only"
+                  src="../../assets/icon/dots.svg"
+                ></ion-icon>
+              </ion-button>
             </div>
             <div>
               <ion-text class="no-presets"> No saved Presets </ion-text>
             </div>
           </div>
         </ng-template>
-        <ion-row class="search-box"> </ion-row>
+        <ion-row class="search-box"></ion-row>
 
         <ion-grid
           class="form-wrapper"
@@ -73,11 +93,28 @@
                   [formGroupName]="i"
                   class="example-box"
                 >
-                  <ion-col size-xs="12" size-sm="1">
-                    <ion-button class="update" (click)="removeRow(i)"
-                      >&minus;</ion-button
-                    >
-                  </ion-col>
+                  <ion-item class="bcd" lines="none">
+                    <ion-row class="abc">
+                      <ion-col class="row-add">
+                        <ion-button (click)="addRow()">
+                          <ion-icon
+                            name="add-circle-outline"
+                            size="large"
+                            slot="icon-only"
+                          ></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-item>
+                  <ion-item size-xs="12" size-sm="1" lines="none">
+                    <ion-button class="update" (click)="removeRow(i)">
+                      <ion-icon
+                        name="remove-circle-outline"
+                        size="large"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                  </ion-item>
                   <ion-col size-xs="12" size-sm="">
                     <select
                       class="select-class"
@@ -171,14 +208,6 @@
             </div>
           </form>
 
-          <ion-item class="bcd" lines="none">
-            <ion-row class="abc">
-              <ion-col class="row-add">
-                <ion-button (click)="addRow()">Add Row</ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-item>
-
           <ion-item>
             <ion-row class="btn-group">
               <ion-col size-xs="6" size-sm="6" class="clear-filter">
@@ -255,4 +284,5 @@
       </ion-list>
     </ion-accordion>
   </ion-accordion-group>
+  <!-- <ion-icon name="remove-circle-outline"></ion-icon> -->
 </ion-content>

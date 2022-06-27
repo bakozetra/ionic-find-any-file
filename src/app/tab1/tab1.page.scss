@@ -31,12 +31,8 @@
 }
 
 .select-class {
-  width: 100%;
-  background: transparent;
-  border: 1px solid #ccc;
-  height: 5vh;
+ 
   border-radius: 6px;
-  color: #fff;
   outline: none;
 }
 
@@ -97,12 +93,17 @@ ion-accordion-group {
   }
 }
 
-.update::part(native) {
-  background: rgb(194, 65, 65) !important;
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
+form {
+  ion-button::part(native) {
+    padding: 0;
+    --background:#535353;
+    box-shadow: none;
+      --background-hover:none;
+      padding: 0;
+  }
 }
+// .update::part(native) {
+//  }
 
 .save-btn {
   text-align: center;
@@ -120,44 +121,52 @@ ion-accordion-group {
 .save-btn1 {
   ion-button {
     font-size: large;
-    --background:#7e7e7e;
+    --background:#535353;
+   
     }
   .plus-button::part(native) {
-    border-radius: 50%;
-    height: 40px;
-    width: 20px;
+    box-shadow: none;
+    --background-hover:none;
+    padding: 0;
   }
 }
 select::-ms-expand {
   display: none;
+}
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Safari, Chrome, Opera */
+  -webkit-appearance: none;
+  //  --background-image:
+  //                     url("../../assets/icon/arro-up.svg"),
+  //                     url("../../assets/icon/arrow-down.svg");
+  //   --background-position:  98% -5%,98% 100%;
+  //   --background-repeat: no-repeat;
+  //  --background-size: 14px;
+  //   --height: 28px;
+  //   --border:none;
+  //   --background-color:#7e7e7e;
+    padding-left: 1rem;
 }
 .select-item select {
   /* for Firefox */
   -moz-appearance: none;
   /* for Safari, Chrome, Opera */
   -webkit-appearance: none;
-    // background-image: url("https://image.flaticon.com/icons/svg/60/60993.svg") 0 0 / 20px 30px repeat;
-    background-image:
-                      url("../../assets/icon/arro-up.svg"),
-                      url("../../assets/icon/arrow-down.svg");
-    // background-position: absolute;
-    background-position:  98% -5%,
-      98% 100%
-      ;
-    background-repeat: no-repeat;
-    background-size: 20px;
+    // background-image:
+    //                   url("../../assets/icon/arro-up.svg"),
+    //                   url("../../assets/icon/arrow-down.svg");
+    // background-position:  98% -5%,98% 100%;
+    // background-repeat: no-repeat;
+    // background-size: 14px;
 }
-
 
 .select-search {
   display: flex;
   width: 100%;
-  justify-content: end;
   align-items: center;
-  gap: 1rem;
 }
-
-
 
 .search-row-select {
   width: 100%;
@@ -177,10 +186,15 @@ select::-ms-expand {
     width: 40%;
     margin-right: 2rem;
     select {
-      height: 35px;
+      height: 28px;
       border:none;
-      background-color:#7e7e7e;
+      background-color:#535353;
+      padding-left: 1rem;
+      color: white;
     }
+  }
+  ion-icon {
+    margin-right: 1rem;
   }
 }
 .find-item {
@@ -287,6 +301,16 @@ ion-item:not(.item-label) .sc-ion-input-md-h {
 
 .abc {
   width: 100%;
+}
+.example-box {
+  display: flex;
+  align-items: center;
+  ion-item {
+    padding: 0;
+    ion-row {
+      padding :0;
+    }
+  } 
 }
 
 .row-add {
