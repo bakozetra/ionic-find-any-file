@@ -292,6 +292,8 @@ export class Tab1Page implements OnInit {
     this.initPriceForm();
     this.updatePreselectList();
     this.onPreselectDDLChange(1);
+    console.log('onPreselectDDLChange::::::', this.onPreselectDDLChange(2));
+    this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
   }
 
   createDatePicker(i, date?: any) {
@@ -326,14 +328,19 @@ export class Tab1Page implements OnInit {
   get f() {
     return this.searchFilterForm.controls;
   }
-  addRow(flag?: boolean) {
+  addRow(flag?: boolean, rowIndex?: number, event?: any) {
+    console.log('rowIndex::::::', rowIndex);
     this.submitted = false;
+    this.allSearch().insert(
+      rowIndex + 1,
+      this.newEvent({ param1: '', param2: '', param3: '', param4: '' })
+    );
     if (flag) {
+      console.log('flag::::::', flag);
       if (this.allSearch().controls.length > 0) return;
       this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
       return;
     }
-    this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
   }
 
   removeRow(index: any) {
@@ -342,6 +349,7 @@ export class Tab1Page implements OnInit {
         (s) => s !== ''
       )
     ) {
+      console.log(this.allSearch(), 'this.allSearch()');
       this.allSearch().removeAt(index);
       return;
     }
@@ -349,7 +357,6 @@ export class Tab1Page implements OnInit {
       if (this.allSearch().length == 1) {
         this.allSearch().removeAt(index);
         this.UpdateSearchByRemoving(index);
-
         const localData: any = localStorage.getItem('presetSearch');
         const localJSON = JSON.parse(localData);
 
@@ -563,8 +570,10 @@ export class Tab1Page implements OnInit {
   }
 
   addSearch(item: any) {
+    console.log('item::::::', item);
     this.allSearch().push(this.newEvent(item));
   }
+  // arr.splice(2, 0, "Lene");
 
   clearFormArray() {
     (this.searchFilterForm.controls['search'] as FormArray)?.clear();
@@ -596,6 +605,7 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, data?: any) {
     // debugger
+    console.log(i, 'i');
     const row = this.allSearch().controls[i] as FormGroup;
     if (row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()) {
       setTimeout(() => {
@@ -934,10 +944,12 @@ export class Tab1Page implements OnInit {
   }
 
   onPreselectDDLChange(e: any) {
+    console.log(e, 'eee');
     // debugger
     const changes = this.trackChanges(this.searchParamId);
-
+    console.log('changes::::::1', changes);
     if (!changes) {
+      console.log('changes::::::', changes);
       if (this.searchParam && this.searchParam !== 'Select') {
         if (!confirm('Do you want to discard the current filter changes')) {
           setTimeout(() => {
@@ -948,6 +960,7 @@ export class Tab1Page implements OnInit {
       }
     }
     this.searchParam = e.target?.options[e.target.selectedIndex]?.text;
+    console.log('searchParam::::::', this.searchParam);
     this.id = e?.target?.options[e?.target?.selectedIndex]?.value;
     this.searchParamId = e.target?.value;
 
@@ -971,6 +984,7 @@ export class Tab1Page implements OnInit {
           );
           // .split('_').join(' '));
           if (this.param2List && this.param2List.length > 0) {
+            console.log('ttttt');
             this.param2List[index] = menu.subMenu;
           } else {
             this.param2List.push(menu.subMenu);
@@ -982,7 +996,9 @@ export class Tab1Page implements OnInit {
             param4: f.param4 ? f.param4 : '',
           });
         });
+        console.log('ssss');
         tempArray.map((m, i) => {
+          console.log(m, 'mmmm');
           this.addSearch(m);
           this.onParam2Change(i, m);
         });

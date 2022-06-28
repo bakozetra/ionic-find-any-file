@@ -38,7 +38,7 @@
 
 ion-input {
   border: 1px solid lightgray;
-  border-radius: 6px;
+  // border-radius: 6px;
   color: #fff !important;
 }
 
@@ -58,11 +58,15 @@ ion-input {
 .input-wrapper {
   display: flex;
   align-items: center;
+  ion-input {
+    height: 28px;
+    border-radius: 0;
+  }
 }
 
 .input-box {
-  height: 5vh;
-  margin-bottom: 0.3rem;
+  // height: ;
+  
 }
 
 .accordion {
@@ -101,9 +105,37 @@ form {
       --background-hover:none;
       padding: 0;
   }
+  select,.datepicker {
+    max-width: 250px;
+    // min-width: 150px;
+    width: 100%;
+  }
+  .row-add,.row-delete {
+    // --max-width: 40px;
+    width: 100%;
+    max-width: fit-content;
+  }
+  .row-add {
+    // padding: 0;
+    max-width: fit-content;
+    ion-button {
+      margin: 0;
+    }
+  }
+  .disablebutton {
+    color: grey;
+  }
+  ion-input {
+    height: 28px;
+  } 
+  .range1 {
+    --border-radius: 0;
+  }
+  .datepicker {
+    border-radius:6px
+
+  }
 }
-// .update::part(native) {
-//  }
 
 .save-btn {
   text-align: center;
@@ -113,8 +145,10 @@ form {
  display: flex;
  align-items: center;
  justify-content: space-between;
- margin-right: 2rem;
  .plus-button {
+  margin-right: 1rem;
+ }
+ ion-text {
   margin-left: 1rem;
  }
 }
@@ -175,7 +209,9 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  margin:0;
   margin-right: 3rem;
+
   .select-class {
     width: 100%;
   }
@@ -236,7 +272,7 @@ select {
 }
 
 .apply-btn::part(native) {
-  background: rgb(203, 35, 203);
+  // background: rgb(203, 35, 203);
   padding: 1rem !important;
 }
 

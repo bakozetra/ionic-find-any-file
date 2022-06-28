@@ -42,11 +42,7 @@
             </div>
           </div>
           <div class="save-btn1">
-            <ion-button
-              class="plus-button"
-              *ngIf="allSearch()?.controls && allSearch()?.controls.length === 0"
-              (click)="addRow(true)"
-            >
+            <ion-button class="plus-button">
               <ion-icon
                 slot="icon-only"
                 src="../../assets/icon/dots.svg"
@@ -54,32 +50,7 @@
             </ion-button>
           </div>
         </div>
-        <ng-template #emptyList>
-          <div class="no-saved-presets">
-            <div class="save-btn1">
-              <ion-button
-                class="plus-button"
-                *ngIf="allSearch()?.controls && allSearch()?.controls.length === 0"
-                (click)="addRow(true)"
-              >
-                <ion-icon
-                  slot="icon-only"
-                  src="../../assets/icon/dots.svg"
-                ></ion-icon>
-              </ion-button>
-            </div>
-            <div>
-              <ion-text class="no-presets"> No saved Presets </ion-text>
-            </div>
-          </div>
-        </ng-template>
-        <ion-row class="search-box"></ion-row>
-
-        <ion-grid
-          class="form-wrapper"
-          style="overflow: overlay; height: 100vh"
-          *ngIf="allSearch()?.controls?.length > 0"
-        >
+        <ion-grid class="form-wrapper" style="overflow: overlay; height: 100vh">
           <form class="" [formGroup]="searchFilterForm">
             <div formArrayName="search">
               <ion-grid
@@ -93,29 +64,39 @@
                   [formGroupName]="i"
                   class="example-box"
                 >
-                  <ion-item class="bcd" lines="none">
-                    <ion-row class="abc">
-                      <ion-col class="row-add">
-                        <ion-button (click)="addRow()">
-                          <ion-icon
-                            name="add-circle-outline"
-                            size="large"
-                            slot="icon-only"
-                          ></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                    </ion-row>
-                  </ion-item>
-                  <ion-item size-xs="12" size-sm="1" lines="none">
-                    <ion-button class="update" (click)="removeRow(i)">
+                  <ion-col class="row-add">
+                    <!-- *ngIf="preSelectList.length > 0 else emptyList" -->
+                    <ion-button (click)="addRow(false,i,$event)">
+                      <ion-icon
+                        name="add-circle-outline"
+                        size="large"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                  <ion-col lines="none" class="row-delete">
+                    <ion-button
+                      class="update"
+                      *ngIf="allSearch()?.controls.length > 1 else disableMinus"
+                      (click)="removeRow(i)"
+                    >
                       <ion-icon
                         name="remove-circle-outline"
                         size="large"
                         slot="icon-only"
                       ></ion-icon>
                     </ion-button>
-                  </ion-item>
-                  <ion-col size-xs="12" size-sm="">
+                    <ng-template #disableMinus>
+                      <ion-button class="update disablebutton">
+                        <ion-icon
+                          name="remove-circle-outline"
+                          size="large"
+                          slot="icon-only"
+                        ></ion-icon>
+                      </ion-button>
+                    </ng-template>
+                  </ion-col>
+                  <ion-col size-lg="3" size-md="4" size-sm="4" size-xl="2">
                     <select
                       class="select-class"
                       formControlName="param1"
@@ -135,7 +116,7 @@
                       </option>
                     </select>
                   </ion-col>
-                  <ion-col size-xs="12" size-sm="">
+                  <ion-col size-lg="3" size-md="4" size-sm="4" size-xl="2">
                     <select
                       class="select-class"
                       [attr.disabled]="isParam2Select? '':null"
@@ -179,7 +160,7 @@
                       <ion-input
                         clearInput
                         type="date"
-                        class="input-box"
+                        class="input-box datepicker"
                         formControlName="param3"
                         [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                         *ngIf="allSearch().controls[i].get('param2')?.value !== 'BETWEEN'"
@@ -196,7 +177,7 @@
                     <ion-input
                       clearInput
                       type="text"
-                      class="input-box"
+                      class="input-box range1"
                       formControlName="param4"
                       [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
                       *ngIf="isDestinationNeeded(i)"
@@ -207,7 +188,6 @@
               </ion-grid>
             </div>
           </form>
-
           <ion-item>
             <ion-row class="btn-group">
               <ion-col size-xs="6" size-sm="6" class="clear-filter">
@@ -217,7 +197,7 @@
               </ion-col>
               <ion-col size-xs="6" size-sm="6" class="apply-filter">
                 <ion-button (click)="applyFilter()" class="apply-btn"
-                  >Apply Filter</ion-button
+                  >Search</ion-button
                 >
               </ion-col>
             </ion-row>
@@ -281,6 +261,21 @@
             </ion-row>
           </ion-item>
         </ion-grid>
+        <ng-template #emptyList>
+          <div class="no-saved-presets">
+            <div>
+              <ion-text text class="no-presets"> No saved Presets </ion-text>
+            </div>
+            <div class="save-btn1">
+              <ion-button class="plus-button">
+                <ion-icon
+                  slot="icon-only"
+                  src="../../assets/icon/dots.svg"
+                ></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ng-template>
       </ion-list>
     </ion-accordion>
   </ion-accordion-group>
