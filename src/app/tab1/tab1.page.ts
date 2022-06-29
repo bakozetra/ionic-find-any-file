@@ -428,6 +428,7 @@ export class Tab1Page implements OnInit {
       }
       this.updatePreselectList();
       for (let i = 0; i < this.allSearch().length; i++) {
+        console.log('i::::::', i);
         this.onParam1Change(i);
       }
     }
@@ -573,7 +574,6 @@ export class Tab1Page implements OnInit {
     console.log('item::::::', item);
     this.allSearch().push(this.newEvent(item));
   }
-  // arr.splice(2, 0, "Lene");
 
   clearFormArray() {
     (this.searchFilterForm.controls['search'] as FormArray)?.clear();
@@ -681,6 +681,7 @@ export class Tab1Page implements OnInit {
       const localData = localStorage.getItem('presetSearch');
       if (localData && localData != null) {
         localJSON = JSON.parse(localData);
+        console.log('localJSON::::::', localJSON);
       }
       if (
         localJSON?.length > 0 &&
@@ -714,6 +715,7 @@ export class Tab1Page implements OnInit {
           filterName: this.searchParam,
           filters: this.searchFilterForm.value.search,
         };
+        console.log('finalData::www::::', finalData);
         allFilters.push(finalData);
         localStorage.setItem('presetSearch', JSON.stringify(allFilters));
         this.updatePreselectList();
@@ -735,6 +737,7 @@ export class Tab1Page implements OnInit {
           filterName: this.searchParam,
           filters: this.searchFilterForm.value.search,
         };
+        console.log('finalData::::::', finalData);
         allFilters.push(finalData);
         localStorage.setItem('presetSearch', JSON.stringify(allFilters));
         this.updatePreselectList();
@@ -749,6 +752,7 @@ export class Tab1Page implements OnInit {
       }
     }
   }
+
   saveAsNewPreset() {
     // debugger
     const localData: any = localStorage.getItem('presetSearch');
