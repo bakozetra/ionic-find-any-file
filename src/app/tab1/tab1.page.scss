@@ -31,14 +31,14 @@
 }
 
 .select-class {
- 
   border-radius: 6px;
   outline: none;
+  background-color: white;
+  color: #000;
 }
 
 ion-input {
   border: 1px solid lightgray;
-  // border-radius: 6px;
   color: #fff !important;
 }
 
@@ -273,11 +273,11 @@ select {
     background-color: #535353;
 }
 
-.apply-btn::part(native) {
+.apply-btn::part(native)  {
   // background: rgb(203, 35, 203);
   padding: 1rem !important;
   color: #dddddd;
-    background-color: #535353;
+  background-color: #535353;
 }
 
 .save::part(native) {
@@ -482,4 +482,29 @@ ul li ul {
 ul li.active ul {
   display: block; /* Show the list when class 'active' is added to the li */ 
   color: red;
+  
 }
+.dropdown-toggle::after {
+  display: none;
+}
+.dropdown-menu.show  {
+  background-color: #333333;
+}
+.dropdown-item {
+  color: #dddddd;
+}
+
+::ng-deep .modal-dialog {
+  top: 40%;
+ 
+.modal-content  {
+  width: fit-content;
+  margin: auto;
+  background-color: #393737;
+  color: white;
+  button {
+  color: #dddddd;
+  background-color: #535353;
+  }
+}
+}  

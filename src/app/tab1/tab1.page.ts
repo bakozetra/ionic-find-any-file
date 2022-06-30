@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare var easepick: any;
 
 @Component({
@@ -286,7 +287,7 @@ export class Tab1Page implements OnInit {
   mod: boolean = false;
   isParam2Select: boolean = false;
   dates = ['Shooting Date', 'Creation Date', 'Modification Date'];
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private modalService: NgbModal) {}
 
   ngOnInit() {
     this.initPriceForm();
@@ -752,7 +753,6 @@ export class Tab1Page implements OnInit {
       }
     }
   }
-
   saveAsNewPreset() {
     // debugger
     const localData: any = localStorage.getItem('presetSearch');
@@ -829,6 +829,86 @@ export class Tab1Page implements OnInit {
       }
     }
   }
+
+  // saveAsNewPreset() {
+  //   // debugger
+  //   const localData: any = localStorage.getItem('presetSearch');
+  //   const localJSON = JSON.parse(localData);
+  //   if (localJSON && localJSON.length > 0) {
+  //     let checkIfExist = localJSON.filter((ele) => ele?.id == this.id);
+  //     if (checkIfExist || checkIfExist?.length > 0) {
+  //       let filterData: FilterModel[] = this.searchFilterForm.value
+  //         .search as FilterModel[];
+  //       let messageSpan = document.getElementById('message');
+  //       let presetName = this.searchParam;
+  //       const allSameNameKeys = localJSON.filter((d) => {
+  //         console.log(d, 'test');
+  //         return d.filterName.search(this.searchParam) > -1;
+  //       });
+  //       console.log('allSameNameKeys::::::', allSameNameKeys);
+  //       if (allSameNameKeys) {
+  //         const allKeys = allSameNameKeys.map((m) => m.filterName);
+  //         console.log('allKeys::::::', allKeys);
+  //         this.presetSelected = this.searchParam;
+  //         if (allKeys[allKeys.length - 1]?.split('_').length === 1) {
+  //           presetName += '_copy';
+  //         }
+  //         if (
+  //           allKeys[allKeys.length - 1]?.split('_').length > 1 &&
+  //           allKeys[allKeys.length - 1]?.split('_')[1].length === 4
+  //         ) {
+  //           presetName = allKeys[allKeys.length - 1].split('_')[0] + '_copy1';
+  //         }
+  //         if (
+  //           allKeys[allKeys.length - 1]?.split('_').length > 1 &&
+  //           allKeys[allKeys.length - 1]?.split('_')[1].length > 4
+  //         ) {
+  //           let newIndex =
+  //             allKeys[allKeys.length - 1][
+  //               allKeys[allKeys.length - 1].length - 1
+  //             ];
+  //           newIndex++;
+  //           presetName =
+  //             allKeys[allKeys.length - 1]?.split('_')[0] + '_copy' + newIndex;
+  //         }
+  //       }
+  //       const allFilters = this.preSelectList;
+  //       filterData = filterData.filter(
+  //         (data) => data?.param1 && data?.param2 && data?.param3
+  //       );
+  //       const finalData = {
+  //         id: allFilters[allFilters.length - 1].id + 1,
+  //         filterName: presetName,
+  //         filters: this.searchFilterForm.value.search,
+  //       };
+  //       allFilters.push(finalData);
+  //       localStorage.setItem('presetSearch', JSON.stringify(allFilters));
+  //       this.updatePreselectList();
+  //       messageSpan.style.color = 'green';
+  //       this.message = 'Your Filter stored successfully.';
+
+  //       // let ele = localJSON?.find(f => f.id == this.presetSelected);
+  //       // let len = ele.filterName.indexOf('_');
+
+  //       // console.log(ele.filterName);
+  //       // let pre = this.preSelectList.length - 1;
+  //       // console.log(pre);
+  //       // if(len) {
+  //       //   this.presetSelected = localJSON?.find(f => f.filterName?.toLowerCase() === this.searchParam?.toLowerCase())?.id + pre ;
+  //       // }
+  //       // else {
+  //       //   this.presetSelected = localJSON?.find(f => f.filterName?.toLowerCase() === this.searchParam?.toLowerCase())?.id + 1;
+  //       // }
+
+  //       // this.presetSelected = localJSON?.find(f => f.filterName?.toLowerCase() === this.searchParam?.toLowerCase())?.;
+
+  //       this.searchParam = presetName;
+  //       setTimeout(() => {
+  //         this.message = '';
+  //       }, 3000);
+  //     }
+  //   }
+  // }
 
   async updateCurrentPreset() {
     // debugger
@@ -948,10 +1028,8 @@ export class Tab1Page implements OnInit {
   }
 
   onPreselectDDLChange(e: any) {
-    console.log(e, 'eee');
     // debugger
     const changes = this.trackChanges(this.searchParamId);
-    console.log('changes::::::1', changes);
     if (!changes) {
       console.log('changes::::::', changes);
       if (this.searchParam && this.searchParam !== 'Select') {
@@ -1000,7 +1078,6 @@ export class Tab1Page implements OnInit {
             param4: f.param4 ? f.param4 : '',
           });
         });
-        console.log('ssss');
         tempArray.map((m, i) => {
           console.log(m, 'mmmm');
           this.addSearch(m);
@@ -1052,5 +1129,29 @@ export class Tab1Page implements OnInit {
     this.allSearch().setControl(event.previousIndex, current);
     this.onParam1Change(event.currentIndex);
     this.onParam1Change(event.previousIndex);
+  }
+  closeResult = '';
+
+  open(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

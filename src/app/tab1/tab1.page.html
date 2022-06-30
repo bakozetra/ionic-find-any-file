@@ -41,13 +41,37 @@
               </select>
             </div>
           </div>
-          <div class="save-btn1">
-            <ion-button class="plus-button">
-              <ion-icon
-                slot="icon-only"
-                src="../../assets/icon/dots.svg"
-              ></ion-icon>
-            </ion-button>
+          <div>
+            <div class="dropdown save-btn1">
+              <ion-button
+                class="btn-primary dropdown-toggle plus-button"
+                type="button"
+                id="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <ion-icon
+                  slot="icon-only"
+                  src="../../assets/icon/dots.svg"
+                ></ion-icon>
+              </ion-button>
+              <ul class="dropdown-menu" aria-labelledby="dropdown">
+                <!-- (click)="saveAsNewPreset()" -->
+                <li class="dropdown-item" (click)="open(content)">
+                  Save As New Preset
+                </li>
+                <!-- (click)="updateCurrentPreset()" -->
+                <li class="dropdown-item" (click)="saveAsNewPreset()">
+                  Update Current Preset
+                </li>
+                <li class="dropdown-item" (click)="deletePreset()">
+                  Delete Preset
+                </li>
+                <li class="dropdown-item" (click)="clearFilter()">
+                  Clear presets
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <ion-grid class="form-wrapper" style="overflow: overlay; height: 100vh">
@@ -190,12 +214,12 @@
           </form>
           <ion-item>
             <ion-row class="btn-group">
-              <ion-col size-xs="6" size-sm="6" class="clear-filter">
+              <!-- <ion-col size-xs="6" size-sm="6" class="clear-filter">
                 <ion-button (click)="clearFilter()" class="clear-btn"
                   >Clear Filter</ion-button
                 >
-              </ion-col>
-              <ion-col size-xs="6" size-sm="6" class="apply-filter">
+              </ion-col> -->
+              <ion-col size-xs="12" size-sm="12" class="apply-filter">
                 <ion-button (click)="applyFilter()" class="apply-btn"
                   >Search</ion-button
                 >
@@ -205,7 +229,7 @@
 
           <ion-item lines="none">
             <ion-row class="save-row ion-align-items-center">
-              <ion-col size-xs="12" size-sm="4">
+              <!-- <ion-col size-xs="12" size-sm="4">
                 <ion-input
                   clearInput
                   class="input-box"
@@ -223,11 +247,11 @@
                 >
                   Save</ion-button
                 >
-              </ion-col>
+              </ion-col> -->
 
               <ion-col size-xs="3" size-sm="2" class="modi-btn">
                 <div class="dropdown" *ngIf="presetSelected">
-                  <button
+                  <!-- <button
                     class="selectbtn btn-primary dropdown-toggle"
                     type="button"
                     id="dropdown"
@@ -235,15 +259,19 @@
                     aria-expanded="false"
                   >
                     Update
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdown">
-                    <li class="dropdown-item" (click)="saveAsNewPreset()">
+                  </button> -->
+                  <!-- <ul class="dropdown-menu" aria-labelledby="dropdown">
+                    <li
+                      class="dropdown-item"
+                      (click)="open(content)"
+                      (click)="saveAsNewPreset()"
+                    >
                       Save As New Preset
                     </li>
                     <li class="dropdown-item" (click)="updateCurrentPreset()">
                       Update Current Preset
                     </li>
-                  </ul>
+                  </ul> -->
                 </div>
               </ion-col>
               <ion-col class="error-col" size-xs="4" size-sm="3">
@@ -251,11 +279,6 @@
                   ><span class="message" id="message"
                     >{{message}}</span
                   ></ion-text
-                >
-              </ion-col>
-              <ion-col size-xs="5" size-sm="3" class="save-btn">
-                <ion-button class="delete-preset" (click)="deletePreset()"
-                  >Delete Preset</ion-button
                 >
               </ion-col>
             </ion-row>
@@ -266,18 +289,84 @@
             <div>
               <ion-text text class="no-presets"> No saved Presets </ion-text>
             </div>
-            <div class="save-btn1">
-              <ion-button class="plus-button">
+            <div class="dropdown save-btn1">
+              <ion-button
+                class="btn-primary dropdown-toggle plus-button"
+                type="button"
+                id="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <ion-icon
                   slot="icon-only"
                   src="../../assets/icon/dots.svg"
                 ></ion-icon>
               </ion-button>
+
+              <ul class="dropdown-menu" aria-labelledby="dropdown">
+                <li
+                  class="dropdown-item"
+                  (click)="open(content)"
+                  (click)="saveAsNewPreset()"
+                >
+                  Save As New Preset
+                </li>
+                <li class="dropdown-item" (click)="updateCurrentPreset()">
+                  Update Current Preset
+                </li>
+                <li class="dropdown-item" (click)="deletePreset()">
+                  Delete Preset
+                </li>
+                <li class="dropdown-item" (click)="clearFilter()">
+                  Clear presets
+                </li>
+              </ul>
             </div>
           </div>
         </ng-template>
       </ion-list>
     </ion-accordion>
   </ion-accordion-group>
-  <!-- <ion-icon name="remove-circle-outline"></ion-icon> -->
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Render preset</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="dateOfBirth">Enter search name:</label>
+        <div class="input-group">
+          <input
+            clearInput
+            class="input-box form-control"
+            placeholder="Enter search name"
+            [(ngModel)]="searchParam"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Cancel
+      </button>
+      <button
+        [disabled]="searchParam?.length < 1"
+        (click)="savePreselectForm(); modal.dismiss('Cross click')"
+        class="btn btn-outline-dark"
+      >
+        Save
+      </button>
+      <ng-template #button1> </ng-template>
+    </div>
+  </ng-template>
 </ion-content>
