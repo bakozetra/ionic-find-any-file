@@ -183,7 +183,7 @@ export class Tab1Page implements OnInit {
     this.initPriceForm();
     this.updatePreselectList();
     this.onPreselectDDLChange(1);
-    console.log('onPreselectDDLChange::::::', this.onPreselectDDLChange(2));
+
     this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
   }
 
@@ -240,7 +240,6 @@ export class Tab1Page implements OnInit {
         (s) => s !== ''
       )
     ) {
-      console.log(this.allSearch(), 'this.allSearch()');
       this.allSearch().removeAt(index);
       return;
     }
@@ -249,7 +248,6 @@ export class Tab1Page implements OnInit {
         this.allSearch().removeAt(index);
         this.UpdateSearchByRemoving(index);
         const localJSON = this.getPersistPresetSearchParsed();
-
         let data = localJSON.filter((ele) => ele?.id != this?.id);
         this.setPersistPresetSearch(data);
         this.updatePreselectList();
@@ -266,7 +264,7 @@ export class Tab1Page implements OnInit {
     const localJSON = this.getPersistPresetSearchParsed();
     if (localJSON.length > 0) {
       let ele = localJSON?.find((f) => f.id == this.presetSelected);
-      if (localJSON.find((s) => s.filterName == this.presetSelected) || ele) {
+      if (this.findInPersistanDataByFilterName(this.presetSelected) || ele) {
         let checkIfExist = localJSON.filter((ele) => ele?.id == this.id);
         if (checkIfExist && checkIfExist?.length > 0) {
           if (confirm(`Are you sure to delete ${this.searchParam} preset.`)) {
@@ -334,7 +332,7 @@ export class Tab1Page implements OnInit {
       // this.UpdateSearchByRemoving(index);
     }
     this.allSearch().clear();
-    this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+    // this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
     // this.updatePreselectList();
 
     // this.updateCurrentPreset(true);
@@ -342,7 +340,6 @@ export class Tab1Page implements OnInit {
 
   clearFilter() {
     let localJSON = this.getPersistPresetSearchParsed();
-
     // debugger
     this.submitted = false;
     if (!this.searchParam) {
@@ -364,13 +361,10 @@ export class Tab1Page implements OnInit {
         this.allSearch().clear();
       }
     } else {
-      if (
-        !localJSON?.find(
-          (f) => f.filterName?.toLowerCase() === this?.searchParam
-        ) ||
-        localJSON.find((f) => f.filterName?.toLowerCase() === this?.searchParam)
-          ?.length === 0
-      ) {
+      const dataForParam = this.findInPersistanDataByFilterName(
+        this?.searchParam
+      );
+      if (!dataForParam || dataForParam?.length === 0) {
         let isData = false;
         const currentFormData = this.allSearch().controls;
         currentFormData.map((m: FormGroup) => {
@@ -737,13 +731,9 @@ export class Tab1Page implements OnInit {
     let messageSpan = document.getElementById('message');
     let isModified = true;
     if (every) {
-      const localJSON = this.getPersistPresetSearchParsed();
+      let temp = this.findInPersistanDataByFilterName(this.searchParam);
       // debugger
-      if (
-        localJSON?.length > 0 &&
-        localJSON.filter((s) => s.filterName == this.searchParam)?.length > 0
-      ) {
-        let temp = localJSON.find((s) => s.filterName == this.searchParam);
+      if (temp?.length > 0) {
         let temp1 = temp.filters;
         const temp2 = this.searchFilterForm.value.search;
         for (var i = 0, len1 = temp1.length; i < len1; i++) {
@@ -786,15 +776,15 @@ export class Tab1Page implements OnInit {
             filters: this.searchFilterForm.getRawValue()?.search,
           },
         ];
-        let data = localJSON.filter((ele) => ele.id != +this.searchParamId);
+        let data = this.getPersistPresetSearchParsed().filter(
+          (ele) => ele.id != +this.searchParamId
+        );
         data = [...data, ...finalData];
         console.log('data::::::', data);
         this.setPersistPresetSearch(data);
         this.updatePreselectList();
         messageSpan.style.color = 'green';
-
         this.message = message;
-
         await setTimeout(() => {
           this.message = '';
         }, 3000);
@@ -803,30 +793,39 @@ export class Tab1Page implements OnInit {
   }
 
   setPersistPresetSearch(data) {
+    console.log('data:::setPersistPresetSearch:::', data);
     localStorage.setItem('presetSearch', JSON.stringify(data));
   }
   getPersistPresetSearch() {
     return localStorage.getItem('presetSearch');
   }
-
   getPersistPresetSearchParsed() {
     let localJSON = [];
     const localData = this.getPersistPresetSearch();
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
+    console.log('localJSON::::getPersistPresetSearchParsed::', localJSON);
     return localJSON;
+  }
+
+  // getJSONStringify(temp) {
+  //   JSON.stringify(temp);
+  // }
+  findInPersistanDataByFilterName(searchParamName) {
+    return this.getPersistPresetSearchParsed().find(
+      (f) => f?.filterName?.toLowerCase() === searchParamName?.toLowerCase()
+    );
   }
 
   updatePreselectList() {
     var localJSON = this.getPersistPresetSearchParsed();
-
     if (localJSON.length) {
       this.preSelectList = localJSON;
     }
     if (this.searchParam.toLowerCase()) {
-      this.presetSelected = localJSON?.find(
-        (f) => f.filterName?.toLowerCase() === this.searchParam?.toLowerCase()
+      this.presetSelected = this.findInPersistanDataByFilterName(
+        this.searchParam
       )?.id;
       this.searchParamId = this.presetSelected;
       // this.presetSelected = this.searchParam;
@@ -834,11 +833,23 @@ export class Tab1Page implements OnInit {
   }
 
   onPreselectDDLChange(e: any) {
-    // debugger
+    // debugger;
+    //initial load
+    this.searchParam = !this.searchParam
+      ? e.target?.options[e.target.selectedIndex]?.text
+      : this.searchParam;
+
+    console.log('this.searchParam::onPreselectDDLChange::::', this.searchParam);
+    console.log(
+      'e.target?.options[e.target.selectedIndex]?.text::::::',
+      e.target?.options[e.target.selectedIndex]?.text
+    );
     const changes = this.trackChanges(this.searchParamId);
+    const compareSearchParam =
+      this.searchParam && this.searchParam !== 'Select';
     if (!changes) {
       console.log('changes::::::', changes);
-      if (this.searchParam && this.searchParam !== 'Select') {
+      if (compareSearchParam) {
         if (!confirm('Do you want to discard the current filter changes')) {
           setTimeout(() => {
             this.presetSelected = this.searchParamId;
@@ -856,7 +867,7 @@ export class Tab1Page implements OnInit {
       this.allSearch().clear();
     }
 
-    if (this.searchParam && this.searchParam !== 'Select') {
+    if (compareSearchParam) {
       this.clearFormArray();
       const localJSON = this.getPersistPresetSearchParsed();
       if (localJSON.length) {
