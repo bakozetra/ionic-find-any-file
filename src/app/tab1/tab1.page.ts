@@ -700,13 +700,15 @@ export class Tab1Page implements OnInit {
 
   updatePreselectList() {
     var localJSON = this.getPersistPresetSearchParsed();
-    if (localJSON.length) {
-      this.preSelectList = localJSON;
-    }
+    debugger;
+    // if (localJSON.length) {
+    this.preSelectList = localJSON;
+    // }
     if (this.searchParam.toLowerCase()) {
       this.presetSelected = this.findInPersistanDataByFilterName(
         this.searchParam
       )?.id;
+      debugger;
       this.searchParamId = this.presetSelected;
       // this.presetSelected = this.searchParam;
     }
