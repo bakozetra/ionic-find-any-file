@@ -248,8 +248,7 @@ export class Tab1Page implements OnInit {
       if (this.allSearch().length == 1) {
         this.allSearch().removeAt(index);
         this.UpdateSearchByRemoving(index);
-        const localData: any = localStorage.getItem('presetSearch');
-        const localJSON = JSON.parse(localData);
+        const localJSON = this.getPersistPresetSearchParsed();
 
         let data = localJSON.filter((ele) => ele?.id != this?.id);
         this.setPersistPresetSearch(data);
@@ -264,9 +263,7 @@ export class Tab1Page implements OnInit {
 
   deletePreset() {
     let messageSpan = document.getElementById('message');
-    const localData: any = localStorage.getItem('presetSearch');
-    const localJSON = JSON.parse(localData);
-
+    const localJSON = this.getPersistPresetSearchParsed();
     if (localJSON && localJSON.length > 0) {
       let ele = localJSON?.find((f) => f.id == this.presetSelected);
       if (localJSON.find((s) => s.filterName == this.presetSelected) || ele) {
@@ -305,9 +302,7 @@ export class Tab1Page implements OnInit {
   }
 
   UpdateSearchByRemoving(index: any) {
-    const localData: any = localStorage.getItem('presetSearch');
-    const localJSON = JSON.parse(localData);
-
+    const localJSON = this.getPersistPresetSearchParsed();
     if (localJSON && localJSON[this.searchParam]) {
       const temp1 = localJSON[this.searchParam];
       temp1.splice(index, 1);
@@ -327,7 +322,7 @@ export class Tab1Page implements OnInit {
 
   clearfilter2() {
     console.log('this.allSearch()::::::', this.allSearch().length);
-    const localData = localStorage.getItem('presetSearch');
+    const localData = this.getPersistPresetSearch();
     console.log('localData::::::', localData);
     const len = this.allSearch().length;
     this.searchParam = '';
@@ -346,6 +341,8 @@ export class Tab1Page implements OnInit {
   }
 
   clearFilter() {
+    let localJSON = this.getPersistPresetSearchParsed();
+
     // debugger
     this.submitted = false;
     if (!this.searchParam) {
@@ -367,10 +364,6 @@ export class Tab1Page implements OnInit {
         this.allSearch().clear();
       }
     } else {
-      const localData = localStorage.getItem('presetSearch');
-      if (localData && localData != null) {
-        localJSON = JSON.parse(localData);
-      }
       if (
         !localJSON?.find(
           (f) => f.filterName?.toLowerCase() === this?.searchParam
@@ -401,11 +394,8 @@ export class Tab1Page implements OnInit {
         }
       }
     }
-    var localJSON = [];
-    const localData = localStorage.getItem('presetSearch');
-    if (localData && localData != null) {
-      localJSON = JSON.parse(localData);
-    }
+    localJSON = this.getPersistPresetSearchParsed();
+
     let selectedData = localJSON.filter(
       (s) => s.filterName == this.searchParam
     );
@@ -584,12 +574,7 @@ export class Tab1Page implements OnInit {
     // let isModified = true;
     // debugger
     if (every) {
-      var localJSON = [];
-      const localData = localStorage.getItem('presetSearch');
-      if (localData && localData != null) {
-        localJSON = JSON.parse(localData);
-        console.log('localJSON::::::', localJSON);
-      }
+      const localJSON = this.getPersistPresetSearchParsed();
       if (
         localJSON?.length > 0 &&
         localJSON.filter((s) => s.filterName == this.searchParam)?.length > 0
@@ -661,8 +646,7 @@ export class Tab1Page implements OnInit {
   }
   saveAsNewPreset() {
     // debugger
-    const localData: any = localStorage.getItem('presetSearch');
-    const localJSON = JSON.parse(localData);
+    const localJSON = this.getPersistPresetSearchParsed();
     if (localJSON && localJSON.length > 0) {
       let checkIfExist = localJSON.filter((ele) => ele?.id == this.id);
       if (checkIfExist || checkIfExist?.length > 0) {
@@ -750,11 +734,7 @@ export class Tab1Page implements OnInit {
     let messageSpan = document.getElementById('message');
     let isModified = true;
     if (every) {
-      var localJSON = [];
-      const localData = localStorage.getItem('presetSearch');
-      if (localData && localData != null) {
-        localJSON = JSON.parse(localData);
-      }
+      const localJSON = this.getPersistPresetSearchParsed();
       // debugger
       if (
         localJSON?.length > 0 &&
@@ -822,13 +802,23 @@ export class Tab1Page implements OnInit {
   setPersistPresetSearch(data) {
     localStorage.setItem('presetSearch', JSON.stringify(data));
   }
+  getPersistPresetSearch() {
+    return localStorage.getItem('presetSearch');
+  }
 
-  updatePreselectList() {
-    var localJSON = [];
-
-    const localData = localStorage.getItem('presetSearch');
+  getPersistPresetSearchParsed() {
+    let localJSON = [];
+    const localData = this.getPersistPresetSearch();
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+
+  updatePreselectList() {
+    var localJSON = this.getPersistPresetSearchParsed();
+
+    if (localJSON.length) {
       this.preSelectList = localJSON;
     }
     if (this.searchParam.toLowerCase()) {
@@ -865,9 +855,8 @@ export class Tab1Page implements OnInit {
 
     if (this.searchParam && this.searchParam !== 'Select') {
       this.clearFormArray();
-      const localData = localStorage.getItem('presetSearch');
-      if (localData && localData != null) {
-        var localJSON = JSON.parse(localData);
+      const localJSON = this.getPersistPresetSearchParsed();
+      if (localJSON.length) {
         const tempArray = [] as any[];
         const currentSelection = localJSON.find(
           (f) => f.id == this.searchParamId
@@ -904,8 +893,7 @@ export class Tab1Page implements OnInit {
 
   trackChanges = (param: any) => {
     if (!param) return true;
-    const localData = localStorage.getItem('presetSearch');
-    var localJSON = JSON.parse(localData);
+    const localJSON = this.getPersistPresetSearchParsed();
     let data = localJSON.find((f) => f.id == param);
 
     if (!data) {
