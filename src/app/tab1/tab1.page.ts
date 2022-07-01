@@ -16,6 +16,70 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare var easepick: any;
 
+const SUB_MENU_TEXT_TYPE_BASE = [
+        {
+          id: 'CONTAINS',
+          name: 'Contains',
+        },
+        {
+          id: 'IS',
+          name: 'Is',
+        },
+        {
+    id: 'IS_NOT',
+    name: 'Is Not',
+  },
+];
+
+const SUB_MENU_TEXT_TYPE_BEGIN_END = [
+  {
+          id: 'BEGIN_WITH',
+          name: 'Begin With',
+        },
+        {
+          id: 'ENDS_WITH',
+          name: 'Ends With',
+        },
+];
+const SUB_MENU_TEXT_TYPE_CONTAINS_WORDS = [
+        {
+          id: 'CONTAINS_WORDS',
+          name: 'Contains Words',
+        },
+];
+const SUB_MENU_DATE_TYPE_BASE = [
+        {
+    id: 'EXACTLY',
+    name: 'Exactly',
+    },
+    {
+    id: 'BEFORE',
+    name: 'Before',
+        },
+        {
+    id: 'AFTER',
+    name: 'After',
+        },
+        {
+    id: 'BETWEEN',
+    name: 'Between',
+        },
+];
+const SUB_MENU_DURATION_TYPE_BASE = [
+        {
+    id: 'LONGER_THAN',
+    name: 'Longer Than',
+        },
+        {
+    id: 'SHORTER_THAN',
+    name: 'Shorter Than',
+        },
+        {
+    id: 'SHOW_TOTAL_DURATION_FOR_SELECTION',
+    name: 'Show Total Duration For Selection',
+        },
+];
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -23,66 +87,24 @@ declare var easepick: any;
 })
 export class Tab1Page implements OnInit {
   searchData = [
-    {
+        {
       id: 'CLIP_NOTES',
       name: 'Clip Notes',
       type: 'text',
       subMenu: [
-        {
-          id: 'CONTAINS',
-          name: 'Contains',
-        },
-        {
-          id: 'CONTAINS_WORDS',
-          name: 'Contains Words',
-        },
-        {
-          id: 'IS',
-          name: 'Is',
-        },
-        {
-          id: 'BEGIN_WITH',
-          name: 'Begin With',
-        },
-        {
-          id: 'ENDS_WITH',
-          name: 'Ends With',
-        },
-        {
-          id: 'IS_NOT',
-          name: 'Is Not',
-        },
+        ...SUB_MENU_TEXT_TYPE_BASE,
+        ...SUB_MENU_TEXT_TYPE_BEGIN_END,
+        ...SUB_MENU_TEXT_TYPE_CONTAINS_WORDS,
       ],
-    },
-    {
+        },
+        {
       id: 'FRAME_NOTES',
       name: 'Frame Notes',
       type: 'text',
       subMenu: [
-        {
-          id: 'CONTAINS',
-          name: 'Contains',
-        },
-        {
-          id: 'CONTAINS_WORDS',
-          name: 'Contains Words',
-        },
-        {
-          id: 'IS',
-          name: 'Is',
-        },
-        {
-          id: 'BEGIN_WITH',
-          name: 'Begin With',
-        },
-        {
-          id: 'ENDS_WITH',
-          name: 'Ends With',
-        },
-        {
-          id: 'IS_NOT',
-          name: 'Is Not',
-        },
+        ...SUB_MENU_TEXT_TYPE_BASE,
+        ...SUB_MENU_TEXT_TYPE_BEGIN_END,
+        ...SUB_MENU_TEXT_TYPE_CONTAINS_WORDS,
       ],
     },
     {
@@ -90,184 +112,52 @@ export class Tab1Page implements OnInit {
       name: 'Transcripts',
       type: 'text',
       subMenu: [
-        {
-          id: 'CONTAINS',
-          name: 'Contains',
-        },
-        {
-          id: 'CONTAINS_WORDS',
-          name: 'Contains Words',
-        },
-        {
-          id: 'IS',
-          name: 'Is',
-        },
-        {
-          id: 'BEGIN_WITH',
-          name: 'Begin With',
-        },
-        {
-          id: 'ENDS_WITH',
-          name: 'Ends With',
-        },
-        {
-          id: 'IS_NOT',
-          name: 'Is Not',
-        },
+        ...SUB_MENU_TEXT_TYPE_BASE,
+        ...SUB_MENU_TEXT_TYPE_BEGIN_END,
+        ...SUB_MENU_TEXT_TYPE_CONTAINS_WORDS,
       ],
     },
     {
       id: 'FILE_NAME',
       name: 'File Name',
       type: 'text',
-      subMenu: [
-        {
-          id: 'CONTAINS',
-          name: 'Contains',
-        },
-        {
-          id: 'IS',
-          name: 'Is',
-        },
-        {
-          id: 'BEGIN_WITH',
-          name: 'Begin With',
-        },
-        {
-          id: 'ENDS_WITH',
-          name: 'Ends With',
-        },
-        {
-          id: 'IS_NOT',
-          name: 'Is Not',
-        },
-      ],
+      subMenu: [...SUB_MENU_TEXT_TYPE_BASE, ...SUB_MENU_TEXT_TYPE_BEGIN_END],
     },
     {
       id: 'DURATION',
       name: 'Duration',
       type: 'time',
-      subMenu: [
-        {
-          id: 'LONGER_THAN',
-          name: 'Longer Than',
-        },
-        {
-          id: 'SHORTER_THAN',
-          name: 'Shorter Than',
-        },
-        {
-          id: 'SHOW_TOTAL_DURATION_FOR_SELECTION',
-          name: 'Show Total Duration For Selection',
-        },
-      ],
+      subMenu: SUB_MENU_DURATION_TYPE_BASE,
     },
     {
       id: 'CARD_SERIAL',
       name: 'Card Serial',
       type: 'text',
-      subMenu: [
-        {
-          id: 'CONTAINS',
-          name: 'Contains',
-        },
-        {
-          id: 'IS',
-          name: 'Is',
-        },
-        {
-          id: 'IS_NOT',
-          name: 'Is Not',
-        },
-      ],
+      subMenu: SUB_MENU_TEXT_TYPE_BASE,
     },
     {
       id: 'RECORDER_SERIAL',
       name: 'Recorder Serial',
       type: 'text',
-      subMenu: [
-        {
-          id: 'CONTAINS',
-          name: 'Contains',
-        },
-        {
-          id: 'IS',
-          name: 'Is',
-        },
-        {
-          id: 'IS_NOT',
-          name: 'Is Not',
-        },
-      ],
+      subMenu: SUB_MENU_TEXT_TYPE_BASE,
     },
     {
       id: 'SHOOTING_DATE',
       name: 'Shooting Date',
       type: 'date',
-      subMenu: [
-        {
-          id: 'EXACTLY',
-          name: 'Exactly',
-        },
-        {
-          id: 'BEFORE',
-          name: 'Before',
-        },
-        {
-          id: 'AFTER',
-          name: 'After',
-        },
-        {
-          id: 'BETWEEN',
-          name: 'Between',
-        },
-      ],
+      subMenu: SUB_MENU_DATE_TYPE_BASE,
     },
     {
       id: 'CREATION_DATE',
       name: 'Creation Date',
       type: 'date',
-      subMenu: [
-        {
-          id: 'EXACTLY',
-          name: 'Exactly',
-        },
-        {
-          id: 'BEFORE',
-          name: 'Before',
-        },
-        {
-          id: 'AFTER',
-          name: 'After',
-        },
-        {
-          id: 'BETWEEN',
-          name: 'Between',
-        },
-      ],
+      subMenu: SUB_MENU_DATE_TYPE_BASE,
     },
     {
       id: 'MODIFICATION_DATE',
       name: 'Modification Date',
       type: 'date',
-      subMenu: [
-        {
-          id: 'EXACTLY',
-          name: 'Exactly',
-        },
-        {
-          id: 'BEFORE',
-          name: 'Before',
-        },
-        {
-          id: 'AFTER',
-          name: 'After',
-        },
-        {
-          id: 'BETWEEN',
-          name: 'Between',
-        },
-      ],
+      subMenu: SUB_MENU_DATE_TYPE_BASE,
     },
   ];
 
@@ -435,6 +325,26 @@ export class Tab1Page implements OnInit {
     }
   }
 
+  clearfilter2() {
+    console.log('this.allSearch()::::::', this.allSearch().length);
+    const localData = localStorage.getItem('presetSearch');
+    console.log('localData::::::', localData);
+    const len = this.allSearch().length;
+    this.searchParam = '';
+    for (let index = 0; index <= len + 1; index++) {
+      console.log('i::::::', index);
+      // this.removeRow(i);
+      this.allSearch().removeAt(index);
+      // this.updatePreselectList();
+      // this.UpdateSearchByRemoving(index);
+    }
+    this.allSearch().clear();
+    this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+    // this.updatePreselectList();
+
+    // this.updateCurrentPreset(true);
+  }
+
   clearFilter() {
     // debugger
     this.submitted = false;
@@ -565,10 +475,6 @@ export class Tab1Page implements OnInit {
 
   allSearch(): FormArray {
     return this.searchFilterForm.get('search') as FormArray;
-  }
-
-  getArray() {
-    return this.searchFilterForm.get('search') as any;
   }
 
   addSearch(item: any) {
@@ -966,7 +872,10 @@ export class Tab1Page implements OnInit {
         }
       }
       if (this.preSelectList.some((s) => s.filterName == this.searchParam)) {
-        if (isModified) {
+        const message = isModified
+          ? 'Your filter updated successfully.'
+          : 'Your Filter stored successfully.';
+
           const finalData = [
             {
               id: String(this.searchParamId),
@@ -976,36 +885,16 @@ export class Tab1Page implements OnInit {
           ];
           let data = localJSON.filter((ele) => ele.id != +this.searchParamId);
           data = [...data, ...finalData];
+        console.log('data::::::', data);
           localStorage.setItem('presetSearch', JSON.stringify(data));
           this.updatePreselectList();
           messageSpan.style.color = 'green';
 
-          this.message = 'Your filter updated successfully.';
-          if (this.message) {
-            await setTimeout(() => {
-              this.message = '';
-            }, 3000);
-          }
-        }
-      } else {
-        const finalData = [
-          {
-            id: String(this.searchParamId),
-            filterName: this.searchParam,
-            filters: this.searchFilterForm.getRawValue()?.search,
-          },
-        ];
-        let data = localJSON.filter((ele) => ele.id != +this.searchParamId);
-        data = [...data, ...finalData];
-        localStorage.setItem('presetSearch', JSON.stringify(data));
-        this.updatePreselectList();
-        messageSpan.style.color = 'green';
-        this.message = 'Your Filter stored successfully.';
-        if (this.message) {
+        this.message = message;
+
           await setTimeout(() => {
             this.message = '';
           }, 3000);
-        }
       }
     }
   }
@@ -1146,6 +1035,7 @@ export class Tab1Page implements OnInit {
   }
 
   private getDismissReason(reason: any): string {
+    console.log(reason, 'reason');
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
