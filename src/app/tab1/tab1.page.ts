@@ -264,7 +264,7 @@ export class Tab1Page implements OnInit {
   deletePreset() {
     let messageSpan = document.getElementById('message');
     const localJSON = this.getPersistPresetSearchParsed();
-    if (localJSON && localJSON.length > 0) {
+    if (localJSON.length > 0) {
       let ele = localJSON?.find((f) => f.id == this.presetSelected);
       if (localJSON.find((s) => s.filterName == this.presetSelected) || ele) {
         let checkIfExist = localJSON.filter((ele) => ele?.id == this.id);
@@ -511,22 +511,25 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  isDateType(formControl) {
-    const param1Obj = this.searchData.find(
-      (f) => f.id === this.allSearch().controls[formControl]?.value?.param1
-    );
-    if (!param1Obj) return false;
-    return param1Obj.type === 'date' ? true : false;
-  }
-
-  isDestinationNeeded(formControl) {
-    const param1Obj = this.searchData.find(
+  findParamById(formControl) {
+    const param = this.searchData.find(
       (f) =>
         f.id.toLowerCase() ===
         this.allSearch().controls[formControl]?.value?.param1?.toLowerCase()
     );
+    return param;
+  }
+
+  isDateType(formControl) {
+    const param1Obj = this.findParamById(formControl);
     if (!param1Obj) return false;
-    return param1Obj.id === 'MODIFICATION_DATE' ? true : false;
+    return param1Obj.type === 'date';
+  }
+
+  isDestinationNeeded(formControl) {
+    const param1Obj = this.findParamById(formControl);
+    if (!param1Obj) return false;
+    return param1Obj.id === 'MODIFICATION_DATE';
   }
 
   getValue(event: any, fc: any) {
