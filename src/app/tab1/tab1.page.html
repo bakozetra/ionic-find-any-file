@@ -56,11 +56,9 @@
                 ></ion-icon>
               </ion-button>
               <ul class="dropdown-menu" aria-labelledby="dropdown">
-                <!-- (click)="saveAsNewPreset()" -->
                 <li class="dropdown-item" (click)="open(content)">
                   Save As New Preset
                 </li>
-                <!-- (click)="updateCurrentPreset()" -->
                 <li class="dropdown-item" (click)="updateCurrentPreset()">
                   Update Current Preset
                 </li>
@@ -330,7 +328,7 @@
 
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Render preset</h4>
+      <h4 class="modal-title" id="modal-basic-title">Search preset</h4>
       <button
         type="button"
         class="btn-close"
