@@ -27,14 +27,15 @@
                 class="select-class"
                 [(ngModel)]="presetSelected"
                 (change)="onPreselectDDLChange($event)"
+                id="presets-select"
               >
                 <option class="select-options" value="" selected>
                   Presets
                 </option>
                 <option
                   class="select-options"
-                  [value]="pre?.id"
                   *ngFor="let pre of preSelectList; let i2 = index"
+                  [value]="pre?.id"
                 >
                   {{pre?.filterName}}
                 </option>
@@ -248,8 +249,8 @@
               </ion-col> -->
 
               <ion-col size-xs="3" size-sm="2" class="modi-btn">
-                <div class="dropdown" *ngIf="presetSelected">
-                  <!-- <button
+                <!-- <div class="dropdown" *ngIf="presetSelected">
+                   <button
                     class="selectbtn btn-primary dropdown-toggle"
                     type="button"
                     id="dropdown"
@@ -258,7 +259,7 @@
                   >
                     Update
                   </button> -->
-                  <!-- <ul class="dropdown-menu" aria-labelledby="dropdown">
+                <!-- <ul class="dropdown-menu" aria-labelledby="dropdown">
                     <li
                       class="dropdown-item"
                       (click)="open(content)"
@@ -269,8 +270,8 @@
                     <li class="dropdown-item" (click)="updateCurrentPreset()">
                       Update Current Preset
                     </li>
-                  </ul> -->
-                </div>
+                  </ul> 
+                </div> -->
               </ion-col>
               <ion-col class="error-col" size-xs="4" size-sm="3">
                 <ion-text
@@ -302,11 +303,7 @@
               </ion-button>
 
               <ul class="dropdown-menu" aria-labelledby="dropdown">
-                <li
-                  class="dropdown-item"
-                  (click)="open(content)"
-                  (click)="saveAsNewPreset()"
-                >
+                <li class="dropdown-item" (click)="open(content)">
                   Save As New Preset
                 </li>
                 <li class="dropdown-item" (click)="updateCurrentPreset()">
