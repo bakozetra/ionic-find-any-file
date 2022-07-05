@@ -14,7 +14,15 @@ import {
 import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UUID } from 'angular2-uuid';
 declare var easepick: any;
+
+interface PresetsStore {}
+interface PresetData {
+  id: string;
+  filterName: string;
+  filters: FilterModel[];
+}
 
 const SUB_MENU_TEXT_TYPE_BASE = [
   {
@@ -463,6 +471,7 @@ export class Tab1Page implements OnInit {
   }
 
   savePreselectForm() {
+    console.log('this.id:::savePreselectForm:::', this.id, this.presetSelected);
     this.submitted = true;
     if (!this.allSearch().valid) {
       return;
@@ -503,7 +512,7 @@ export class Tab1Page implements OnInit {
           (data) => data?.param1 && data?.param2 && data?.param3
         );
         const finalData = {
-          id: this.searchParamId ? this.searchParamId : 1,
+          id: this.searchParamId ? this.searchParamId : UUID.UUID(),
           filterName: this.searchParam,
           filters: this.searchFilterForm.value.search,
         };
@@ -525,7 +534,7 @@ export class Tab1Page implements OnInit {
           (data) => data?.param1 && data?.param2 && data?.param3
         );
         const finalData = {
-          id: allFilters[allFilters.length - 1].id + 1,
+          id: UUID.UUID(),
           filterName: this.searchParam,
           filters: this.searchFilterForm.value.search,
         };
@@ -562,7 +571,7 @@ export class Tab1Page implements OnInit {
     if (every) {
       let temp = this.findInPersistanDataByFilterName(this.searchParam);
       // debugger;
-      if (temp?.length > 0) {
+      if (temp) {
         let temp1 = temp.filters;
         const temp2 = this.searchFilterForm.value.search;
         for (var i = 0, len1 = temp1.length; i < len1; i++) {
@@ -607,7 +616,7 @@ export class Tab1Page implements OnInit {
           },
         ];
         let data = this.getPersistPresetSearchParsed().filter(
-          (ele) => ele.id != +this.searchParamId
+          (ele) => ele.id != String(this.searchParamId)
         );
         data = [...data, ...finalData];
         console.log('data::::::', data);
@@ -629,7 +638,7 @@ export class Tab1Page implements OnInit {
   getPersistPresetSearch() {
     return localStorage.getItem('presetSearch');
   }
-  getPersistPresetSearchParsed() {
+  getPersistPresetSearchParsed(): PresetData[] {
     let localJSON = [];
     const localData = this.getPersistPresetSearch();
     if (localData && localData != null) {
@@ -640,7 +649,7 @@ export class Tab1Page implements OnInit {
   }
 
   findInPersistanDataByFilterName(searchParamName) {
-    return this.getPersistPresetSearchParsed()?.find(
+    return this.getPersistPresetSearchParsed().find(
       (f) => f?.filterName?.toLowerCase() === searchParamName
     );
   }
