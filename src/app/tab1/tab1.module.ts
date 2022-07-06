@@ -6,8 +6,8 @@ import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { Tab1PageRoutingModule } from './tab1-routing.module';;
-
+import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { MyCommonModule } from '../tooltip/tooltip.module';
 @NgModule({
   imports: [
     IonicModule,
@@ -17,7 +17,8 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';;
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
     DragDropModule,
+    MyCommonModule,
   ],
-  declarations: [Tab1Page]
+  declarations: [Tab1Page],
 })
-export class Tab1PageModule { }
+export class Tab1PageModule {}

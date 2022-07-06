@@ -1,20 +1,11 @@
 <!-- Basic -->
-<!-- There is a list of the next features and bug fixes to implement:
-- move all UI components inside of the collapsable panel
-- initial state of the search is empty with only add filter button "+" visible and drop-down selector of saved presets
-- add clear filter button that removes all filters and turns search panel to initial state
-- "+" button should insert filter before the current filter. additional "+" button should be in the very bottom of filters list that adds a filter after all current
-- track and check user input and remember if anything was actually changed in filters
-- if filters was changed, then show user a confirmation before clearing filters or loading another saved preset
-- sometimes click on save button is ignored even if the name of preset is set - debug and fix
-- do not save empty filter preset, preset name should be 1+ char long
-- if user tries to save preset with the same name - ask for confirmation
-- remove a line that changes color when you enter text field in the very bottom of the filters list -->
 <ion-content [fullscreen]="true" class="content">
   <ion-accordion-group class="accordion-grp">
     <ion-accordion value="colors" class="accordion">
       <ion-item slot="header">
-        <ion-label class="accordion-label">Search</ion-label>
+        <ion-label class="accordion-label" [tooltip]="'search presets'"
+          >Search</ion-label
+        >
       </ion-item>
       <ion-list slot="content" class="list">
         <div
@@ -28,6 +19,7 @@
                 [(ngModel)]="presetSelected"
                 (change)="onPreselectDDLChange($event)"
                 id="presets-select"
+                [tooltip]="'presets list'"
               >
                 <option class="select-options" value="" selected>
                   Presets
@@ -50,6 +42,7 @@
                 id="dropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                [tooltip]="'menu'"
               >
                 <ion-icon
                   slot="icon-only"
@@ -66,7 +59,7 @@
                 <li class="dropdown-item" (click)="deletePreset()">
                   Delete Preset
                 </li>
-                <li class="dropdown-item" (click)="clearfilter()">
+                <li class="dropdown-item" (click)="clearFilter()">
                   Clear presets
                 </li>
               </ul>
@@ -88,8 +81,10 @@
                   class="example-box"
                 >
                   <ion-col class="row-add">
-                    <!-- *ngIf="preSelectList.length > 0 else emptyList" -->
-                    <ion-button (click)="addRow(false,i,$event)">
+                    <ion-button
+                      (click)="addRow(false,i,$event)"
+                      [tooltip]="'Add row'"
+                    >
                       <ion-icon
                         name="add-circle-outline"
                         size="large"
@@ -102,6 +97,7 @@
                       class="update"
                       *ngIf="allSearch()?.controls.length > 1 else disableMinus"
                       (click)="removeRow(i)"
+                      [tooltip]="'remove row'"
                     >
                       <ion-icon
                         name="remove-circle-outline"
@@ -213,13 +209,11 @@
           </form>
           <ion-item>
             <ion-row class="btn-group">
-              <!-- <ion-col size-xs="6" size-sm="6" class="clear-filter">
-                <ion-button (click)="clearFilter()" class="clear-btn"
-                  >Clear Filter</ion-button
-                >
-              </ion-col> -->
               <ion-col size-xs="12" size-sm="12" class="apply-filter">
-                <ion-button (click)="applyFilter()" class="apply-btn"
+                <ion-button
+                  (click)="applyFilter()"
+                  class="apply-btn"
+                  [tooltip]="'search filter'"
                   >Search</ion-button
                 >
               </ion-col>
@@ -228,51 +222,7 @@
 
           <ion-item lines="none">
             <ion-row class="save-row ion-align-items-center">
-              <!-- <ion-col size-xs="12" size-sm="4">
-                <ion-input
-                  clearInput
-                  class="input-box"
-                  placeholder="Enter search name"
-                  [(ngModel)]="searchParam"
-                >
-                </ion-input>
-              </ion-col>
-              <ion-col size-xs="3" size-sm="2" class="save-btn">
-                <ion-button
-                  *ngIf="!presetSelected"
-                  [disabled]="searchParam?.length < 1"
-                  (click)="savePreselectForm()"
-                  class="save"
-                >
-                  Save</ion-button
-                >
-              </ion-col> -->
-
-              <ion-col size-xs="3" size-sm="2" class="modi-btn">
-                <!-- <div class="dropdown" *ngIf="presetSelected">
-                   <button
-                    class="selectbtn btn-primary dropdown-toggle"
-                    type="button"
-                    id="dropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Update
-                  </button> -->
-                <!-- <ul class="dropdown-menu" aria-labelledby="dropdown">
-                    <li
-                      class="dropdown-item"
-                      (click)="open(content)"
-                      (click)="saveAsNewPreset()"
-                    >
-                      Save As New Preset
-                    </li>
-                    <li class="dropdown-item" (click)="updateCurrentPreset()">
-                      Update Current Preset
-                    </li>
-                  </ul> 
-                </div> -->
-              </ion-col>
+              <ion-col size-xs="3" size-sm="2" class="modi-btn"> </ion-col>
               <ion-col class="error-col" size-xs="4" size-sm="3">
                 <ion-text
                   ><span class="message" id="message"
@@ -295,6 +245,7 @@
                 id="dropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                [tooltip]="'menu'"
               >
                 <ion-icon
                   slot="icon-only"
@@ -312,7 +263,7 @@
                 <li class="dropdown-item" (click)="deletePreset()">
                   Delete Preset
                 </li>
-                <li class="dropdown-item" (click)="clearfilter()">
+                <li class="dropdown-item" (click)="clearFilter()">
                   Clear presets
                 </li>
               </ul>

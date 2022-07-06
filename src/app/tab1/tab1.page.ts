@@ -17,12 +17,29 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 declare var easepick: any;
 
-interface PresetsStore {}
 interface PresetData {
   id: string;
   filterName: string;
   filters: FilterModel[];
 }
+
+// <!-- There is a list of the next features and bug fixes to implement:
+// - move all UI components inside of the collapsable panel
+// - initial state of the search is empty with only add filter button "+" visible and drop-down selector of saved presets
+// - add clear filter button that removes all filters and turns search panel to initial state
+// - "+" button should insert filter before the current filter. additional "+" button should be in the very bottom of filters list that adds a filter after all current
+// - track and check user input and remember if anything was actually changed in filters
+//  =>
+// - if filters was changed, then show user a confirmation before clearing filters or loading another saved preset
+//  =>
+// - sometimes click on save button is ignored even if the name of preset is set - debug and fix
+//  =>
+// - do not save empty filter preset, preset name should be 1+ char long
+//  =>
+// - if user tries to save preset with the same name - ask for confirmation
+//  =>
+// - remove a line that changes color when you enter text field in the very bottom of the filters list
+// -->
 
 const SUB_MENU_TEXT_TYPE_BASE = [
   {
@@ -234,7 +251,6 @@ export class Tab1Page implements OnInit {
       this.newEvent({ param1: '', param2: '', param3: '', param4: '' })
     );
     if (flag) {
-      console.log('flag::::::', flag);
       if (this.allSearch().controls.length > 0) return;
       this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
       return;
@@ -269,10 +285,7 @@ export class Tab1Page implements OnInit {
   deletePreset() {
     console.log('delete Presets');
     console.log('presetSelected::::::', this.presetSelected);
-
-    // if (!this.id) {
     this.id = this.presetSelected;
-    // }
     let messageSpan = document.getElementById('message');
     const localJSON = this.getPersistPresetSearchParsed();
     if (localJSON.length > 0) {
@@ -336,15 +349,38 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  clearfilter() {
+  clearFilter() {
     console.log('this.allSearch()::::::', this.allSearch().length);
     const localData = this.getPersistPresetSearch();
+    // if (
+    //   confirm(
+    //     'Do you want to clear your unsaved changes to filter: ' +
+    //       this.searchParam
+    //   )
+    // ) {
     const len = this.allSearch().length;
     for (let index = 0; index <= len + 1; index++) {
       this.allSearch().removeAt(index);
     }
     this.allSearch().clear();
     this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+    // const currentFormData = this.allSearch().controls;
+    // console.log('currentFormData::::::', currentFormData);
+    // let isData = true;
+    // currentFormData.map((m: FormGroup) => {
+    //   if (Object.values(m.value).some((s) => s != '')) {
+    //     isData = true;
+    //   }
+    // });
+    // let selectedData = this.getPersistPresetSearchParsed().filter(
+    //   (s) => s.filterName == this.searchParam
+    // );
+    // console.log('selectedData::::::', selectedData);
+    // let temp1 = selectedData[0]?.filters;
+    // console.log('temp1::::::', temp1);
+    // const temp2 = this.searchFilterForm.value.search;
+    // console.log('temp2::::::', temp2);
+    // }
   }
 
   applyFilter() {
@@ -358,6 +394,7 @@ export class Tab1Page implements OnInit {
   }
 
   newEvent(item?): FormGroup {
+    console.log('item::::::', item);
     return this.fb.group({
       param1: [item?.param1, [Validators.required]],
       param2: [
@@ -493,7 +530,6 @@ export class Tab1Page implements OnInit {
         )[0];
         const temp2 = this.searchFilterForm.value.search;
         if (JSON.stringify(temp1) == JSON.stringify(temp2)) {
-          // messageSpan.style.color = 'green';
           this.message = 'Your Filter stored successfully';
           if (this.message) {
             setTimeout(() => {
@@ -522,7 +558,6 @@ export class Tab1Page implements OnInit {
         this.updatePreselectList();
         messageSpan.style.color = 'green';
         this.message = 'Your Filter stored successfully.';
-        // this.searchParam = '';
         if (this.message) {
           setTimeout(() => {
             this.message = '';
@@ -538,13 +573,11 @@ export class Tab1Page implements OnInit {
           filterName: this.searchParam,
           filters: this.searchFilterForm.value.search,
         };
-        console.log('finalData::::::', finalData);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
         messageSpan.style.color = 'green';
         this.message = 'Your Filter stored successfully.';
-        // this.searchParam = '';
         if (this.message) {
           setTimeout(() => {
             this.message = '';
@@ -555,7 +588,6 @@ export class Tab1Page implements OnInit {
   }
 
   async updateCurrentPreset() {
-    // debugger
     this.submitted = true;
     if (!this.allSearch().valid) {
       return;
@@ -567,10 +599,9 @@ export class Tab1Page implements OnInit {
     );
     let messageSpan = document.getElementById('message');
     let isModified = true;
-    console.log('every::::::', every);
     if (every) {
       let temp = this.findInPersistanDataByFilterName(this.searchParam);
-      // debugger;
+      console.log('temp::::::', temp);
       if (temp) {
         let temp1 = temp.filters;
         const temp2 = this.searchFilterForm.value.search;
@@ -669,9 +700,6 @@ export class Tab1Page implements OnInit {
       // this.presetSelected = this.searchParam;
     }
   }
-  getcurrentlySelectedPrestsFromOption(e) {
-    document.querySelector;
-  }
 
   onPreselectDDLChange(e: any) {
     this.searchParam = !this.searchParam
@@ -742,6 +770,7 @@ export class Tab1Page implements OnInit {
   }
 
   trackChanges = (param: any) => {
+    console.log('param::::::', param);
     if (!param) return true;
     const localJSON = this.getPersistPresetSearchParsed();
     let data = localJSON.find((f) => f.id == param);
@@ -805,65 +834,4 @@ export class Tab1Page implements OnInit {
       return `with: ${reason}`;
     }
   }
-
-  // saveAsNewPreset() {
-  //   // debugger
-  //   const localJSON = this.getPersistPresetSearchParsed();
-  //   if (localJSON && localJSON.length > 0) {
-  //     let checkIfExist = localJSON.filter((ele) => ele?.id == this.id);
-  //     console.log('this?.id:::::save::::::', this.id);
-  //     if (checkIfExist || checkIfExist?.length > 0) {
-  //       let filterData: FilterModel[] = this.searchFilterForm.value
-  //         .search as FilterModel[];
-  //       let messageSpan = document.getElementById('message');
-  //       let presetName = this.searchParam;
-  //       const allSameNameKeys = localJSON.filter(
-  //         (d) => d.filterName.search(this.searchParam) > -1
-  //       );
-  //       if (allSameNameKeys) {
-  //         const allKeys = allSameNameKeys.map((m) => m.filterName);
-  //         this.presetSelected = this.searchParam;
-  //         if (allKeys[allKeys.length - 1]?.split('_').length === 1) {
-  //           presetName += '_copy';
-  //         }
-  //         if (
-  //           allKeys[allKeys.length - 1]?.split('_').length > 1 &&
-  //           allKeys[allKeys.length - 1]?.split('_')[1].length === 4
-  //         ) {
-  //           presetName = allKeys[allKeys.length - 1].split('_')[0] + '_copy1';
-  //         }
-  //         if (
-  //           allKeys[allKeys.length - 1]?.split('_').length > 1 &&
-  //           allKeys[allKeys.length - 1]?.split('_')[1].length > 4
-  //         ) {
-  //           let newIndex =
-  //             allKeys[allKeys.length - 1][
-  //               allKeys[allKeys.length - 1].length - 1
-  //             ];
-  //           newIndex++;
-  //           presetName =
-  //             allKeys[allKeys.length - 1]?.split('_')[0] + '_copy' + newIndex;
-  //         }
-  //       }
-  //       const allFilters = this.preSelectList;
-  //       filterData = filterData.filter(
-  //         (data) => data?.param1 && data?.param2 && data?.param3
-  //       );
-  //       const finalData = {
-  //         id: allFilters[allFilters.length - 1].id + 1,
-  //         filterName: presetName,
-  //         filters: this.searchFilterForm.value.search,
-  //       };
-  //       allFilters.push(finalData);
-  //       this.setPersistPresetSearch(allFilters);
-  //       this.updatePreselectList();
-  //       messageSpan.style.color = 'green';
-  //       this.message = 'Your Filter stored successfully.';
-  //       this.searchParam = presetName;
-  //       setTimeout(() => {
-  //         this.message = '';
-  //       }, 3000);
-  //     }
-  //   }
-  // }
 }
