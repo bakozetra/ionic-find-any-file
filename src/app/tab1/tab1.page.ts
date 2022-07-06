@@ -352,35 +352,35 @@ export class Tab1Page implements OnInit {
   clearFilter() {
     console.log('this.allSearch()::::::', this.allSearch().length);
     const localData = this.getPersistPresetSearch();
-    // if (
-    //   confirm(
-    //     'Do you want to clear your unsaved changes to filter: ' +
-    //       this.searchParam
-    //   )
-    // ) {
-    const len = this.allSearch().length;
-    for (let index = 0; index <= len + 1; index++) {
-      this.allSearch().removeAt(index);
+    if (
+      confirm(
+        'Do you want to clear your unsaved changes to filter: ' +
+          this.searchParam
+      )
+    ) {
+      const len = this.allSearch().length;
+      for (let index = 0; index <= len + 1; index++) {
+        this.allSearch().removeAt(index);
+      }
+      this.allSearch().clear();
+      this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+      // const currentFormData = this.allSearch().controls;
+      // console.log('currentFormData::::::', currentFormData);
+      // let isData = true;
+      // currentFormData.map((m: FormGroup) => {
+      //   if (Object.values(m.value).some((s) => s != '')) {
+      //     isData = true;
+      //   }
+      // });
+      // let selectedData = this.getPersistPresetSearchParsed().filter(
+      //   (s) => s.filterName == this.searchParam
+      // );
+      // console.log('selectedData::::::', selectedData);
+      // let temp1 = selectedData[0]?.filters;
+      // console.log('temp1::::::', temp1);
+      // const temp2 = this.searchFilterForm.value.search;
+      // console.log('temp2::::::', temp2);
     }
-    this.allSearch().clear();
-    this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
-    // const currentFormData = this.allSearch().controls;
-    // console.log('currentFormData::::::', currentFormData);
-    // let isData = true;
-    // currentFormData.map((m: FormGroup) => {
-    //   if (Object.values(m.value).some((s) => s != '')) {
-    //     isData = true;
-    //   }
-    // });
-    // let selectedData = this.getPersistPresetSearchParsed().filter(
-    //   (s) => s.filterName == this.searchParam
-    // );
-    // console.log('selectedData::::::', selectedData);
-    // let temp1 = selectedData[0]?.filters;
-    // console.log('temp1::::::', temp1);
-    // const temp2 = this.searchFilterForm.value.search;
-    // console.log('temp2::::::', temp2);
-    // }
   }
 
   applyFilter() {
