@@ -64,11 +64,6 @@ ion-input {
   }
 }
 
-.input-box {
-  // height: ;
-  
-}
-
 .accordion {
   border: 2px solid #fff;
   border-radius: 5px;
@@ -172,15 +167,6 @@ select {
   -moz-appearance: none;
   /* for Safari, Chrome, Opera */
   -webkit-appearance: none;
-  //  --background-image:
-  //                     url("../../assets/icon/arro-up.svg"),
-  //                     url("../../assets/icon/arrow-down.svg");
-  //   --background-position:  98% -5%,98% 100%;
-  //   --background-repeat: no-repeat;
-  //  --background-size: 14px;
-  //   --height: 28px;
-  //   --border:none;
-  //   --background-color:#7e7e7e;
     padding-left: 1rem;
 }
 .select-item select {
@@ -188,18 +174,13 @@ select {
   -moz-appearance: none;
   /* for Safari, Chrome, Opera */
   -webkit-appearance: none;
-    // background-image:
-    //                   url("../../assets/icon/arro-up.svg"),
-    //                   url("../../assets/icon/arrow-down.svg");
-    // background-position:  98% -5%,98% 100%;
-    // background-repeat: no-repeat;
-    // background-size: 14px;
 }
 
 .select-search {
   display: flex;
   width: 100%;
   align-items: center;
+
 }
 
 .search-row-select {
@@ -219,15 +200,20 @@ select {
     margin-left: 1rem;
   }
   .select-item {
-    width: 40%;
-    margin-right: 2rem;
+    width:250px;
     background-color: #333333;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
     select {
       height: 28px;
       border:none;
       background-color:#535353;
       padding-left: 1rem;
       color: white;
+      option {
+        background-color: #333333;
+      }
     }
   }
   ion-icon {

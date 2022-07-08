@@ -15,6 +15,7 @@ import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
+import { AlertController } from '@ionic/angular';
 declare var easepick: any;
 
 interface PresetData {
@@ -202,7 +203,11 @@ export class Tab1Page implements OnInit {
   mod: boolean = false;
   isParam2Select: boolean = false;
   dates = ['Shooting Date', 'Creation Date', 'Modification Date'];
-  constructor(private fb: FormBuilder, private modalService: NgbModal) {}
+  constructor(
+    private fb: FormBuilder,
+    private modalService: NgbModal,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.initPriceForm();
@@ -257,7 +262,7 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  removeRow(index: any) {
+  async removeRow(index: any) {
     if (
       !Object.values(this.allSearch().get(String(index)).value).some(
         (s) => s !== ''
@@ -266,7 +271,10 @@ export class Tab1Page implements OnInit {
       this.allSearch().removeAt(index);
       return;
     }
-    if (confirm('Do you want remove row?')) {
+    const confirmed = await this.confirmationAlert(
+      `Are you sure to remove this row`
+    );
+    if (confirmed) {
       if (this.allSearch().length == 1) {
         this.allSearch().removeAt(index);
         this.UpdateSearchByRemoving(index);
@@ -282,7 +290,7 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  deletePreset() {
+  async deletePreset() {
     console.log('delete Presets');
     console.log('presetSelected::::::', this.presetSelected);
     this.id = this.presetSelected;
@@ -299,7 +307,10 @@ export class Tab1Page implements OnInit {
         });
         console.log('checkIfExist::::::', checkIfExist);
         if (checkIfExist && checkIfExist?.length > 0) {
-          if (confirm(`Are you sure to delete ${this.searchParam} preset.`)) {
+          const confirmed = await this.confirmationAlert(
+            `Are you sure to delete ${this.searchParam} preset.`
+          );
+          if (confirmed) {
             let data = localJSON.filter((ele) => ele?.id != this?.id);
             this.setPersistPresetSearch(data);
             messageSpan.style.color = 'red';
@@ -349,15 +360,14 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  clearFilter() {
+  async clearFilter() {
     console.log('this.allSearch()::::::', this.allSearch().length);
     const localData = this.getPersistPresetSearch();
-    if (
-      confirm(
-        'Do you want to clear your unsaved changes to filter: ' +
-          this.searchParam
-      )
-    ) {
+    const confirmed = await this.confirmationAlert(
+      'Do you want to clear your unsaved changes to filter: ' + this.searchParam
+    );
+    console.log('confirmationAlert::::::', confirmed);
+    if (confirmed) {
       const len = this.allSearch().length;
       for (let index = 0; index <= len + 1; index++) {
         this.allSearch().removeAt(index);
@@ -626,11 +636,12 @@ export class Tab1Page implements OnInit {
           }
           return;
         } else {
-          isModified = confirm(
+          const confirmed = await this.confirmationAlert(
             'Your are updating the current filter: ' +
               this.searchParam +
               ' Please confirm'
           );
+          isModified = confirmed;
         }
       }
 
@@ -833,5 +844,29 @@ export class Tab1Page implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  private async confirmationAlert(message: string): Promise<boolean> {
+    let resolveFunction: (confirm: boolean) => void;
+    const promise = new Promise<boolean>((resolve) => {
+      resolveFunction = resolve;
+    });
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'No',
+          handler: () => resolveFunction(false),
+        },
+        {
+          text: 'Yes',
+          handler: () => resolveFunction(true),
+        },
+      ],
+    });
+    await alert.present();
+    return promise;
   }
 }
