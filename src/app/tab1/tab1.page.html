@@ -53,10 +53,25 @@
                 <li class="dropdown-item" (click)="open(content)">
                   Save As New Preset
                 </li>
-                <li class="dropdown-item" (click)="updateCurrentPreset()">
+                <li
+                  class="dropdown-item"
+                  (click)="updateCurrentPreset( 
+                  this.searchFilterForm,
+                  this.allSearch(),
+                  this.findInPersistanDataByFilterName(this.searchParam),
+                  this.preSelectList,
+                  this.searchParam
+                )"
+                >
                   Update Current Preset
                 </li>
-                <li class="dropdown-item" (click)="deletePreset()">
+                <li
+                  class="dropdown-item"
+                  (click)="deletePreset(
+                  this.presetSelected,
+                  this.searchParam,
+                  this.allSearch())"
+                >
                   Delete Preset
                 </li>
                 <li class="dropdown-item" (click)="clearFilter()">
@@ -257,10 +272,26 @@
                 <li class="dropdown-item" (click)="open(content)">
                   Save As New Preset
                 </li>
-                <li class="dropdown-item" (click)="updateCurrentPreset()">
+                <li
+                  class="dropdown-item"
+                  (click)="updateCurrentPreset(
+                  this.searchFilterForm,
+                  this.allSearch(),
+                  this.findInPersistanDataByFilterName(this.searchParam),
+                  this.preSelectList,
+                  this.searchParam
+                )"
+                >
                   Update Current Preset
                 </li>
-                <li class="dropdown-item" (click)="deletePreset()">
+                <li
+                  class="dropdown-item"
+                  (click)="deletePreset(
+                  this.presetSelected,
+                  this.searchParam,
+                  this.allSearch()
+                )"
+                >
                   Delete Preset
                 </li>
                 <li class="dropdown-item" (click)="clearFilter()">
@@ -307,7 +338,12 @@
       </button>
       <button
         [disabled]="searchParam?.length < 1"
-        (click)="savePreselectForm(); modal.dismiss('Cross click')"
+        (click)="savePreselectForm(
+          this.getPersistPresetSearchParsed(),
+          this.searchFilterForm,
+          this.preSelectList,
+          this.searchParam
+        ); modal.dismiss('Cross click')"
         class="btn btn-outline-dark"
       >
         Save
