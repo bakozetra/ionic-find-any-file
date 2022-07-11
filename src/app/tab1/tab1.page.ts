@@ -106,6 +106,13 @@ const SUB_MENU_DURATION_TYPE_BASE = [
   },
 ];
 
+const initialFilterValue = {
+  param1: '',
+  param2: '',
+  param3: '',
+  param4: '',
+};
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -215,7 +222,7 @@ export class Tab1Page implements OnInit {
     this.updatePreselectList();
     this.onPreselectDDLChange(1);
 
-    this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+    this.addSearch(initialFilterValue);
   }
 
   createDatePicker(i, date?: any) {
@@ -252,13 +259,10 @@ export class Tab1Page implements OnInit {
   }
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
-    this.allSearch().insert(
-      rowIndex + 1,
-      this.newEvent({ param1: '', param2: '', param3: '', param4: '' })
-    );
+    this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
-      this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+      this.addSearch(initialFilterValue);
       return;
     }
   }
@@ -330,7 +334,7 @@ export class Tab1Page implements OnInit {
             this.searchParam = emptyPreselected;
             allsearch.clear();
             this.updatePreselectList();
-            this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+            this.addSearch(initialFilterValue);
           }
         }
       } else {
@@ -388,6 +392,11 @@ export class Tab1Page implements OnInit {
     console.log('temp2::::::', temp2);
     console.log('JSON.stringify(temp1) ::::::', JSON.stringify(temp1));
 
+    // write a function that compares the oblects are equal
+    // areEqual(o1,o2):boolean
+    // areEqual(o1,o2):boolean
+    //if inside one of the objects param4 exist but value is '' and in the other object there is no param4 treat as equal
+
     if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
       const confirmed2 = await this.confirmationAlert(
         'Do you want to clear the current preset: ' + this.searchParam
@@ -398,7 +407,7 @@ export class Tab1Page implements OnInit {
           this.allSearch().removeAt(index);
         }
         this.allSearch().clear();
-        this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+        this.addSearch(initialFilterValue);
       }
       return;
     }
@@ -413,143 +422,11 @@ export class Tab1Page implements OnInit {
           this.allSearch().removeAt(index);
         }
         this.allSearch().clear();
-        this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+        this.addSearch(initialFilterValue);
       }
       return;
     }
-
-    // if (confirmed) {
-    //   const len = this.allSearch().length;
-    //   for (let index = 0; index <= len + 1; index++) {
-    //     this.allSearch().removeAt(index);
-    //   }
-
-    //   this.allSearch().clear();
-    //   this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
-    // const currentFormData = this.allSearch().controls;
-    // console.log('currentFormData::::::', currentFormData);
-    // let isData = true;
-    // currentFormData.map((m: FormGroup) => {
-    //   if (Object.values(m.value).some((s) => s != '')) {
-    //     isData = true;
-    //   }
-    // });
-    // let selectedData = this.getPersistPresetSearchParsed().filter(
-    //   (s) => s.filterName == this.searchParam
-    // );
-    // console.log('selectedData::::::', selectedData);
-    // let temp1 = selectedData[0]?.filters;
-    // console.log('temp1::::::', temp1);
-    // const temp2 = this.searchFilterForm.value.search;
-    // console.log('temp2::::::', temp2);
-    // }
   }
-
-  // clearFilter() {
-  //   // debugger
-  //   this.submitted = false;
-  //   if (!this.searchParam) {
-  //     let isData = true;
-  //     const currentFormData = this.allSearch().controls;
-  //     // currentFormData.map((m: FormGroup) => {
-  //     //   if (Object.values(m.value).some((s) => s != '')) {
-  //     //     isData = true;
-  //     //   }
-  //     // });
-
-  //     if (isData) {
-  //       if (!confirm('Do you want to discard changes?')) {
-  //         return;
-  //       } else {
-  //         this.allSearch().clear();
-  //         this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
-  //       }
-  //     } else {
-  //       this.allSearch().clear();
-  //       this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
-  //     }
-  //   } else {
-  //     const localData = localStorage.getItem('presetSearch');
-  //     if (localData && localData != null) {
-  //       localJSON = JSON.parse(localData);
-  //     }
-  //     if (
-  //       !localJSON?.find(
-  //         (f) => f.filterName?.toLowerCase() === this?.searchParam
-  //       ) ||
-  //       localJSON.find((f) => f.filterName?.toLowerCase() === this?.searchParam)
-  //         ?.length === 0
-  //     ) {
-  //       let isData = false;
-  //       const currentFormData = this.allSearch().controls;
-  //       currentFormData.map((m: FormGroup) => {
-  //         if (Object.values(m.value).some((s) => s != '')) {
-  //           isData = true;
-  //         }
-  //       });
-
-  //       if (isData) {
-  //         if (!confirm('Do you want to discard changes?')) {
-  //           return;
-  //         } else {
-  //           this.allSearch().clear();
-  //           this.presetSelected = '';
-  //           this.updatePreselectList();
-  //         }
-  //       } else {
-  //         this.allSearch().clear();
-  //         this.presetSelected = '';
-  //         this.updatePreselectList();
-  //       }
-  //     }
-  //   }
-  //   var localJSON = [];
-  //   const localData = localStorage.getItem('presetSearch');
-  //   if (localData && localData != null) {
-  //     localJSON = JSON.parse(localData);
-  //   }
-  //   let selectedData = localJSON.filter(
-  //     (s) => s.filterName == this.searchParam
-  //   );
-  //   if (localJSON?.length > 0 && selectedData && selectedData?.length > 0) {
-  //     let temp1 = selectedData[0]?.filters;
-  //     const temp2 = this.searchFilterForm.value.search;
-
-  //     for (var i = 0, len = temp1.length; i < len; i++) {
-  //       if (temp1[i].param4 == '') {
-  //         delete temp1[i].param4;
-  //       }
-  //     }
-
-  //     if (JSON.stringify(temp1) == JSON.stringify(temp2)) {
-  //       this.allSearch().clear();
-  //       this.searchParam = '';
-  //     } else {
-  //       for (var i = 0, len = temp1.length; i < len; i++) {
-  //         if (temp2[i].param4 == '') {
-  //           delete temp2[i].param4;
-  //         }
-  //       }
-  //       if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
-  //         if (
-  //           confirm(
-  //             'Do you want to clear your unsaved changes to filter: ' +
-  //               this.searchParam
-  //           )
-  //         ) {
-  //           this.allSearch().clear();
-  //           this.searchParam = '';
-  //         } else {
-  //           return false;
-  //         }
-  //       } else {
-  //         return;
-  //       }
-  //     }
-  //     this.presetSelected = '';
-  //     return;
-  //   }
-  // }
 
   applyFilter() {
     alert('Apply filter.');
@@ -594,6 +471,7 @@ export class Tab1Page implements OnInit {
       this.isParam2Select = true;
     }
     const row = this.allSearch().controls[i] as FormGroup;
+    console.log('row::::onParam1Change::', row);
     const menu = this.searchData.find(
       (f) => f.id.toLowerCase() === row.get('param1').value.toLowerCase()
     );
@@ -790,12 +668,12 @@ export class Tab1Page implements OnInit {
         let temp1 = temp.filters;
         const temp2 = filterModel.value.search;
         for (var i = 0, len1 = temp1.length; i < len1; i++) {
-          if (temp1[i].param4 == '') {
+          if (temp1?.[i]?.param4 == '') {
             delete temp1[i].param4;
           }
         }
         for (var i = 0, len2 = temp2.length; i < len2; i++) {
-          if (temp2[i].param4 == '') {
+          if (temp2?.[i]?.param4 == '') {
             delete temp2[i].param4;
           }
         }
@@ -968,12 +846,12 @@ export class Tab1Page implements OnInit {
       const temp2 = data?.filters;
 
       for (var i = 0, len1 = temp1.length; i < len1; i++) {
-        if (temp1[i].param4 == '') {
+        if (temp1?.[i]?.param4 == '') {
           delete temp1[i].param4;
         }
       }
       for (var i = 0, len2 = temp2.length; i < len2; i++) {
-        if (temp2[i].param4 == '') {
+        if (temp2?.[i]?.param4 == '') {
           delete temp2[i].param4;
         }
       }
