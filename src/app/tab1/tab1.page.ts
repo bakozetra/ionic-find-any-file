@@ -369,35 +369,187 @@ export class Tab1Page implements OnInit {
   async clearFilter() {
     console.log('this.allSearch()::::::', this.allSearch().length);
     const localData = this.getPersistPresetSearch();
-    const confirmed = await this.confirmationAlert(
-      'Do you want to clear your unsaved changes to filter: ' + this.searchParam
+
+    // console.log('confirmationAlert::::::', confirmed);
+    console.log(
+      'this.getPersistPresetSearchParsed()::::::',
+      this.getPersistPresetSearchParsed()
     );
-    console.log('confirmationAlert::::::', confirmed);
-    if (confirmed) {
-      const len = this.allSearch().length;
-      for (let index = 0; index <= len + 1; index++) {
-        this.allSearch().removeAt(index);
+    let selectedData = this.getPersistPresetSearchParsed().filter((s) => {
+      console.log(s, 'sss');
+      console.log('this.searchParam::::::', this.searchParam);
+      return s.filterName == this.searchParam;
+    });
+    console.log('selectedData::::::', selectedData);
+    let temp1 = selectedData[0]?.filters;
+    const temp2 = this.searchFilterForm.value.search;
+    console.log('temp1::::::', temp1);
+
+    console.log('temp2::::::', temp2);
+    console.log('JSON.stringify(temp1) ::::::', JSON.stringify(temp1));
+
+    if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
+      const confirmed2 = await this.confirmationAlert(
+        'Do you want to clear the current preset: ' + this.searchParam
+      );
+      if (confirmed2) {
+        const len = this.allSearch().length;
+        for (let index = 0; index <= len + 1; index++) {
+          this.allSearch().removeAt(index);
+        }
+        this.allSearch().clear();
+        this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
       }
-      this.allSearch().clear();
-      this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
-      // const currentFormData = this.allSearch().controls;
-      // console.log('currentFormData::::::', currentFormData);
-      // let isData = true;
-      // currentFormData.map((m: FormGroup) => {
-      //   if (Object.values(m.value).some((s) => s != '')) {
-      //     isData = true;
-      //   }
-      // });
-      // let selectedData = this.getPersistPresetSearchParsed().filter(
-      //   (s) => s.filterName == this.searchParam
-      // );
-      // console.log('selectedData::::::', selectedData);
-      // let temp1 = selectedData[0]?.filters;
-      // console.log('temp1::::::', temp1);
-      // const temp2 = this.searchFilterForm.value.search;
-      // console.log('temp2::::::', temp2);
+      return;
     }
+    if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
+      const confirmed = await this.confirmationAlert(
+        'Do you want to clear preset including your unsaved changes : ' +
+          this.searchParam
+      );
+      if (confirmed) {
+        const len = this.allSearch().length;
+        for (let index = 0; index <= len + 1; index++) {
+          this.allSearch().removeAt(index);
+        }
+        this.allSearch().clear();
+        this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+      }
+      return;
+    }
+
+    // if (confirmed) {
+    //   const len = this.allSearch().length;
+    //   for (let index = 0; index <= len + 1; index++) {
+    //     this.allSearch().removeAt(index);
+    //   }
+
+    //   this.allSearch().clear();
+    //   this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+    // const currentFormData = this.allSearch().controls;
+    // console.log('currentFormData::::::', currentFormData);
+    // let isData = true;
+    // currentFormData.map((m: FormGroup) => {
+    //   if (Object.values(m.value).some((s) => s != '')) {
+    //     isData = true;
+    //   }
+    // });
+    // let selectedData = this.getPersistPresetSearchParsed().filter(
+    //   (s) => s.filterName == this.searchParam
+    // );
+    // console.log('selectedData::::::', selectedData);
+    // let temp1 = selectedData[0]?.filters;
+    // console.log('temp1::::::', temp1);
+    // const temp2 = this.searchFilterForm.value.search;
+    // console.log('temp2::::::', temp2);
+    // }
   }
+
+  // clearFilter() {
+  //   // debugger
+  //   this.submitted = false;
+  //   if (!this.searchParam) {
+  //     let isData = true;
+  //     const currentFormData = this.allSearch().controls;
+  //     // currentFormData.map((m: FormGroup) => {
+  //     //   if (Object.values(m.value).some((s) => s != '')) {
+  //     //     isData = true;
+  //     //   }
+  //     // });
+
+  //     if (isData) {
+  //       if (!confirm('Do you want to discard changes?')) {
+  //         return;
+  //       } else {
+  //         this.allSearch().clear();
+  //         this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+  //       }
+  //     } else {
+  //       this.allSearch().clear();
+  //       this.addSearch({ param1: '', param2: '', param3: '', param4: '' });
+  //     }
+  //   } else {
+  //     const localData = localStorage.getItem('presetSearch');
+  //     if (localData && localData != null) {
+  //       localJSON = JSON.parse(localData);
+  //     }
+  //     if (
+  //       !localJSON?.find(
+  //         (f) => f.filterName?.toLowerCase() === this?.searchParam
+  //       ) ||
+  //       localJSON.find((f) => f.filterName?.toLowerCase() === this?.searchParam)
+  //         ?.length === 0
+  //     ) {
+  //       let isData = false;
+  //       const currentFormData = this.allSearch().controls;
+  //       currentFormData.map((m: FormGroup) => {
+  //         if (Object.values(m.value).some((s) => s != '')) {
+  //           isData = true;
+  //         }
+  //       });
+
+  //       if (isData) {
+  //         if (!confirm('Do you want to discard changes?')) {
+  //           return;
+  //         } else {
+  //           this.allSearch().clear();
+  //           this.presetSelected = '';
+  //           this.updatePreselectList();
+  //         }
+  //       } else {
+  //         this.allSearch().clear();
+  //         this.presetSelected = '';
+  //         this.updatePreselectList();
+  //       }
+  //     }
+  //   }
+  //   var localJSON = [];
+  //   const localData = localStorage.getItem('presetSearch');
+  //   if (localData && localData != null) {
+  //     localJSON = JSON.parse(localData);
+  //   }
+  //   let selectedData = localJSON.filter(
+  //     (s) => s.filterName == this.searchParam
+  //   );
+  //   if (localJSON?.length > 0 && selectedData && selectedData?.length > 0) {
+  //     let temp1 = selectedData[0]?.filters;
+  //     const temp2 = this.searchFilterForm.value.search;
+
+  //     for (var i = 0, len = temp1.length; i < len; i++) {
+  //       if (temp1[i].param4 == '') {
+  //         delete temp1[i].param4;
+  //       }
+  //     }
+
+  //     if (JSON.stringify(temp1) == JSON.stringify(temp2)) {
+  //       this.allSearch().clear();
+  //       this.searchParam = '';
+  //     } else {
+  //       for (var i = 0, len = temp1.length; i < len; i++) {
+  //         if (temp2[i].param4 == '') {
+  //           delete temp2[i].param4;
+  //         }
+  //       }
+  //       if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
+  //         if (
+  //           confirm(
+  //             'Do you want to clear your unsaved changes to filter: ' +
+  //               this.searchParam
+  //           )
+  //         ) {
+  //           this.allSearch().clear();
+  //           this.searchParam = '';
+  //         } else {
+  //           return false;
+  //         }
+  //       } else {
+  //         return;
+  //       }
+  //     }
+  //     this.presetSelected = '';
+  //     return;
+  //   }
+  // }
 
   applyFilter() {
     alert('Apply filter.');
