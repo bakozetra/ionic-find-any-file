@@ -16,6 +16,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import { AlertController } from '@ionic/angular';
+import { areFiltersEqual } from '../utils';
 declare var easepick: any;
 
 interface PresetData {
@@ -370,59 +371,40 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  async clearFilter() {
-    console.log('this.allSearch()::::::', this.allSearch().length);
-    const localData = this.getPersistPresetSearch();
+  clearObject() {
+    const len = this.allSearch().length;
+    for (let index = 0; index <= len + 1; index++) {
+      this.allSearch().removeAt(index);
+    }
+    this.allSearch().clear();
+    this.addSearch(initialFilterValue);
+  }
 
-    // console.log('confirmationAlert::::::', confirmed);
-    console.log(
-      'this.getPersistPresetSearchParsed()::::::',
-      this.getPersistPresetSearchParsed()
-    );
+  async clearFilter() {
+    const localData = this.getPersistPresetSearch();
     let selectedData = this.getPersistPresetSearchParsed().filter((s) => {
-      console.log(s, 'sss');
-      console.log('this.searchParam::::::', this.searchParam);
       return s.filterName == this.searchParam;
     });
-    console.log('selectedData::::::', selectedData);
-    let temp1 = selectedData[0]?.filters;
+    let temp1 = selectedData[0]?.filters || [];
     const temp2 = this.searchFilterForm.value.search;
-    console.log('temp1::::::', temp1);
+    const areEqual = areFiltersEqual(temp1, temp2);
 
-    console.log('temp2::::::', temp2);
-    console.log('JSON.stringify(temp1) ::::::', JSON.stringify(temp1));
-
-    // write a function that compares the oblects are equal
-    // areEqual(o1,o2):boolean
-    // areEqual(o1,o2):boolean
-    //if inside one of the objects param4 exist but value is '' and in the other object there is no param4 treat as equal
-
-    if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
-      const confirmed2 = await this.confirmationAlert(
+    if (areEqual) {
+      const confirmed = await this.confirmationAlert(
         'Do you want to clear the current preset: ' + this.searchParam
       );
-      if (confirmed2) {
-        const len = this.allSearch().length;
-        for (let index = 0; index <= len + 1; index++) {
-          this.allSearch().removeAt(index);
-        }
-        this.allSearch().clear();
-        this.addSearch(initialFilterValue);
+      if (confirmed) {
+        this.clearObject();
       }
       return;
     }
-    if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
+    if (!areEqual) {
       const confirmed = await this.confirmationAlert(
         'Do you want to clear preset including your unsaved changes : ' +
           this.searchParam
       );
       if (confirmed) {
-        const len = this.allSearch().length;
-        for (let index = 0; index <= len + 1; index++) {
-          this.allSearch().removeAt(index);
-        }
-        this.allSearch().clear();
-        this.addSearch(initialFilterValue);
+        this.clearObject();
       }
       return;
     }
