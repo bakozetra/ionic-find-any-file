@@ -222,7 +222,6 @@ export class Tab1Page implements OnInit {
     this.initPriceForm();
     this.updatePreselectList();
     this.onPreselectDDLChange(1);
-
     this.addSearch(initialFilterValue);
   }
 
@@ -310,12 +309,8 @@ export class Tab1Page implements OnInit {
       let ele = localJSON?.find((f) => f.id == presetSelected);
       if (this.findInPersistanDataByFilterName(this.presetSelected) || ele) {
         let checkIfExist = localJSON.filter((ele) => {
-          console.log('ele?.id::::::', ele?.id);
-          console.log('this.searchParam: delete:::::', searchParam);
-          console.log('this?.id::::::', this?.id);
           return ele?.id == this.id;
         });
-        console.log('checkIfExist::::::', checkIfExist);
         if (checkIfExist && checkIfExist?.length > 0) {
           const confirmed = await this.confirmationAlert(
             `Are you sure to delete ${searchParam} preset.`
@@ -326,9 +321,7 @@ export class Tab1Page implements OnInit {
             messageSpan.style.color = 'red';
             this.message = `'${searchParam}' is deleted successfully.`;
             if (this.message) {
-              setTimeout(() => {
-                this.message = '';
-              }, 3000);
+              this.emptyMessageTimeout();
             }
             let emptyPreselected = '';
             presetSelected = emptyPreselected;
@@ -381,7 +374,6 @@ export class Tab1Page implements OnInit {
   }
 
   async clearFilter() {
-    const localData = this.getPersistPresetSearch();
     let selectedData = this.getPersistPresetSearchParsed().filter((s) => {
       return s.filterName == this.searchParam;
     });
@@ -535,11 +527,6 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  //this.getPersistPresetSearchParsed();
-  //this.searchFilterForm,
-  //this.preSelectList
-  //this.searchParam
-
   savePreselectForm(localjson, searchFilterForm, preSelectList, searchParam) {
     console.log('this.id:::savePreselectForm:::', this.id, this.presetSelected);
     this.submitted = true;
@@ -562,12 +549,10 @@ export class Tab1Page implements OnInit {
           data?.id === this.id ? data?.filters : ''
         )[0];
         const temp2 = searchFilterForm.value.search;
-        if (JSON.stringify(temp1) == JSON.stringify(temp2)) {
+        if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
           this.message = 'Your Filter stored successfully';
           if (this.message) {
-            setTimeout(() => {
-              this.message = '';
-            }, 3000);
+            this.emptyMessageTimeout();
           }
           return;
         } else {
@@ -592,38 +577,37 @@ export class Tab1Page implements OnInit {
         messageSpan.style.color = 'green';
         this.message = 'Your Filter stored successfully.';
         if (this.message) {
-          setTimeout(() => {
-            this.message = '';
-          }, 3000);
+          this.emptyMessageTimeout();
         }
       } else {
         const allFilters = preSelectList;
         filterData = filterData.filter(
           (data) => data?.param1 && data?.param2 && data?.param3
         );
+        console.log('allFilters:savePreselectForm:::::', allFilters);
         const finalData = {
           id: UUID.UUID(),
-          filterName: this.searchParam,
+          filterName: searchParam,
           filters: searchFilterForm.value.search,
         };
+        console.log('searchParam::::::', searchParam);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
         messageSpan.style.color = 'green';
         this.message = 'Your Filter stored successfully.';
         if (this.message) {
-          setTimeout(() => {
-            this.message = '';
-          }, 3000);
+          this.emptyMessageTimeout();
         }
       }
     }
   }
 
-  // this.allSearch()
-  //this.findInPersistanDataByFilterName(this.searchParam)
-  //this.preSelectList
-  //this.searchParam
+  emptyMessageTimeout() {
+    setTimeout(() => {
+      this.message = '';
+    }, 3000);
+  }
 
   async updateCurrentPreset(
     filterModel,
@@ -644,8 +628,8 @@ export class Tab1Page implements OnInit {
     let messageSpan = document.getElementById('message');
     let isModified = true;
     if (every) {
+      console.log(every, 'every');
       let temp = findInPersistanDataByFilterName;
-      // console.log('temp::::::', temp);
       if (temp) {
         let temp1 = temp.filters;
         const temp2 = filterModel.value.search;
@@ -659,14 +643,14 @@ export class Tab1Page implements OnInit {
             delete temp2[i].param4;
           }
         }
-
+        // debugger;
+        console.log('temp1::::::', temp1);
+        console.log('temp2::::::', temp2);
         if (JSON.stringify(temp1) == JSON.stringify(temp2)) {
           messageSpan.style.color = 'green';
           this.message = 'Your Filter stored successfully';
           if (this.message) {
-            setTimeout(() => {
-              this.message = '';
-            }, 3000);
+            this.emptyMessageTimeout();
           }
           return;
         } else {
@@ -700,9 +684,10 @@ export class Tab1Page implements OnInit {
         // this.updatePreselectList();
         messageSpan.style.color = 'green';
         this.message = message;
-        await setTimeout(() => {
-          this.message = '';
-        }, 3000);
+        await this.emptyMessageTimeout();
+        // setTimeout(() => {
+        //   this.message = '';
+        // }, 3000);
       }
     }
   }
