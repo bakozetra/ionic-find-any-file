@@ -685,9 +685,9 @@ export class Tab1Page implements OnInit {
         messageSpan.style.color = 'green';
         this.message = message;
         await this.emptyMessageTimeout();
-        // setTimeout(() => {
-        //   this.message = '';
-        // }, 3000);
+        setTimeout(() => {
+          this.message = '';
+        }, 3000);
       }
     }
   }
@@ -732,11 +732,15 @@ export class Tab1Page implements OnInit {
   }
 
   onPreselectDDLChange(e: any) {
+    console.log(
+      'TEXT-VALUE',
+      e?.target?.children[e.target.selectedIndex]?.text
+    );
     this.searchParam = !this.searchParam
       ? e.target?.options[e.target.selectedIndex]?.text
       : this.searchParam;
     console.log('this.searchParam::onPreselectDDLChange::::', this.searchParam);
-    console.log('TEXT-VALUE', e.target?.options[e.target.selectedIndex]?.text);
+
     const changes = this.trackChanges(this.searchParamId);
     const compareSearchParam =
       this.searchParam && this.searchParam !== 'Select';
@@ -880,6 +884,7 @@ export class Tab1Page implements OnInit {
     await alert.present();
     return promise;
   }
+
   drop(event: CdkDragDrop<any>) {
     const previous = this.allSearch().at(event.previousIndex);
     const current = this.allSearch().at(event.currentIndex);

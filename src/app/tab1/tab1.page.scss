@@ -290,7 +290,8 @@ ion-item::part(native) {
 }
 
 .select-options {
-  color: #000 !important;
+  color: rgb(233, 32, 32) !important;
+  background-color: #008000 !important;
 }
 
 input::placeholder {
@@ -496,4 +497,8 @@ ul li.active ul {
   background-color: #535353;
   }
 }
-}  
+} 
+
+
+
+

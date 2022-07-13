@@ -14,7 +14,30 @@
         >
           <div class="select-search">
             <div class="select-item">
-              <select
+              <!-- <ion-list>
+                <ion-item> -->
+              <ion-select
+                interface="popover"
+                placeholder="Select fruit"
+                [(ngModel)]="presetSelected"
+                (ionChange)="onPreselectDDLChange($event)"
+                id="presets-select"
+                class="select-class"
+                [tooltip]="'presets list'"
+              >
+                <!-- <ion-select-option class="select-options" value="" selected>
+                  Presets
+                </ion-select-option> -->
+                <ion-select-option
+                  *ngFor="let pre of preSelectList; let i2 = index"
+                  [value]="pre?.id"
+                >
+                  {{pre?.filterName}}
+                </ion-select-option>
+              </ion-select>
+              <!-- </ion-item>
+              </ion-list> -->
+              <!-- <select
                 class="select-class"
                 [(ngModel)]="presetSelected"
                 (change)="onPreselectDDLChange($event)"
@@ -31,7 +54,7 @@
                 >
                   {{pre?.filterName}}
                 </option>
-              </select>
+              </select> -->
             </div>
           </div>
           <div>
