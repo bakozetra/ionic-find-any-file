@@ -35,6 +35,7 @@
   outline: none;
   background-color: white;
   color: #000;
+  // color: #fff !important;
 }
 
 ion-input {
@@ -290,8 +291,7 @@ ion-item::part(native) {
 }
 
 .select-options {
-  color: rgb(233, 32, 32) !important;
-  background-color: #008000 !important;
+  color: black !important;
 }
 
 input::placeholder {
@@ -464,6 +464,48 @@ label {
   }
 }
 
+// ::ng-deep .popover-viewport {
+  // ion-select-popover {
+  //   background: pink;
+
+  //   ion-list,
+  //   ion-list-header,
+  //   ion-item,
+  //   ion-radio-group {
+  //     --background: transparent;
+  //     background: transparent;
+  //   }
+  // }
+
+// ion-list {
+//   background-color: #008000;
+  
+// }
+// .sc-ion-select-popover-md {
+//    background-color: red;
+// }
+// ion-item {
+//   .sc-ion-select-popover-md {
+//     }
+// }
+
+// }
+::ng-deep .sc-ion-select-popover-md {
+   background-color: #333333;
+  // .item-native {
+  //   padding: 0;
+  // }
+  ion-item {
+    --background:#333333;
+    --background-hover:white;
+    --color:white;
+  }
+  ion-label {
+    color:#333333;
+    
+  }
+}
+
 ul li ul {
   display: none; /* Hide the nested list first */
 }
@@ -498,6 +540,34 @@ ul li.active ul {
   }
 }
 } 
+#presets-select {
+  background-color: #535353;
+}
+// .popover-viewport {
+// }
+// .list-md {
+//   background-color: #008000;
+// // } 
+// .backdrop-no-scroll {
+//   .select-popover{
+//   .popover-viewport {
+//     .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md {
+//       // left: 0 !important;
+//       // width: 100%;
+//       background-color: #008000
+//   }
+//   }
+// }
+ 
+// }
+:root {
+  .popover {
+      left: 0 !important;
+      width: 100%;
+      background-color: #008000;
+  }
+}
+
 
 
 

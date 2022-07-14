@@ -114,6 +114,8 @@ const initialFilterValue = {
   param4: '',
 };
 
+const INITIALCURRENTPRESETNAME = '';
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -197,15 +199,15 @@ export class Tab1Page implements OnInit {
 
   param2List = [];
   searchFilterForm: FormGroup;
-  searchParam = '';
+  currentPresetName = '';
   preSelectList = [];
   message: string = '';
   updated: boolean = false;
   submitted: boolean = false;
   submittedForm: boolean;
-  presetSelected: string = '';
-  searchParamId: any;
-  id: any;
+  selectedPresetId: string = '';
+  presetId: string = '';
+  id: string;
   isDate: boolean = false;
   modBetween: boolean = false;
   mod: boolean = false;
@@ -287,7 +289,7 @@ export class Tab1Page implements OnInit {
         let data = localJSON.filter((ele) => ele?.id != this?.id);
         this.setPersistPresetSearch(data);
         this.updatePreselectList();
-        this.searchParam = '';
+        this.currentPresetName = '';
       } else {
         this.allSearch().removeAt(index);
         this.UpdateSearchByRemoving(index);
@@ -299,7 +301,7 @@ export class Tab1Page implements OnInit {
   // this.searchParam
   // this.allSearch()
 
-  async deletePreset(presetSelected, searchParam, allsearch) {
+  async deletePreset(presetSelected, presetName, allsearch) {
     console.log('delete Presets');
     console.log('presetSelected::::::', presetSelected);
     this.id = presetSelected;
@@ -307,25 +309,25 @@ export class Tab1Page implements OnInit {
     const localJSON = this.getPersistPresetSearchParsed();
     if (localJSON.length > 0) {
       let ele = localJSON?.find((f) => f.id == presetSelected);
-      if (this.findInPersistanDataByFilterName(this.presetSelected) || ele) {
+      if (this.findInPersistanDataByFilterName(this.selectedPresetId) || ele) {
         let checkIfExist = localJSON.filter((ele) => {
           return ele?.id == this.id;
         });
         if (checkIfExist && checkIfExist?.length > 0) {
           const confirmed = await this.confirmationAlert(
-            `Are you sure to delete ${searchParam} preset.`
+            `Are you sure to delete ${presetName} preset.`
           );
           if (confirmed) {
             let data = localJSON.filter((ele) => ele?.id != this?.id);
             this.setPersistPresetSearch(data);
             messageSpan.style.color = 'red';
-            this.message = `'${searchParam}' is deleted successfully.`;
+            this.message = `'${presetName}' is deleted successfully.`;
             if (this.message) {
               this.emptyMessageTimeout();
             }
             let emptyPreselected = '';
             presetSelected = emptyPreselected;
-            this.searchParam = emptyPreselected;
+            this.currentPresetName = emptyPreselected;
             allsearch.clear();
             this.updatePreselectList();
             this.addSearch(initialFilterValue);
@@ -348,13 +350,13 @@ export class Tab1Page implements OnInit {
 
   UpdateSearchByRemoving(index: any) {
     const localJSON = this.getPersistPresetSearchParsed();
-    if (localJSON && localJSON[this.searchParam]) {
-      const temp1 = localJSON[this.searchParam];
+    if (localJSON && localJSON[this.currentPresetName]) {
+      const temp1 = localJSON[this.currentPresetName];
       temp1.splice(index, 1);
       if (temp1.length > 0) {
         this.setPersistPresetSearch(localJSON);
       } else {
-        delete localJSON[this.searchParam];
+        delete localJSON[this.currentPresetName];
         this.setPersistPresetSearch(localJSON);
       }
       this.updatePreselectList();
@@ -375,7 +377,7 @@ export class Tab1Page implements OnInit {
 
   async clearFilter() {
     let selectedData = this.getPersistPresetSearchParsed().filter((s) => {
-      return s.filterName == this.searchParam;
+      return s.filterName == this.currentPresetName;
     });
     let temp1 = selectedData[0]?.filters || [];
     const temp2 = this.searchFilterForm.value.search;
@@ -383,7 +385,7 @@ export class Tab1Page implements OnInit {
 
     if (areEqual) {
       const confirmed = await this.confirmationAlert(
-        'Do you want to clear the current preset: ' + this.searchParam
+        'Do you want to clear the current preset: ' + this.currentPresetName
       );
       if (confirmed) {
         this.clearObject();
@@ -393,7 +395,7 @@ export class Tab1Page implements OnInit {
     if (!areEqual) {
       const confirmed = await this.confirmationAlert(
         'Do you want to clear preset including your unsaved changes : ' +
-          this.searchParam
+          this.currentPresetName
       );
       if (confirmed) {
         this.clearObject();
@@ -527,8 +529,12 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  savePreselectForm(localjson, searchFilterForm, preSelectList, searchParam) {
-    console.log('this.id:::savePreselectForm:::', this.id, this.presetSelected);
+  savePreselectForm(localjson, searchFilterForm, preSelectList, prestName) {
+    console.log(
+      'this.id:::savePreselectForm:::',
+      this.id,
+      this.selectedPresetId
+    );
     this.submitted = true;
     if (!this.allSearch().valid) {
       return;
@@ -543,7 +549,7 @@ export class Tab1Page implements OnInit {
       const localJSON = localjson;
       if (
         localJSON?.length > 0 &&
-        localJSON.filter((s) => s.filterName == searchParam)?.length > 0
+        localJSON.filter((s) => s.filterName == prestName)?.length > 0
       ) {
         const temp1 = localJSON.map((data) =>
           data?.id === this.id ? data?.filters : ''
@@ -566,8 +572,8 @@ export class Tab1Page implements OnInit {
           (data) => data?.param1 && data?.param2 && data?.param3
         );
         const finalData = {
-          id: this.searchParamId ? this.searchParamId : UUID.UUID(),
-          filterName: searchParam,
+          id: this.presetId ? this.presetId : UUID.UUID(),
+          filterName: prestName,
           filters: searchFilterForm.value.search,
         };
         console.log('finalData::www::::', finalData);
@@ -587,10 +593,10 @@ export class Tab1Page implements OnInit {
         console.log('allFilters:savePreselectForm:::::', allFilters);
         const finalData = {
           id: UUID.UUID(),
-          filterName: searchParam,
+          filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        console.log('searchParam::::::', searchParam);
+        console.log('searchParam::::::', prestName);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
@@ -614,7 +620,7 @@ export class Tab1Page implements OnInit {
     allsearch,
     findInPersistanDataByFilterName,
     preselectList,
-    searchParam
+    presetsName
   ) {
     this.submitted = true;
     if (!allsearch.valid) {
@@ -656,27 +662,27 @@ export class Tab1Page implements OnInit {
         } else {
           const confirmed = await this.confirmationAlert(
             'Your are updating the current filter: ' +
-              searchParam +
+              presetsName +
               ' Please confirm'
           );
           isModified = confirmed;
         }
       }
 
-      if (preselectList.some((s) => s.filterName == searchParam)) {
+      if (preselectList.some((s) => s.filterName == presetsName)) {
         const message = isModified
           ? 'Your filter updated successfully.'
           : 'Your Filter stored successfully.';
 
         const finalData = [
           {
-            id: String(this.searchParamId),
-            filterName: searchParam,
+            id: String(this.presetId),
+            filterName: presetsName,
             filters: filterModel.getRawValue()?.search,
           },
         ];
         let data = this.getPersistPresetSearchParsed().filter(
-          (ele) => ele.id != String(this.searchParamId)
+          (ele) => ele.id != String(this.presetId)
         );
         data = [...data, ...finalData];
         console.log('data::::::', data);
@@ -721,50 +727,79 @@ export class Tab1Page implements OnInit {
     // if (localJSON.length) {
     this.preSelectList = localJSON;
     // }
-    if (this.searchParam.toLowerCase()) {
-      this.presetSelected = this.findInPersistanDataByFilterName(
-        this.searchParam
+    if (this.currentPresetName.toLowerCase()) {
+      this.selectedPresetId = this.findInPersistanDataByFilterName(
+        this.currentPresetName
       )?.id;
       // debugger;
-      this.searchParamId = this.presetSelected;
+      this.presetId = this.selectedPresetId;
       // this.presetSelected = this.searchParam;
     }
   }
 
   onPreselectDDLChange(e: any) {
+    console.log('TEXT-VALUE', e?.target);
+    console.log('TEXT- event VALUE', e);
     console.log(
-      'TEXT-VALUE',
-      e?.target?.children[e.target.selectedIndex]?.text
+      'e?.target?.detail?.value::::::',
+      e?.currentTarget?.detail?.value
     );
-    this.searchParam = !this.searchParam
-      ? e.target?.options[e.target.selectedIndex]?.text
-      : this.searchParam;
-    console.log('this.searchParam::onPreselectDDLChange::::', this.searchParam);
+    console.log('preSelectList::::::', this.preSelectList);
+    if (e === 1) {
+      this.currentPresetName = INITIALCURRENTPRESETNAME;
+    } else {
+      const currentPreset = this.preSelectList.find((preItem) => {
+        return preItem.id === e?.detail?.value;
+      });
+      this.currentPresetName =
+        currentPreset?.filterName || INITIALCURRENTPRESETNAME;
+      console.log('currentPreset', currentPreset);
+    }
+    console.log('this.presetId::::::', this.presetId);
+    console.log('this.presetSelected ::::::', this.selectedPresetId);
+    // this.currentPresetName = !this.currentPresetName
+    //   ? e.target?.options[e.target.selectedIndex]?.text
+    //   : this.currentPresetName;
+    // console.log(
+    //   'this.searchParam::onPreselectDDLChange::::',
+    //   this.currentPresetName
+    // );
 
-    const changes = this.trackChanges(this.searchParamId);
+    const changes = this.trackChanges(this.presetId);
+    // to check if newly created presets after fresh load app should be saved
     const compareSearchParam =
-      this.searchParam && this.searchParam !== 'Select';
+      this.currentPresetName &&
+      this.currentPresetName !== INITIALCURRENTPRESETNAME;
     console.log('compareSearchParam::::bbb::', compareSearchParam);
     if (!changes) {
       if (compareSearchParam) {
         if (!confirm('Do you want to discard the current filter changes')) {
           setTimeout(() => {
-            this.presetSelected = this.searchParamId;
+            this.selectedPresetId = this.presetId;
           }, 100);
           return;
         }
       }
     }
-    this.searchParam = e.target?.options[e.target.selectedIndex]?.text;
-    console.log('searchParam::::::', this.searchParam);
-    this.id = e?.target?.options[e?.target?.selectedIndex]?.value;
-    console.log(
-      'e?.target?.options[e?.target?.selectedIndex]?.value::::::',
-      e?.target?.options[e?.target?.selectedIndex]
-    );
-    console.log('this.id::DDDD::::', this.id);
-    this.searchParamId = e.target?.value;
-    if (this.searchParam && this.searchParam == 'Select') {
+    // this.currentPresetName = e.target?.options[e.target.selectedIndex]?.text;
+    console.log('searchParam::::::', this.currentPresetName);
+    this.id = e.target?.value;
+    // this.preSelectList.find((preItem) => {
+    //   return preItem.id === e?.detail?.value;
+    // })?.id;
+
+    console.log('    this.id::::::', this.id);
+    // console.log(
+    //   'e?.target?.options[e?.target?.selectedIndex]?.value::::::',
+    //   e?.target?.options[e?.target?.selectedIndex]
+    // );
+    // console.log('this.id::DDDD::::', this.id);
+    this.presetId = e.target?.value;
+    console.log('e.target?.value::::::', e.target?.value);
+    if (
+      this.currentPresetName &&
+      this.currentPresetName == INITIALCURRENTPRESETNAME
+    ) {
       this.allSearch().clear();
     }
 
@@ -773,9 +808,7 @@ export class Tab1Page implements OnInit {
       const localJSON = this.getPersistPresetSearchParsed();
       if (localJSON.length) {
         const tempArray = [] as any[];
-        const currentSelection = localJSON.find(
-          (f) => f.id == this.searchParamId
-        );
+        const currentSelection = localJSON.find((f) => f.id == this.presetId);
 
         currentSelection?.filters?.map((f, index) => {
           const menu = this.searchData.find(
