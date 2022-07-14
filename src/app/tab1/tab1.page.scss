@@ -221,15 +221,6 @@ select {
     margin-right: 1rem;
   }
 }
-.find-item {
-  // margin-righ
-}
-
-// .search-row1 {
-//   width: 60%;
-//   margin: auto;
-//   justify-content: end;
-// }
 
 .modi-btn{
   text-align: center;
@@ -464,47 +455,6 @@ label {
   }
 }
 
-// ::ng-deep .popover-viewport {
-  // ion-select-popover {
-  //   background: pink;
-
-  //   ion-list,
-  //   ion-list-header,
-  //   ion-item,
-  //   ion-radio-group {
-  //     --background: transparent;
-  //     background: transparent;
-  //   }
-  // }
-
-// ion-list {
-//   background-color: #008000;
-  
-// }
-// .sc-ion-select-popover-md {
-//    background-color: red;
-// }
-// ion-item {
-//   .sc-ion-select-popover-md {
-//     }
-// }
-
-// }
-::ng-deep .sc-ion-select-popover-md {
-   background-color: #333333;
-  // .item-native {
-  //   padding: 0;
-  // }
-  ion-item {
-    --background:#333333;
-    --background-hover:white;
-    --color:white;
-  }
-  ion-label {
-    color:#333333;
-    
-  }
-}
 
 ul li ul {
   display: none; /* Hide the nested list first */
@@ -540,35 +490,46 @@ ul li.active ul {
   }
 }
 } 
-#presets-select {
-  background-color: #535353;
+
+::ng-deep ion-select-popover {
+  --box-shadow: none;
+  .popover-content {
+    --box-shadow: none;
+ }
 }
-// .popover-viewport {
-// }
-// .list-md {
-//   background-color: #008000;
-// // } 
-// .backdrop-no-scroll {
-//   .select-popover{
-//   .popover-viewport {
-//     .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md {
-//       // left: 0 !important;
-//       // width: 100%;
-//       background-color: #008000
-//   }
-//   }
-// }
- 
-// }
-:root {
-  .popover {
-      left: 0 !important;
-      width: 100%;
-      background-color: #008000;
+
+::ng-deep .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md {
+   background-color: #333333;
+   box-shadow:none;
+  ion-item {
+    --background:#333333;
+    --background-hover:white;
+    --color:white;
+    --background-focused:#d4c9c9;
+    --background-hover-opacity:0.1;
   }
 }
+  
+.item-radio-checked.sc-ion-select-popover-md {
+    --background:#333333;
+    --background-focused:#d4c9c9;
+    --background-hover: none;
+    --ripple-color:red;
+    --background-hover-opacity:0;
+    --highlight-color-focused:#d4c9c9;
+  }
 
+#presets-select {
+  background-color: #535353;
+  --placeholder-color:white;
+  --placeholder-opacity:none;
+  color: white;
+  
+}
 
+#presets-select::part(icon) {
+  display: none !important;
+}
 
 
 

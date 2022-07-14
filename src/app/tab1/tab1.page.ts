@@ -297,10 +297,6 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  // this.presetSelected
-  // this.searchParam
-  // this.allSearch()
-
   async deletePreset(presetSelected, presetName, allsearch) {
     console.log('delete Presets');
     console.log('presetSelected::::::', presetSelected);
@@ -650,8 +646,6 @@ export class Tab1Page implements OnInit {
           }
         }
         // debugger;
-        console.log('temp1::::::', temp1);
-        console.log('temp2::::::', temp2);
         if (JSON.stringify(temp1) == JSON.stringify(temp2)) {
           messageSpan.style.color = 'green';
           this.message = 'Your Filter stored successfully';
@@ -723,17 +717,12 @@ export class Tab1Page implements OnInit {
 
   updatePreselectList() {
     var localJSON = this.getPersistPresetSearchParsed();
-    // debugger;
-    // if (localJSON.length) {
     this.preSelectList = localJSON;
-    // }
     if (this.currentPresetName.toLowerCase()) {
       this.selectedPresetId = this.findInPersistanDataByFilterName(
         this.currentPresetName
       )?.id;
-      // debugger;
       this.presetId = this.selectedPresetId;
-      // this.presetSelected = this.searchParam;
     }
   }
 
@@ -753,17 +742,7 @@ export class Tab1Page implements OnInit {
       });
       this.currentPresetName =
         currentPreset?.filterName || INITIALCURRENTPRESETNAME;
-      console.log('currentPreset', currentPreset);
     }
-    console.log('this.presetId::::::', this.presetId);
-    console.log('this.presetSelected ::::::', this.selectedPresetId);
-    // this.currentPresetName = !this.currentPresetName
-    //   ? e.target?.options[e.target.selectedIndex]?.text
-    //   : this.currentPresetName;
-    // console.log(
-    //   'this.searchParam::onPreselectDDLChange::::',
-    //   this.currentPresetName
-    // );
 
     const changes = this.trackChanges(this.presetId);
     // to check if newly created presets after fresh load app should be saved
@@ -781,21 +760,9 @@ export class Tab1Page implements OnInit {
         }
       }
     }
-    // this.currentPresetName = e.target?.options[e.target.selectedIndex]?.text;
     console.log('searchParam::::::', this.currentPresetName);
     this.id = e.target?.value;
-    // this.preSelectList.find((preItem) => {
-    //   return preItem.id === e?.detail?.value;
-    // })?.id;
-
-    console.log('    this.id::::::', this.id);
-    // console.log(
-    //   'e?.target?.options[e?.target?.selectedIndex]?.value::::::',
-    //   e?.target?.options[e?.target?.selectedIndex]
-    // );
-    // console.log('this.id::DDDD::::', this.id);
     this.presetId = e.target?.value;
-    console.log('e.target?.value::::::', e.target?.value);
     if (
       this.currentPresetName &&
       this.currentPresetName == INITIALCURRENTPRESETNAME
@@ -809,7 +776,6 @@ export class Tab1Page implements OnInit {
       if (localJSON.length) {
         const tempArray = [] as any[];
         const currentSelection = localJSON.find((f) => f.id == this.presetId);
-
         currentSelection?.filters?.map((f, index) => {
           const menu = this.searchData.find(
             (fn) => fn.id.toLowerCase() === f.param1.toLowerCase()
