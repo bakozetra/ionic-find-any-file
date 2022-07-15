@@ -12,21 +12,18 @@
           *ngIf="preSelectList.length > 0 else emptyList"
           class="search-row search-row-select"
         >
-          <!--    -->
           <div class="select-search">
             <div class="select-item">
               <ion-select
                 interface="popover"
                 placeholder="Presets"
+                value="Presets"
                 [(ngModel)]="selectedPresetId"
-                (ionChange)="onPreselectDDLChange($event)"
+                (ionChange)="this.onPreselectDDLChange($event)"
                 id="presets-select"
                 [tooltip]="'presets list'"
                 (ionFocus)="onSelectFocus($event)"
               >
-                <!-- <ion-select-option class="select-options" value="" selected>
-                  Presets
-                </ion-select-option> -->
                 <ion-select-option
                   (ionFocus)="onSelectFocus($event)"
                   *ngFor="let pre of preSelectList; let i2 = index"

@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   FormArray,
@@ -17,6 +18,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import { AlertController } from '@ionic/angular';
 import { areFiltersEqual } from '../utils';
+
 declare var easepick: any;
 
 interface PresetData {
@@ -225,6 +227,7 @@ export class Tab1Page implements OnInit {
     this.updatePreselectList();
     this.onPreselectDDLChange(1);
     this.addSearch(initialFilterValue);
+    // document.getElementById('presets-select').addEventListener('ionChange');
   }
 
   createDatePicker(i, date?: any) {
@@ -298,8 +301,6 @@ export class Tab1Page implements OnInit {
   }
 
   async deletePreset(presetSelected, presetName, allsearch) {
-    console.log('delete Presets');
-    console.log('presetSelected::::::', presetSelected);
     this.id = presetSelected;
     let messageSpan = document.getElementById('message');
     const localJSON = this.getPersistPresetSearchParsed();
@@ -321,9 +322,8 @@ export class Tab1Page implements OnInit {
             if (this.message) {
               this.emptyMessageTimeout();
             }
-            let emptyPreselected = '';
-            presetSelected = emptyPreselected;
-            this.currentPresetName = emptyPreselected;
+            this.selectedPresetId = INITIALCURRENTPRESETNAME;
+            this.currentPresetName = INITIALCURRENTPRESETNAME;
             allsearch.clear();
             this.updatePreselectList();
             this.addSearch(initialFilterValue);
@@ -411,7 +411,6 @@ export class Tab1Page implements OnInit {
   }
 
   newEvent(item?): FormGroup {
-    console.log('item::::::', item);
     return this.fb.group({
       param1: [item?.param1, [Validators.required]],
       param2: [
@@ -443,7 +442,6 @@ export class Tab1Page implements OnInit {
       this.isParam2Select = true;
     }
     const row = this.allSearch().controls[i] as FormGroup;
-    console.log('row::::onParam1Change::', row);
     const menu = this.searchData.find(
       (f) => f.id.toLowerCase() === row.get('param1').value.toLowerCase()
     );
@@ -464,7 +462,6 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, data?: any) {
     // debugger
-    console.log(i, 'i');
     const row = this.allSearch().controls[i] as FormGroup;
     if (row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()) {
       setTimeout(() => {
@@ -526,11 +523,6 @@ export class Tab1Page implements OnInit {
   }
 
   savePreselectForm(localjson, searchFilterForm, preSelectList, prestName) {
-    console.log(
-      'this.id:::savePreselectForm:::',
-      this.id,
-      this.selectedPresetId
-    );
     this.submitted = true;
     if (!this.allSearch().valid) {
       return;
@@ -572,7 +564,6 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        console.log('finalData::www::::', finalData);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
@@ -586,13 +577,11 @@ export class Tab1Page implements OnInit {
         filterData = filterData.filter(
           (data) => data?.param1 && data?.param2 && data?.param3
         );
-        console.log('allFilters:savePreselectForm:::::', allFilters);
         const finalData = {
           id: UUID.UUID(),
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        console.log('searchParam::::::', prestName);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
@@ -623,14 +612,12 @@ export class Tab1Page implements OnInit {
       return;
     }
     let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
-    console.log('filterData:nnnn:::::', filterData);
     let every = filterData.every(
       (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
     );
     let messageSpan = document.getElementById('message');
     let isModified = true;
     if (every) {
-      console.log(every, 'every');
       let temp = findInPersistanDataByFilterName;
       if (temp) {
         let temp1 = temp.filters;
@@ -679,9 +666,7 @@ export class Tab1Page implements OnInit {
           (ele) => ele.id != String(this.presetId)
         );
         data = [...data, ...finalData];
-        console.log('data::::::', data);
         this.setPersistPresetSearch(data);
-        // this.updatePreselectList();
         messageSpan.style.color = 'green';
         this.message = message;
         await this.emptyMessageTimeout();
@@ -693,7 +678,6 @@ export class Tab1Page implements OnInit {
   }
 
   setPersistPresetSearch(data) {
-    console.log('data:::setPersistPresetSearch:::', data);
     localStorage.setItem('presetSearch', JSON.stringify(data));
   }
   getPersistPresetSearch() {
@@ -705,7 +689,6 @@ export class Tab1Page implements OnInit {
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
-    console.log('localJSON::::getPersistPresetSearchParsed::', localJSON);
     return localJSON;
   }
 
@@ -727,13 +710,6 @@ export class Tab1Page implements OnInit {
   }
 
   onPreselectDDLChange(e: any) {
-    console.log('TEXT-VALUE', e?.target);
-    console.log('TEXT- event VALUE', e);
-    console.log(
-      'e?.target?.detail?.value::::::',
-      e?.currentTarget?.detail?.value
-    );
-    console.log('preSelectList::::::', this.preSelectList);
     if (e === 1) {
       this.currentPresetName = INITIALCURRENTPRESETNAME;
     } else {
@@ -749,7 +725,6 @@ export class Tab1Page implements OnInit {
     const compareSearchParam =
       this.currentPresetName &&
       this.currentPresetName !== INITIALCURRENTPRESETNAME;
-    console.log('compareSearchParam::::bbb::', compareSearchParam);
     if (!changes) {
       if (compareSearchParam) {
         if (!confirm('Do you want to discard the current filter changes')) {
@@ -760,14 +735,14 @@ export class Tab1Page implements OnInit {
         }
       }
     }
-    console.log('searchParam::::::', this.currentPresetName);
     this.id = e.target?.value;
     this.presetId = e.target?.value;
     if (
       this.currentPresetName &&
-      this.currentPresetName == INITIALCURRENTPRESETNAME
+      this.currentPresetName === INITIALCURRENTPRESETNAME
     ) {
       this.allSearch().clear();
+      this.currentPresetName = INITIALCURRENTPRESETNAME;
     }
 
     if (compareSearchParam) {
@@ -798,12 +773,12 @@ export class Tab1Page implements OnInit {
         });
       } else {
         this.allSearch().clear();
+        this.updatePreselectList();
       }
     }
   }
 
   trackChanges = (param: any) => {
-    console.log('param::::::', param);
     if (!param) return true;
     const localJSON = this.getPersistPresetSearchParsed();
     let data = localJSON.find((f) => f.id == param);
