@@ -472,7 +472,8 @@ ul li.active ul {
   color: #dddddd;
 }
 .dropdown-item:hover {
-  color: #333333;
+  // color: #333333;
+  background-color: #535353;
 }
 
 ::ng-deep .modal-dialog {

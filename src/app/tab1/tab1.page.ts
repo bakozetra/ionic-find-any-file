@@ -742,7 +742,6 @@ export class Tab1Page implements OnInit {
       this.currentPresetName === INITIALCURRENTPRESETNAME
     ) {
       this.allSearch().clear();
-      this.currentPresetName = INITIALCURRENTPRESETNAME;
     }
 
     if (compareSearchParam) {
