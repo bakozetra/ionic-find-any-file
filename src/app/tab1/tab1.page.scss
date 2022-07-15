@@ -386,7 +386,6 @@ ion-item:not(.item-label) .sc-ion-input-md-h {
 .delete-preset::part(native) {
   background-color: red;
   color: white;
-  // padding: 1rem;
 }
 
 
@@ -425,14 +424,12 @@ label {
 }
 
 .mat-form ::ng-deep .mat-calendar-body-cell-container {
-  // width: 100px !important;
   background-color: pink !important;
   width: 100px !important;
   height: 100px !important;
 }
 
 .range-picker ::ng-deep .mat-calendar-body-cell-container {
-  // width: 100px !important;
   background-color: rgb(192, 255, 219) !important;
   width: 100px !important;
   height: 100px !important;
@@ -443,7 +440,6 @@ label {
 }
 
 .toggle ::ng-deep .mat-calendar-body-cell-container {
-  // width: 100px !important;
   background-color: rgb(214, 18, 51) !important;
   width: 100px !important;
   height: 100px !important;
@@ -511,7 +507,14 @@ ul li.active ul {
     --background-focused:#d4c9c9;
     --background-hover-opacity:0.1;
   }
+  .unfocusFirstelement.ion-focused::part(native)::after {
+    opacity: 0!important; 
+  }
+  .unfocusFirstelement.ion-focused::part(native):hover {
+    background-color:#535353;
+  }
 }
+
   
 .item-radio-checked.sc-ion-select-popover-md {
     --background:#333333;

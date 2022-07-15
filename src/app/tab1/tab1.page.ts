@@ -883,6 +883,18 @@ export class Tab1Page implements OnInit {
     await alert.present();
     return promise;
   }
+  onSelectFocus(e) {
+    const elementFirstchild = e.srcElement.firstChild;
+    if (this.currentPresetName === INITIALCURRENTPRESETNAME) {
+      const addClassToElementChild = elementFirstchild.classList.add(
+        'unfocusFirstelement'
+      );
+    } else {
+      const addClassToElementChild = elementFirstchild.classList.remove(
+        'unfocusFirstelement'
+      );
+    }
+  }
 
   drop(event: CdkDragDrop<any>) {
     const previous = this.allSearch().at(event.previousIndex);

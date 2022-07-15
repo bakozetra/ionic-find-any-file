@@ -12,23 +12,23 @@
           *ngIf="preSelectList.length > 0 else emptyList"
           class="search-row search-row-select"
         >
+          <!--    -->
           <div class="select-search">
             <div class="select-item">
-              <!-- <ion-list>
-                <ion-item> -->
               <ion-select
                 interface="popover"
                 placeholder="Presets"
                 [(ngModel)]="selectedPresetId"
                 (ionChange)="onPreselectDDLChange($event)"
                 id="presets-select"
-                class="custom-options"
                 [tooltip]="'presets list'"
+                (ionFocus)="onSelectFocus($event)"
               >
                 <!-- <ion-select-option class="select-options" value="" selected>
                   Presets
                 </ion-select-option> -->
                 <ion-select-option
+                  (ionFocus)="onSelectFocus($event)"
                   *ngFor="let pre of preSelectList; let i2 = index"
                   [value]="pre?.id"
                   class="preset-option"
@@ -36,26 +36,6 @@
                   {{pre?.filterName}}
                 </ion-select-option>
               </ion-select>
-              <!-- </ion-item>
-              </ion-list> -->
-              <!-- <select
-                class="select-class"
-                [(ngModel)]="presetSelected"
-                (change)="onPreselectDDLChange($event)"
-                id="presets-select"
-                [tooltip]="'presets list'"
-              >
-                <option class="select-options" value="" selected>
-                  Presets
-                </option>
-                <option
-                  class="select-options list-option"
-                  *ngFor="let pre of preSelectList; let i2 = index"
-                  [value]="pre?.id"
-                >
-                  {{pre?.filterName}}
-                </option>
-              </select> -->
             </div>
           </div>
           <div>
