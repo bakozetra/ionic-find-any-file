@@ -472,7 +472,6 @@ ul li.active ul {
   color: #dddddd;
 }
 .dropdown-item:hover {
-  // color: #333333;
   background-color: #535353;
 }
 
@@ -491,16 +490,10 @@ ul li.active ul {
 }
 } 
 
-::ng-deep ion-select-popover {
-  --box-shadow: none;
-  .popover-content {
-    --box-shadow: none;
- }
-}
+// Dropdown styles for presets list
 
 ::ng-deep .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md {
    background-color: #333333;
-   box-shadow:none;
   ion-item {
     --background:#333333;
     --background-hover:white;
@@ -515,7 +508,6 @@ ul li.active ul {
     background-color:#535353;
   }
 }
-
   
 .item-radio-checked.sc-ion-select-popover-md {
     --background:#333333;

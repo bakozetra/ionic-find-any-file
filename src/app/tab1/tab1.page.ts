@@ -227,11 +227,12 @@ export class Tab1Page implements OnInit {
     this.updatePreselectList();
     this.onPreselectDDLChange(1);
     this.addSearch(initialFilterValue);
-    // document.getElementById('presets-select').addEventListener('ionChange');
   }
 
   createDatePicker(i, date?: any) {
     const presetDate = date && date.param3 ? date.param3.split(' - ') : [];
+    const presetDateParm4 = date && date.param3 ? date.param4.split(' - ') : [];
+
     const picker = new easepick.create({
       element: '#datepicker' + i,
       css: [
@@ -242,20 +243,26 @@ export class Tab1Page implements OnInit {
     });
 
     picker.on('select', (date) => {
-      this.allSearch()
-        .controls[i].get('param3')
-        .setValue(
-          date.detail.start.toLocaleString().split(',')[0] +
-            ' - ' +
-            date.detail.end.toLocaleString().split(',')[0]
-        );
+      console.log('date::: date.detai:::', date.detail);
+      this.allSearch().controls[i].get('param3').setValue(
+        date.detail.start.toLocaleString().split(',')[0]
+        // +date.detail.end.toLocaleString().split(',')[0]
+      );
+    });
+    picker.on('select', (date) => {
+      console.log('date::: date:::', date);
+      this.allSearch().controls[i].get('param4').setValue(
+        // date.detail.start.toLocaleString().split(',')[0] + ' - '
+        date.detail.end.toLocaleString().split(',')[0]
+      );
     });
     picker.on('show', () => {
       let startDate = presetDate[0] ? new Date(presetDate[0]) : new Date();
+      console.log('startDate::::::', startDate);
       let endDate = presetDate[1] ? new Date(presetDate[1]) : new Date();
       if (startDate) {
         startDate.setMonth(startDate.getMonth());
-        picker.setDateRange(startDate, endDate);
+        picker.setDateRange(startDate);
       }
     });
   }
@@ -462,6 +469,7 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, data?: any) {
     // debugger
+    // console.log('nnn', this.allSearch().controls[i].get('param2')?.value);
     const row = this.allSearch().controls[i] as FormGroup;
     if (row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()) {
       setTimeout(() => {
@@ -488,7 +496,9 @@ export class Tab1Page implements OnInit {
   isDestinationNeeded(formControl) {
     const param1Obj = this.findParamById(formControl);
     if (!param1Obj) return false;
-    return param1Obj.id === 'MODIFICATION_DATE';
+    return (
+      param1Obj.id === 'MODIFICATION_DATE' || 'SHOOTING_DATE' || 'CREATION_DATE'
+    );
   }
 
   getValue(event: any, fc: any) {
