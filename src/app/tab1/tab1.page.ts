@@ -16,8 +16,15 @@ import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { areFiltersEqual } from '../utils';
+import { CalendarComponentOptions } from 'ion2-calendar';
+import {
+  CalendarModal,
+  CalendarModalOptions,
+  DayConfig,
+  CalendarResult,
+} from 'ion2-calendar';
 
 declare var easepick: any;
 
@@ -26,24 +33,6 @@ interface PresetData {
   filterName: string;
   filters: FilterModel[];
 }
-
-// <!-- There is a list of the next features and bug fixes to implement:
-// - move all UI components inside of the collapsable panel
-// - initial state of the search is empty with only add filter button "+" visible and drop-down selector of saved presets
-// - add clear filter button that removes all filters and turns search panel to initial state
-// - "+" button should insert filter before the current filter. additional "+" button should be in the very bottom of filters list that adds a filter after all current
-// - track and check user input and remember if anything was actually changed in filters
-//  =>
-// - if filters was changed, then show user a confirmation before clearing filters or loading another saved preset
-//  =>
-// - sometimes click on save button is ignored even if the name of preset is set - debug and fix
-//  =>
-// - do not save empty filter preset, preset name should be 1+ char long
-//  =>
-// - if user tries to save preset with the same name - ask for confirmation
-//  =>
-// - remove a line that changes color when you enter text field in the very bottom of the filters list
-// -->
 
 const SUB_MENU_TEXT_TYPE_BASE = [
   {
@@ -216,10 +205,14 @@ export class Tab1Page implements OnInit {
   isParam2Select: boolean = false;
   messageSpan = document.getElementById('message');
   dates = ['Shooting Date', 'Creation Date', 'Modification Date'];
+  dateRangePickerStart = '';
+  dateRangePickerEnd = '';
+
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private alertController: AlertController
+    private alertController: AlertController,
+    public modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -229,7 +222,43 @@ export class Tab1Page implements OnInit {
     this.addSearch(initialFilterValue);
   }
 
-  createDatePicker(i, date?: any) {
+  dateRange: { from: string; to: string };
+  type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
+  optionsRange: CalendarComponentOptions = {
+    pickMode: 'range',
+  };
+
+  onClick(e) {
+    console.log('heloo', e);
+  }
+
+  async openCalendar() {
+    console.log('openCalendar::::::');
+    const options: CalendarModalOptions = {
+      pickMode: 'range',
+      title: 'Pick date between',
+    };
+
+    const myCalendar = await this.modalCtrl.create({
+      component: CalendarModal,
+      componentProps: { options },
+    });
+
+    myCalendar.present();
+
+    const event: any = await myCalendar.onDidDismiss();
+    const date = event?.data;
+    const from: CalendarResult = date?.from;
+    const to: CalendarResult = date?.to;
+    console.log(date, from, to);
+    console.log(date, from?.string, to?.string);
+    this.dateRangePickerStart = from?.string;
+    this.dateRangePickerEnd = to?.string;
+  }
+
+  // console.log('openCalendar::::::', this.openCalendar());
+
+  createDateRangePicker(i, date?: any) {
     const presetDate = date && date.param3 ? date.param3.split(' - ') : [];
     const presetDateParm4 = date && date.param3 ? date.param4.split(' - ') : [];
 
@@ -243,7 +272,6 @@ export class Tab1Page implements OnInit {
     });
 
     picker.on('select', (date) => {
-      console.log('date::: date.detai:::', date.detail);
       this.allSearch().controls[i].get('param3').setValue(
         date.detail.start.toLocaleString().split(',')[0]
         // +date.detail.end.toLocaleString().split(',')[0]
@@ -257,6 +285,39 @@ export class Tab1Page implements OnInit {
       );
     });
     picker.on('show', () => {
+      let startDate = presetDate[0] ? new Date(presetDate[0]) : new Date();
+      console.log('startDate::::::', startDate);
+      let endDate = presetDate[1] ? new Date(presetDate[1]) : new Date();
+      if (startDate) {
+        startDate.setMonth(startDate.getMonth());
+        picker.setDateRange(startDate);
+      }
+    });
+
+    const picker2 = new easepick.create({
+      element: '#datepicker2' + i,
+      css: [
+        'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.css',
+      ],
+      zIndex: 99,
+      plugins: ['AmpPlugin', 'RangePlugin'],
+    });
+
+    picker2.on('select', (date) => {
+      console.log('date::: date.detai:::', date.detail);
+      this.allSearch().controls[i].get('param3').setValue(
+        date.detail.start.toLocaleString().split(',')[0]
+        // +date.detail.end.toLocaleString().split(',')[0]
+      );
+    });
+    picker2.on('select', (date) => {
+      console.log('date::: date:::', date);
+      this.allSearch().controls[i].get('param4').setValue(
+        // date.detail.start.toLocaleString().split(',')[0] + ' - '
+        date.detail.end.toLocaleString().split(',')[0]
+      );
+    });
+    picker2.on('show', () => {
       let startDate = presetDate[0] ? new Date(presetDate[0]) : new Date();
       console.log('startDate::::::', startDate);
       let endDate = presetDate[1] ? new Date(presetDate[1]) : new Date();
@@ -469,11 +530,17 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, data?: any) {
     // debugger
+    console.log('data::onParam2Change::::', data);
+    console.log('i::::onParam2Change::', i);
     // console.log('nnn', this.allSearch().controls[i].get('param2')?.value);
     const row = this.allSearch().controls[i] as FormGroup;
+    console.log(
+      'row.value.param2.toLowerCase() === BETWEEN.toLowerCase()::::::',
+      row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()
+    );
     if (row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()) {
       setTimeout(() => {
-        this.createDatePicker(i, data);
+        this.createDateRangePicker(i, data);
       }, 100);
     }
   }
@@ -495,6 +562,7 @@ export class Tab1Page implements OnInit {
 
   isDestinationNeeded(formControl) {
     const param1Obj = this.findParamById(formControl);
+    // console.log('param1Obj:::isDestinationNeeded:::', param1Obj);
     if (!param1Obj) return false;
     return (
       param1Obj.id === 'MODIFICATION_DATE' || 'SHOOTING_DATE' || 'CREATION_DATE'

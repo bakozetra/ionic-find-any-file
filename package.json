@@ -35,6 +35,8 @@
     "@ng-bootstrap/ng-bootstrap": "^12.1.2",
     "@popperjs/core": "^2.11.5",
     "angular2-uuid": "^1.1.1",
+    "ion2-calendar": "^3.5.0",
+    "ionic2-calendar": "^0.6.9",
     "popper.js": "^1.16.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",

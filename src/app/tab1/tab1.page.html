@@ -157,7 +157,7 @@
                       class="select-class"
                       formControlName="param2"
                       onselect=""
-                      (change)="onParam2Change(i)"
+                      (change)="onParam2Change(i, $event)"
                       [ngClass]="!allSearch().controls[i].get('param2')?.valid && submitted ? 'error' : ''"
                     >
                       <option
@@ -180,6 +180,9 @@
                       *ngIf="!isDateType(i) else dates"
                     >
                     </ion-input>
+                    <!-- 
+                      id="{{'datepicker' + i}}"
+                     -->
                     <ng-template #dates>
                       <ion-input
                         clearInput
@@ -187,9 +190,11 @@
                         formControlName="param3"
                         [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                         *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                        id="{{'datepicker' + i}}"
+                        (click)="this.openCalendar()"
                       >
+                        {{this.dateRangePickerStart}}
                       </ion-input>
+
                       <ion-input
                         clearInput
                         type="date"
@@ -214,8 +219,11 @@
                       formControlName="param4"
                       [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
                       *ngIf="isDestinationNeeded(i)"
+                      (click)="this.openCalendar()"
                     >
+                      {{this.dateRangePickerEnd}}
                     </ion-input>
+                    <div></div>
                   </ion-col>
                 </ion-row>
               </ion-grid>

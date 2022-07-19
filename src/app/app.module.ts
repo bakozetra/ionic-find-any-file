@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CalendarModule } from 'ion2-calendar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,11 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    CalendarModule.forRoot({
+      doneLabel: 'Save',
+      closeIcon: true,
+      clearLabel: 'Clear',
+    }),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

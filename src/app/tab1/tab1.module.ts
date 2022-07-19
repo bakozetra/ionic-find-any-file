@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { CalendarModule } from 'ion2-calendar';
+import { NgCalendarModule } from 'ionic2-calendar';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { MyCommonModule } from '../tooltip/tooltip.module';
 @NgModule({
@@ -18,6 +19,7 @@ import { MyCommonModule } from '../tooltip/tooltip.module';
     Tab1PageRoutingModule,
     DragDropModule,
     MyCommonModule,
+    CalendarModule,
   ],
   declarations: [Tab1Page],
 })
