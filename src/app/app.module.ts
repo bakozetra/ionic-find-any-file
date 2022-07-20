@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarModule } from 'ion2-calendar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { CalendarModule } from 'ion2-calendar';
       closeIcon: true,
       clearLabel: 'Clear',
     }),
+    NgxDaterangepickerMd.forRoot(),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

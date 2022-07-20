@@ -25,6 +25,7 @@ import {
   DayConfig,
   CalendarResult,
 } from 'ion2-calendar';
+import { Moment } from 'moment';
 
 declare var easepick: any;
 
@@ -237,6 +238,7 @@ export class Tab1Page implements OnInit {
     const options: CalendarModalOptions = {
       pickMode: 'range',
       title: 'Pick date between',
+      showYearPicker: true,
     };
 
     const myCalendar = await this.modalCtrl.create({
@@ -256,11 +258,23 @@ export class Tab1Page implements OnInit {
     this.dateRangePickerEnd = to?.string;
   }
 
-  // console.log('openCalendar::::::', this.openCalendar());
+  title = 'angular-ngx-daterangepicker-material-app';
+  test2 = '';
+  selected: {
+    startDate: Moment;
+    endDate: Moment;
+  };
+  test() {
+    console.log(this.selected?.endDate, 'selected');
+    const test1 = this.selected?.endDate;
+    const aa = new Date(test1 as any);
 
+    // console.log('test1::::::', );
+    console.log('aa::::::', aa);
+  }
   createDateRangePicker(i, date?: any) {
     const presetDate = date && date.param3 ? date.param3.split(' - ') : [];
-    const presetDateParm4 = date && date.param3 ? date.param4.split(' - ') : [];
+    // const presetDateParm4 = date && date.param3 ? date.param4.split(' - ') : [];
 
     const picker = new easepick.create({
       element: '#datepicker' + i,
@@ -271,61 +285,28 @@ export class Tab1Page implements OnInit {
       plugins: ['AmpPlugin', 'RangePlugin'],
     });
 
-    picker.on('select', (date) => {
-      this.allSearch().controls[i].get('param3').setValue(
-        date.detail.start.toLocaleString().split(',')[0]
-        // +date.detail.end.toLocaleString().split(',')[0]
-      );
-    });
-    picker.on('select', (date) => {
-      console.log('date::: date:::', date);
-      this.allSearch().controls[i].get('param4').setValue(
-        // date.detail.start.toLocaleString().split(',')[0] + ' - '
-        date.detail.end.toLocaleString().split(',')[0]
-      );
-    });
-    picker.on('show', () => {
-      let startDate = presetDate[0] ? new Date(presetDate[0]) : new Date();
-      console.log('startDate::::::', startDate);
-      let endDate = presetDate[1] ? new Date(presetDate[1]) : new Date();
-      if (startDate) {
-        startDate.setMonth(startDate.getMonth());
-        picker.setDateRange(startDate);
-      }
-    });
-
-    const picker2 = new easepick.create({
-      element: '#datepicker2' + i,
-      css: [
-        'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.css',
-      ],
-      zIndex: 99,
-      plugins: ['AmpPlugin', 'RangePlugin'],
-    });
-
-    picker2.on('select', (date) => {
-      console.log('date::: date.detai:::', date.detail);
-      this.allSearch().controls[i].get('param3').setValue(
-        date.detail.start.toLocaleString().split(',')[0]
-        // +date.detail.end.toLocaleString().split(',')[0]
-      );
-    });
-    picker2.on('select', (date) => {
-      console.log('date::: date:::', date);
-      this.allSearch().controls[i].get('param4').setValue(
-        // date.detail.start.toLocaleString().split(',')[0] + ' - '
-        date.detail.end.toLocaleString().split(',')[0]
-      );
-    });
-    picker2.on('show', () => {
-      let startDate = presetDate[0] ? new Date(presetDate[0]) : new Date();
-      console.log('startDate::::::', startDate);
-      let endDate = presetDate[1] ? new Date(presetDate[1]) : new Date();
-      if (startDate) {
-        startDate.setMonth(startDate.getMonth());
-        picker.setDateRange(startDate);
-      }
-    });
+    // picker.on('select', (date) => {
+    //   this.allSearch().controls[i].get('param3').setValue(
+    //     date.detail.start.toLocaleString().split(',')[0]
+    //     // +date.detail.end.toLocaleString().split(',')[0]
+    //   );
+    // });
+    // picker.on('select', (date) => {
+    //   console.log('date::: date:::', date);
+    //   this.allSearch().controls[i].get('param4').setValue(
+    //     // date.detail.start.toLocaleString().split(',')[0] + ' - '
+    //     date.detail.end.toLocaleString().split(',')[0]
+    //   );
+    // });
+    // picker.on('show', () => {
+    //   let startDate = presetDate[0] ? new Date(presetDate[0]) : new Date();
+    //   console.log('startDate::::::', startDate);
+    //   // let endDate = presetDate[1] ? new Date(presetDate[1]) : new Date();
+    //   if (startDate) {
+    //     startDate.setMonth(startDate.getMonth());
+    //     picker.setDateRange(startDate);
+    //   }
+    // });
   }
   get f() {
     return this.searchFilterForm.controls;
@@ -539,9 +520,9 @@ export class Tab1Page implements OnInit {
       row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()
     );
     if (row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()) {
-      setTimeout(() => {
-        this.createDateRangePicker(i, data);
-      }, 100);
+      // setTimeout(() => {
+      //   this.createDateRangePicker(i, data);
+      // }, 100);
     }
   }
 

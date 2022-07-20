@@ -9,6 +9,8 @@ import { CalendarModule } from 'ion2-calendar';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { MyCommonModule } from '../tooltip/tooltip.module';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+
 @NgModule({
   imports: [
     IonicModule,
@@ -20,6 +22,7 @@ import { MyCommonModule } from '../tooltip/tooltip.module';
     DragDropModule,
     MyCommonModule,
     CalendarModule,
+    NgxDaterangepickerMd.forRoot(),
   ],
   declarations: [Tab1Page],
 })

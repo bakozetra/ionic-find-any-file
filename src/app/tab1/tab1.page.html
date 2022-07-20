@@ -157,7 +157,7 @@
                       class="select-class"
                       formControlName="param2"
                       onselect=""
-                      (change)="onParam2Change(i, $event)"
+                      (change)="onParam2Change(i)"
                       [ngClass]="!allSearch().controls[i].get('param2')?.valid && submitted ? 'error' : ''"
                     >
                       <option
@@ -180,11 +180,8 @@
                       *ngIf="!isDateType(i) else dates"
                     >
                     </ion-input>
-                    <!-- 
-                      id="{{'datepicker' + i}}"
-                     -->
                     <ng-template #dates>
-                      <ion-input
+                      <!-- <ion-input
                         clearInput
                         class="input-box range"
                         formControlName="param3"
@@ -193,8 +190,35 @@
                         (click)="this.openCalendar()"
                       >
                         {{this.dateRangePickerStart}}
-                      </ion-input>
+                      </ion-input> -->
+                      <input
+                        formControlName="param3"
+                        class="input-box"
+                        [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
+                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
+                        ngxDaterangepickerMd
+                        [showCancel]="true"
+                        [(ngModel)]="selected"
+                        [showDropdowns]="true"
+                        value="{{
+                          selected?.startDate.format('MM-DD-YYYY')
+                           | json}}"
+                      />
 
+                      <!-- {
+                        format: 'MM/DD/YYYY', // could be 'YYYY-MM-DDTHH:mm:ss.SSSSZ'
+                        displayFormat: 'MM/DD/YYYY', // default is format value
+                        direction: 'ltr', // could be rtl
+                        weekLabel: 'W',
+                        separator: ' To ', // default is ' - '
+                        cancelLabel: 'Cancel', // detault is 'Cancel'
+                        applyLabel: 'Okay', // detault is 'Apply'
+                        clearLabel: 'Clear', // detault is 'Clear'
+                        customRangeLabel: 'Custom range',
+                        daysOfWeek: moment.weekdaysMin(),
+                        monthNames: moment.monthsShort(),
+                        firstDay: 1 // first day is monday
+                    } -->
                       <ion-input
                         clearInput
                         type="date"
@@ -206,7 +230,6 @@
                       </ion-input>
                     </ng-template>
                   </ion-col>
-                  <!-- MODIFICATION_DATE  -->
                   <ion-col
                     size-xs="12"
                     size-sm=""
@@ -219,7 +242,7 @@
                       formControlName="param4"
                       [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
                       *ngIf="isDestinationNeeded(i)"
-                      (click)="this.openCalendar()"
+                      value="{{selected?.endDate.format('MM-DD-YYYY').substring(1) | json}}"
                     >
                       {{this.dateRangePickerEnd}}
                     </ion-input>
