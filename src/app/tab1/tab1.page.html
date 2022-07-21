@@ -191,7 +191,7 @@
                       >
                         {{this.dateRangePickerStart}}
                       </ion-input> -->
-                      <input
+                      <!-- <input
                         formControlName="param3"
                         class="input-box"
                         [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
@@ -200,10 +200,42 @@
                         [showCancel]="true"
                         [(ngModel)]="selected"
                         [showDropdowns]="true"
+                        [customRangeDirection]="true"
                         value="{{
                           selected?.startDate.format('MM-DD-YYYY')
                            | json}}"
-                      />
+                      /> -->
+                      <ion-input
+                        clearInput
+                        class="input-box range"
+                        formControlName="param3"
+                        [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
+                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
+                        (click)="showPicker = !showPicker"
+                      >
+                        {{dateValue}}
+                        <!-- {{this.dateRangePickerStart}} -->
+                      </ion-input>
+                      <!-- <ion-toolbar> -->
+                      <!-- <ion-segment
+                        formControlName="selectMode"
+                        [(ngModel)]="selectMode"
+                        scrollable
+                      >
+                        <ion-segment-button
+                          [value]="mode"
+                          *ngFor="let mode of modes"
+                        >
+                          <ion-label>{{mode}}</ion-label>
+                        </ion-segment-button>
+                      </ion-segment> -->
+                      <!-- </ion-toolbar> -->
+                      <ion-datetime
+                        #datetime
+                        [presentation]="selectMode"
+                        *ngIf="showPicker"
+                        [value]="this.dateValue"
+                      ></ion-datetime>
 
                       <!-- {
                         format: 'MM/DD/YYYY', // could be 'YYYY-MM-DDTHH:mm:ss.SSSSZ'
@@ -230,6 +262,7 @@
                       </ion-input>
                     </ng-template>
                   </ion-col>
+
                   <ion-col
                     size-xs="12"
                     size-sm=""

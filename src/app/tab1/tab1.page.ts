@@ -26,6 +26,7 @@ import {
   CalendarResult,
 } from 'ion2-calendar';
 import { Moment } from 'moment';
+import { format, parseISO } from 'date-fns';
 
 declare var easepick: any;
 
@@ -214,7 +215,9 @@ export class Tab1Page implements OnInit {
     private modalService: NgbModal,
     private alertController: AlertController,
     public modalCtrl: ModalController
-  ) {}
+  ) {
+    this.setToday;
+  }
 
   ngOnInit() {
     this.initPriceForm();
@@ -223,16 +226,34 @@ export class Tab1Page implements OnInit {
     this.addSearch(initialFilterValue);
   }
 
-  dateRange: { from: string; to: string };
-  type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
-  optionsRange: CalendarComponentOptions = {
-    pickMode: 'range',
-  };
+  // Ionic date picker
+  modes = [
+    'date',
+    'date-time',
+    'month',
+    'month-year',
+    'time',
+    'time-date',
+    'year',
+  ];
+  selectMode = 'date';
+  showPicker = false;
+  dateValue = format(new Date(), 'yy-MM-dd') + 'T09:00:00.000Z';
+  formatedstring = '';
 
-  onClick(e) {
-    console.log('heloo', e);
+  datechanged(value: any) {
+    console.log('value::::::', value);
   }
 
+  setToday() {
+    this.formatedstring = format(
+      parseISO(format(new Date(), 'yy-MM-dd') + 'T09:00:00.000Z'),
+      'HH:mm, MMM d, yyyy'
+    );
+    console.log('formatedstring::::::', this.formatedstring);
+  }
+
+  //  ngx calender
   async openCalendar() {
     console.log('openCalendar::::::');
     const options: CalendarModalOptions = {
@@ -264,14 +285,7 @@ export class Tab1Page implements OnInit {
     startDate: Moment;
     endDate: Moment;
   };
-  test() {
-    console.log(this.selected?.endDate, 'selected');
-    const test1 = this.selected?.endDate;
-    const aa = new Date(test1 as any);
-
-    // console.log('test1::::::', );
-    console.log('aa::::::', aa);
-  }
+  // easipick calender
   createDateRangePicker(i, date?: any) {
     const presetDate = date && date.param3 ? date.param3.split(' - ') : [];
     // const presetDateParm4 = date && date.param3 ? date.param4.split(' - ') : [];
