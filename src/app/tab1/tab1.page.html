@@ -152,7 +152,6 @@
                     </select>
                   </ion-col>
                   <ion-col size-lg="3" size-md="4" size-sm="3" size-xl="2">
-                    <!-- [attr.disabled]="isParam2Select? '':null" -->
                     <select
                       class="select-class"
                       formControlName="param2"
@@ -181,30 +180,6 @@
                     >
                     </ion-input>
                     <ng-template #dates>
-                      <!-- <ion-input
-                        clearInput
-                        class="input-box range"
-                        formControlName="param3"
-                        [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
-                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                        (click)="this.openCalendar()"
-                      >
-                        {{this.dateRangePickerStart}}
-                      </ion-input> -->
-                      <!-- <input
-                        formControlName="param3"
-                        class="input-box"
-                        [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
-                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                        ngxDaterangepickerMd
-                        [showCancel]="true"
-                        [(ngModel)]="selected"
-                        [showDropdowns]="true"
-                        [customRangeDirection]="true"
-                        value="{{
-                          selected?.startDate.format('MM-DD-YYYY')
-                           | json}}"
-                      /> -->
                       <ion-input
                         clearInput
                         class="input-box range"
@@ -215,23 +190,7 @@
                         *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                         (click)="this.datePickerInputOnClick('start',i)"
                       >
-                        <!-- {{formatedstringStart}} -->
-                        <!-- {{this.dateRangePickerStart}} -->
                       </ion-input>
-                      <!-- <ion-toolbar> -->
-                      <!-- <ion-segment
-                        formControlName="selectMode"
-                        [(ngModel)]="selectMode"
-                        scrollable
-                      >
-                        <ion-segment-button
-                          [value]="mode"
-                          *ngFor="let mode of modes"
-                        >
-                          <ion-label>{{mode}}</ion-label>
-                        </ion-segment-button>
-                      </ion-segment> -->
-                      <!-- </ion-toolbar> -->
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
@@ -241,8 +200,9 @@
                         formControlName="param3"
                         (ionChange)="this.dateChanged( 'start',datetime.value,i)"
                         showDefaultButtons="true"
+                        (ionCancel)="this.datePickersInfo[i].start.open = false"
                       ></ion-datetime>
-                      <!--  (ionCancel)="showPicker = false" -->
+
                       <ion-input
                         clearInput
                         type="date"
@@ -261,9 +221,6 @@
                     class="input"
                     *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                   >
-                    <!-- 
-                      value="{{selected?.endDate.format('MM-DD-YYYY').substring(1) | json}}"
-                   -->
                     <ion-datetime
                       #datetime
                       [presentation]="selectMode"
@@ -273,12 +230,9 @@
                       class="ion-datetime-end"
                       (ionChange)="this.dateChanged('end',datetime.value , i)"
                       showDefaultButtons="true"
-                      (ionCancel)="showPickerEnd = false"
+                      (ionCancel)="this.datePickersInfo[i].start.open = false"
                     ></ion-datetime>
-                    <!-- 
-                      [min]="this.formatedstringEnd == ''? this.dateValue : this.formatedstringStart"
 
-                     -->
                     <ion-input
                       clearInput
                       class="input-box range"
@@ -289,7 +243,6 @@
                       *ngIf="isDestinationNeeded(i)"
                       (click)="this.datePickerInputOnClick('end',i)"
                     >
-                      <!-- {{this.dateRangePickerEnd}} -->
                     </ion-input>
                     <div></div>
                   </ion-col>
@@ -309,7 +262,6 @@
               </ion-col>
             </ion-row>
           </ion-item>
-
           <ion-item lines="none">
             <ion-row class="save-row ion-align-items-center">
               <ion-col size-xs="3" size-sm="2" class="modi-btn"> </ion-col>

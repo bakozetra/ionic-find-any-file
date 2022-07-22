@@ -227,17 +227,8 @@ export class Tab1Page implements OnInit {
   @ViewChild(IonDatetime) datetime: IonDatetime;
 
   // Ionic date picker
-  modes = [
-    'date',
-    'date-time',
-    'month',
-    'month-year',
-    'time',
-    'time-date',
-    'year',
-  ];
-  selectMode = 'date';
 
+  selectMode = 'date';
   datePickersInfo = {
     '0': { start: { open: false, value: '' }, end: { open: false, value: '' } },
   };
@@ -246,7 +237,6 @@ export class Tab1Page implements OnInit {
   formatedstringEnd = '';
 
   formatDateToDisplay(date) {
-    // console.log('date::::::', date);
     if (!date) {
       return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
     }
@@ -254,28 +244,16 @@ export class Tab1Page implements OnInit {
   }
 
   datePickerInputOnClick(limitName, i) {
-    console.log('i:::datePickerInputOnClick:::', i);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
-    console.log(
-      'this.datePickersInfo[i][limitName].open::::::',
-      this.datePickersInfo[i][limitName].open
-    );
-
-    console.log(
-      'this.showPicker[i].start ::::datePickerInputOnClick::',
-      this.datePickersInfo[i].start
-    );
-    console.log('this.datePickersInfo[i]::::::', this.datePickersInfo[i]);
+  }
+  datePickerInputClose(limitName, i) {
+    this.datePickersInfo[i][limitName].open =
+      this.datePickersInfo[i][limitName].open;
   }
 
   dateChanged(limitName, value, i) {
     this.datePickersInfo[i][limitName].open = false;
-    console.log(
-      'this.showPicker[i].start::::::',
-      this.datePickersInfo[i].start
-    );
-    console.log('value::::::', value);
     this.datePickersInfo[i][limitName].value = value;
   }
 
@@ -567,7 +545,6 @@ export class Tab1Page implements OnInit {
     // debugger
     console.log('data::onParam2Change::::', data);
     console.log('i::::onParam2Change::', i);
-    // console.log('nnn', this.allSearch().controls[i].get('param2')?.value);
     const row = this.allSearch().controls[i] as FormGroup;
     console.log(
       'row.value.param2.toLowerCase() === BETWEEN.toLowerCase()::::::',
@@ -597,7 +574,6 @@ export class Tab1Page implements OnInit {
 
   isDestinationNeeded(formControl) {
     const param1Obj = this.findParamById(formControl);
-    // console.log('param1Obj:::isDestinationNeeded:::', param1Obj);
     if (!param1Obj) return false;
     return (
       param1Obj.id === 'MODIFICATION_DATE' || 'SHOOTING_DATE' || 'CREATION_DATE'
