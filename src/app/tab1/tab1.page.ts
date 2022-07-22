@@ -240,9 +240,8 @@ export class Tab1Page implements OnInit {
   ];
   selectMode = 'date';
 
-  showPicker = {
-    '0': { start: false, end: false },
-    '1': { start: false, end: false },
+  datePickersInfo = {
+    '0': { start: { open: false, value: '' }, end: { open: false, value: '' } },
   };
   showPickerEnd = false;
   dateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
@@ -269,20 +268,24 @@ export class Tab1Page implements OnInit {
 
   datePickerInputOnClick(i) {
     console.log('i:::datePickerInputOnClick:::', i);
-    this.showPicker[i].start = !this.showPicker[i].start;
+    this.datePickersInfo[i].start.open = !this.datePickersInfo[i].start.open;
 
     console.log(
       'this.showPicker[i].start ::::datePickerInputOnClick::',
-      this.showPicker[i].start
+      this.datePickersInfo[i].start
     );
   }
 
   dateChangedStart(value, i) {
-    this.showPicker[i].start = false;
-    console.log('this.showPicker[i].start::::::', this.showPicker[i].start);
+    this.datePickersInfo[i].start.open = false;
+    console.log(
+      'this.showPicker[i].start::::::',
+      this.datePickersInfo[i].start
+    );
     // if (!this.datetime) return;
     console.log('value::::::', value);
-    this.dateValue = value;
+    this.datePickersInfo[i].start.value = value;
+
     console.log('this.dateValue::::::', this.dateValue);
     this.formatedstringStart = format(parseISO(value), 'HH:mm, MMM d, yyyy');
     console.log('formatedstringStart::::::', this.formatedstringStart);
@@ -371,7 +374,10 @@ export class Tab1Page implements OnInit {
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
-    this.showPicker[rowIndex + 1] = { start: false, end: false };
+    this.datePickersInfo[rowIndex + 1] = {
+      start: { open: false, value: '' },
+      end: { open: false, value: '' },
+    };
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);

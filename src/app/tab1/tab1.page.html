@@ -213,7 +213,8 @@
                         *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                         (click)="this.datePickerInputOnClick(i)"
                       >
-                        {{formatedstringStart}}
+                        {{datePickersInfo?.[i]?.start?.value}}
+                        <!-- {{formatedstringStart}} -->
                         <!-- {{this.dateRangePickerStart}} -->
                       </ion-input>
                       <!-- <ion-toolbar> -->
@@ -233,8 +234,8 @@
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
-                        *ngIf="showPicker?.[i]?.start"
-                        [value]="dateValue"
+                        *ngIf="datePickersInfo?.[i]?.start?.open"
+                        [value]="datePickersInfo?.[i]?.start?.value"
                         class="ion-datetime-start"
                         formControlName="param3"
                         (ionChange)="this.dateChangedStart(datetime.value,i)"
