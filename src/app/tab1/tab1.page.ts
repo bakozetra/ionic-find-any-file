@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewEncapsulation,
   ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core';
 import {
   FormArray,
@@ -16,7 +17,7 @@ import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonDatetime, ModalController } from '@ionic/angular';
 import { areFiltersEqual } from '../utils';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import {
@@ -225,6 +226,7 @@ export class Tab1Page implements OnInit {
     this.onPreselectDDLChange(1);
     this.addSearch(initialFilterValue);
   }
+  @ViewChild(IonDatetime) datetime: IonDatetime;
 
   // Ionic date picker
   modes = [
@@ -238,19 +240,41 @@ export class Tab1Page implements OnInit {
   ];
   selectMode = 'date';
   showPicker = false;
-  dateValue = format(new Date(), 'yy-MM-dd') + 'T09:00:00.000Z';
-  formatedstring = '';
+  showPickerEnd = false;
+  dateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
+  dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
+  formatedstringStart = '';
+  formatedstringEnd = '';
 
   datechanged(value: any) {
     console.log('value::::::', value);
   }
 
   setToday() {
-    this.formatedstring = format(
-      parseISO(format(new Date(), 'yy-MM-dd') + 'T09:00:00.000Z'),
+    this.formatedstringStart = format(
+      parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'),
       'HH:mm, MMM d, yyyy'
     );
-    console.log('formatedstring::::::', this.formatedstring);
+    this.formatedstringEnd = format(
+      parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'),
+      'HH:mm, MMM d, yyyy'
+    );
+    this.dateValue;
+    // console.log('formatedstring::::::', this.formatedstring);
+  }
+
+  async dateChangedStart(value) {
+    // if (!this.datetime) return;
+    console.log('value::::::', value);
+    this.dateValue = value;
+    this.formatedstringStart = format(parseISO(value), 'HH:mm, MMM d, yyyy');
+    this.showPicker = false;
+  }
+  async dateChangedEnd(value) {
+    console.log('value::::::', value);
+    this.dateValueEnd = value;
+    this.formatedstringEnd = format(parseISO(value), 'HH:mm, MMM d, yyyy');
+    this.showPickerEnd = false;
   }
 
   //  ngx calender
