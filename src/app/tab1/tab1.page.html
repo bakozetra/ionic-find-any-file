@@ -211,7 +211,7 @@
                         formControlName="param3"
                         [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                         *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                        (click)="showPicker = !showPicker"
+                        (click)="this.datePickerInputOnClick(i)"
                       >
                         {{formatedstringStart}}
                         <!-- {{this.dateRangePickerStart}} -->
@@ -233,25 +233,14 @@
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
-                        *ngIf="showPicker"
+                        *ngIf="showPicker?.[i]?.start"
                         [value]="dateValue"
                         class="ion-datetime-start"
-                        (ionChange)="this.dateChangedStart(datetime.value)"
+                        formControlName="param3"
+                        (ionChange)="this.dateChangedStart(datetime.value,i)"
                         showDefaultButtons="true"
-                        (ionCancel)="showPicker = false"
-                        [max]="this.formatedstringStart == ''? this.dateValue : this.formatedstringEnd"
                       ></ion-datetime>
-                      <ion-datetime
-                        #datetime
-                        [presentation]="selectMode"
-                        *ngIf="showPickerEnd"
-                        [value]="dateValue"
-                        class="ion-datetime-end"
-                        (ionChange)="this.dateChangedEnd(datetime.value)"
-                        showDefaultButtons="true"
-                        (ionCancel)="showPickerEnd = false"
-                        [min]="this.formatedstringEnd == ''? this.dateValue : this.formatedstringStart"
-                      ></ion-datetime>
+                      <!--  (ionCancel)="showPicker = false" -->
                       <ion-input
                         clearInput
                         type="date"
@@ -273,6 +262,21 @@
                     <!-- 
                       value="{{selected?.endDate.format('MM-DD-YYYY').substring(1) | json}}"
                    -->
+                    <ion-datetime
+                      #datetime
+                      [presentation]="selectMode"
+                      *ngIf="showPickerEnd"
+                      [value]="dateValue"
+                      formControlName="param4"
+                      class="ion-datetime-end"
+                      (ionChange)="this.dateChangedEnd(datetime.value)"
+                      showDefaultButtons="true"
+                      (ionCancel)="showPickerEnd = false"
+                    ></ion-datetime>
+                    <!-- 
+                      [min]="this.formatedstringEnd == ''? this.dateValue : this.formatedstringStart"
+
+                     -->
                     <ion-input
                       clearInput
                       class="input-box range"

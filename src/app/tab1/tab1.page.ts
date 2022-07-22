@@ -239,7 +239,11 @@ export class Tab1Page implements OnInit {
     'year',
   ];
   selectMode = 'date';
-  showPicker = false;
+
+  showPicker = {
+    '0': { start: false, end: false },
+    '1': { start: false, end: false },
+  };
   showPickerEnd = false;
   dateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
@@ -259,21 +263,36 @@ export class Tab1Page implements OnInit {
       parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'),
       'HH:mm, MMM d, yyyy'
     );
-    this.dateValue;
+
     // console.log('formatedstring::::::', this.formatedstring);
   }
 
-  async dateChangedStart(value) {
+  datePickerInputOnClick(i) {
+    console.log('i:::datePickerInputOnClick:::', i);
+    this.showPicker[i].start = !this.showPicker[i].start;
+
+    console.log(
+      'this.showPicker[i].start ::::datePickerInputOnClick::',
+      this.showPicker[i].start
+    );
+  }
+
+  dateChangedStart(value, i) {
+    this.showPicker[i].start = false;
+    console.log('this.showPicker[i].start::::::', this.showPicker[i].start);
     // if (!this.datetime) return;
     console.log('value::::::', value);
     this.dateValue = value;
+    console.log('this.dateValue::::::', this.dateValue);
     this.formatedstringStart = format(parseISO(value), 'HH:mm, MMM d, yyyy');
-    this.showPicker = false;
+    console.log('formatedstringStart::::::', this.formatedstringStart);
+    // this.showPicker = false;
   }
-  async dateChangedEnd(value) {
+  dateChangedEnd(value) {
     console.log('value::::::', value);
     this.dateValueEnd = value;
     this.formatedstringEnd = format(parseISO(value), 'HH:mm, MMM d, yyyy');
+    console.log('this.formatedstringEnd::::::', this.formatedstringEnd);
     this.showPickerEnd = false;
   }
 
@@ -352,6 +371,7 @@ export class Tab1Page implements OnInit {
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
+    this.showPicker[rowIndex + 1] = { start: false, end: false };
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -498,6 +518,7 @@ export class Tab1Page implements OnInit {
   }
 
   newEvent(item?): FormGroup {
+    console.log('item::::::', item);
     return this.fb.group({
       param1: [item?.param1, [Validators.required]],
       param2: [
@@ -505,10 +526,18 @@ export class Tab1Page implements OnInit {
         [Validators.required],
       ],
       param3: [
-        { value: item?.param3, disabled: item?.param3 ? false : true },
+        {
+          value: item?.param3,
+          disabled: item?.param3 ? false : true,
+        },
         [Validators.required],
       ],
-      param4: [{ value: item?.param4, disabled: item?.param4 ? false : true }],
+      param4: [
+        {
+          value: item?.param4,
+          disabled: item?.param4 ? false : true,
+        },
+      ],
     });
   }
 
@@ -517,6 +546,7 @@ export class Tab1Page implements OnInit {
   }
 
   addSearch(item: any) {
+    console.log('item::::addSearch::', item);
     this.allSearch().push(this.newEvent(item));
   }
 
@@ -592,6 +622,7 @@ export class Tab1Page implements OnInit {
     let param1DurationObj =
       this.searchFilterForm.value.search[0].param1 === 'DURATION';
     if (param1DurationObj) {
+      console.log('param1DurationObj::::::', param1DurationObj);
       let value = event.target.value;
       if (value.length === 1 && parseInt(value) != NaN) {
         this.allSearch()
@@ -679,6 +710,7 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
+
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
