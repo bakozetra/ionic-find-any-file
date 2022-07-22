@@ -216,9 +216,7 @@ export class Tab1Page implements OnInit {
     private modalService: NgbModal,
     private alertController: AlertController,
     public modalCtrl: ModalController
-  ) {
-    this.setToday;
-  }
+  ) {}
 
   ngOnInit() {
     this.initPriceForm();
@@ -244,59 +242,41 @@ export class Tab1Page implements OnInit {
     '0': { start: { open: false, value: '' }, end: { open: false, value: '' } },
   };
   showPickerEnd = false;
-  dateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
-  formatedstringStart = '';
   formatedstringEnd = '';
 
-  datechanged(value: any) {
-    console.log('value::::::', value);
+  formatDateToDisplay(date) {
+    // console.log('date::::::', date);
+    if (!date) {
+      return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
+    }
+    return format(parseISO(date), 'yyyy-MM-dd');
   }
 
-  setToday() {
-    this.formatedstringStart = format(
-      parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'),
-      'HH:mm, MMM d, yyyy'
-    );
-    this.formatedstringEnd = format(
-      parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'),
-      'HH:mm, MMM d, yyyy'
-    );
-
-    // console.log('formatedstring::::::', this.formatedstring);
-  }
-
-  datePickerInputOnClick(i) {
+  datePickerInputOnClick(limitName, i) {
     console.log('i:::datePickerInputOnClick:::', i);
-    this.datePickersInfo[i].start.open = !this.datePickersInfo[i].start.open;
+    this.datePickersInfo[i][limitName].open =
+      !this.datePickersInfo[i][limitName].open;
+    console.log(
+      'this.datePickersInfo[i][limitName].open::::::',
+      this.datePickersInfo[i][limitName].open
+    );
 
     console.log(
       'this.showPicker[i].start ::::datePickerInputOnClick::',
       this.datePickersInfo[i].start
     );
+    console.log('this.datePickersInfo[i]::::::', this.datePickersInfo[i]);
   }
 
-  dateChangedStart(value, i) {
-    this.datePickersInfo[i].start.open = false;
+  dateChanged(limitName, value, i) {
+    this.datePickersInfo[i][limitName].open = false;
     console.log(
       'this.showPicker[i].start::::::',
       this.datePickersInfo[i].start
     );
-    // if (!this.datetime) return;
     console.log('value::::::', value);
-    this.datePickersInfo[i].start.value = value;
-
-    console.log('this.dateValue::::::', this.dateValue);
-    this.formatedstringStart = format(parseISO(value), 'HH:mm, MMM d, yyyy');
-    console.log('formatedstringStart::::::', this.formatedstringStart);
-    // this.showPicker = false;
-  }
-  dateChangedEnd(value) {
-    console.log('value::::::', value);
-    this.dateValueEnd = value;
-    this.formatedstringEnd = format(parseISO(value), 'HH:mm, MMM d, yyyy');
-    console.log('this.formatedstringEnd::::::', this.formatedstringEnd);
-    this.showPickerEnd = false;
+    this.datePickersInfo[i][limitName].value = value;
   }
 
   //  ngx calender
@@ -698,6 +678,7 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
+        console.log('finalData::::::', finalData);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
@@ -716,7 +697,7 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-
+        console.log('finalData:::else:::', finalData);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
