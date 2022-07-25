@@ -201,7 +201,10 @@
                         (ionChange)="this.dateChanged( 'start',datetime.value,i)"
                         showDefaultButtons="true"
                         (ionCancel)="this.datePickersInfo[i].start.open = false"
-                      ></ion-datetime>
+                        [max]="formatDateToDisplayStart(datePickersInfo?.[i]?.end?.value)"
+                      >
+                        <span slot="title">Select a start date</span>
+                      </ion-datetime>
 
                       <ion-input
                         clearInput
@@ -230,8 +233,11 @@
                       class="ion-datetime-end"
                       (ionChange)="this.dateChanged('end',datetime.value , i)"
                       showDefaultButtons="true"
-                      (ionCancel)="this.datePickersInfo[i].start.open = false"
-                    ></ion-datetime>
+                      (ionCancel)="this.datePickersInfo[i].end.open = false"
+                      [min]="formatDateToDisplayEnd(datePickersInfo?.[i]?.start?.value)"
+                    >
+                      <span slot="title">Select an end date</span>
+                    </ion-datetime>
 
                     <ion-input
                       clearInput

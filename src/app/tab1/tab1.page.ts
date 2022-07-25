@@ -19,7 +19,6 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import { AlertController, IonDatetime, ModalController } from '@ionic/angular';
 import { areFiltersEqual } from '../utils';
-import { CalendarComponentOptions } from 'ion2-calendar';
 import {
   CalendarModal,
   CalendarModalOptions,
@@ -27,7 +26,7 @@ import {
   CalendarResult,
 } from 'ion2-calendar';
 import { Moment } from 'moment';
-import { format, parseISO } from 'date-fns';
+import { format, formatDistance, parseISO } from 'date-fns';
 
 declare var easepick: any;
 
@@ -235,10 +234,29 @@ export class Tab1Page implements OnInit {
   showPickerEnd = false;
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
   formatedstringEnd = '';
-
+  test = '';
+  result = formatDistance(new Date(2014, 6, 2), new Date());
   formatDateToDisplay(date) {
     if (!date) {
       return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
+    }
+    return format(parseISO(date), 'yyyy-MM-dd');
+  }
+  formatDateToDisplayStart(date) {
+    if (date === '') {
+      return format(
+        parseISO(format(new Date(3000, 8, 5), 'yyyy-MM-dd')),
+        'yyyy-MM-dd'
+      );
+    }
+    return format(parseISO(date), 'yyyy-MM-dd');
+  }
+  formatDateToDisplayEnd(date) {
+    if (date === '') {
+      return format(
+        parseISO(format(new Date(2000, 6, 2), 'yyyy-MM-dd')),
+        'yyyy-MM-dd'
+      );
     }
     return format(parseISO(date), 'yyyy-MM-dd');
   }
