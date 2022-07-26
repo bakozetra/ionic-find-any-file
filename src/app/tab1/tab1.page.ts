@@ -19,7 +19,6 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import { AlertController, IonDatetime, ModalController } from '@ionic/angular';
 import { areFiltersEqual } from '../utils';
-import { CalendarComponentOptions } from 'ion2-calendar';
 import {
   CalendarModal,
   CalendarModalOptions,
@@ -27,7 +26,7 @@ import {
   CalendarResult,
 } from 'ion2-calendar';
 import { Moment } from 'moment';
-import { format, parseISO } from 'date-fns';
+import { format, formatDistance, parseISO } from 'date-fns';
 
 declare var easepick: any;
 
@@ -216,9 +215,7 @@ export class Tab1Page implements OnInit {
     private modalService: NgbModal,
     private alertController: AlertController,
     public modalCtrl: ModalController
-  ) {
-    this.setToday;
-  }
+  ) {}
 
   ngOnInit() {
     this.initPriceForm();
@@ -229,52 +226,53 @@ export class Tab1Page implements OnInit {
   @ViewChild(IonDatetime) datetime: IonDatetime;
 
   // Ionic date picker
-  modes = [
-    'date',
-    'date-time',
-    'month',
-    'month-year',
-    'time',
-    'time-date',
-    'year',
-  ];
+
   selectMode = 'date';
-  showPicker = false;
+  datePickersInfo = {
+    '0': { start: { open: false, value: '' }, end: { open: false, value: '' } },
+  };
   showPickerEnd = false;
-  dateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
-  formatedstringStart = '';
   formatedstringEnd = '';
-
-  datechanged(value: any) {
-    console.log('value::::::', value);
+  test = '';
+  result = formatDistance(new Date(2014, 6, 2), new Date());
+  formatDateToDisplay(date) {
+    if (!date) {
+      return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
+    }
+    return format(parseISO(date), 'yyyy-MM-dd');
+  }
+  formatDateToDisplayStart(date) {
+    if (date === '') {
+      return format(
+        parseISO(format(new Date(3000, 8, 5), 'yyyy-MM-dd')),
+        'yyyy-MM-dd'
+      );
+    }
+    return format(parseISO(date), 'yyyy-MM-dd');
+  }
+  formatDateToDisplayEnd(date) {
+    if (date === '') {
+      return format(
+        parseISO(format(new Date(2000, 6, 2), 'yyyy-MM-dd')),
+        'yyyy-MM-dd'
+      );
+    }
+    return format(parseISO(date), 'yyyy-MM-dd');
   }
 
-  setToday() {
-    this.formatedstringStart = format(
-      parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'),
-      'HH:mm, MMM d, yyyy'
-    );
-    this.formatedstringEnd = format(
-      parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'),
-      'HH:mm, MMM d, yyyy'
-    );
-    this.dateValue;
-    // console.log('formatedstring::::::', this.formatedstring);
+  datePickerInputOnClick(limitName, i) {
+    this.datePickersInfo[i][limitName].open =
+      !this.datePickersInfo[i][limitName].open;
+  }
+  datePickerInputClose(limitName, i) {
+    this.datePickersInfo[i][limitName].open =
+      this.datePickersInfo[i][limitName].open;
   }
 
-  async dateChangedStart(value) {
-    // if (!this.datetime) return;
-    console.log('value::::::', value);
-    this.dateValue = value;
-    this.formatedstringStart = format(parseISO(value), 'HH:mm, MMM d, yyyy');
-    this.showPicker = false;
-  }
-  async dateChangedEnd(value) {
-    console.log('value::::::', value);
-    this.dateValueEnd = value;
-    this.formatedstringEnd = format(parseISO(value), 'HH:mm, MMM d, yyyy');
-    this.showPickerEnd = false;
+  dateChanged(limitName, value, i) {
+    this.datePickersInfo[i][limitName].open = false;
+    this.datePickersInfo[i][limitName].value = value;
   }
 
   //  ngx calender
@@ -352,6 +350,10 @@ export class Tab1Page implements OnInit {
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
+    this.datePickersInfo[rowIndex + 1] = {
+      start: { open: false, value: '' },
+      end: { open: false, value: '' },
+    };
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -498,6 +500,7 @@ export class Tab1Page implements OnInit {
   }
 
   newEvent(item?): FormGroup {
+    console.log('item::::::', item);
     return this.fb.group({
       param1: [item?.param1, [Validators.required]],
       param2: [
@@ -505,10 +508,18 @@ export class Tab1Page implements OnInit {
         [Validators.required],
       ],
       param3: [
-        { value: item?.param3, disabled: item?.param3 ? false : true },
+        {
+          value: item?.param3,
+          disabled: item?.param3 ? false : true,
+        },
         [Validators.required],
       ],
-      param4: [{ value: item?.param4, disabled: item?.param4 ? false : true }],
+      param4: [
+        {
+          value: item?.param4,
+          disabled: item?.param4 ? false : true,
+        },
+      ],
     });
   }
 
@@ -517,6 +528,7 @@ export class Tab1Page implements OnInit {
   }
 
   addSearch(item: any) {
+    console.log('item::::addSearch::', item);
     this.allSearch().push(this.newEvent(item));
   }
 
@@ -551,7 +563,6 @@ export class Tab1Page implements OnInit {
     // debugger
     console.log('data::onParam2Change::::', data);
     console.log('i::::onParam2Change::', i);
-    // console.log('nnn', this.allSearch().controls[i].get('param2')?.value);
     const row = this.allSearch().controls[i] as FormGroup;
     console.log(
       'row.value.param2.toLowerCase() === BETWEEN.toLowerCase()::::::',
@@ -581,7 +592,6 @@ export class Tab1Page implements OnInit {
 
   isDestinationNeeded(formControl) {
     const param1Obj = this.findParamById(formControl);
-    // console.log('param1Obj:::isDestinationNeeded:::', param1Obj);
     if (!param1Obj) return false;
     return (
       param1Obj.id === 'MODIFICATION_DATE' || 'SHOOTING_DATE' || 'CREATION_DATE'
@@ -592,6 +602,7 @@ export class Tab1Page implements OnInit {
     let param1DurationObj =
       this.searchFilterForm.value.search[0].param1 === 'DURATION';
     if (param1DurationObj) {
+      console.log('param1DurationObj::::::', param1DurationObj);
       let value = event.target.value;
       if (value.length === 1 && parseInt(value) != NaN) {
         this.allSearch()
@@ -661,6 +672,7 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
+        console.log('finalData::::::', finalData);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
@@ -679,6 +691,7 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
+        console.log('finalData:::else:::', finalData);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
