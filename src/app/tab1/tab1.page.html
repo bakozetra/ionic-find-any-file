@@ -201,7 +201,6 @@
                         (ionChange)="this.dateChanged( 'start',datetime.value,i)"
                         showDefaultButtons="true"
                         (ionCancel)="this.datePickersInfo[i].start.open = false"
-                        [max]="formatDateToDisplayStart(datePickersInfo?.[i]?.end?.value)"
                       >
                         <span slot="title">Select a start date</span>
                       </ion-datetime>
