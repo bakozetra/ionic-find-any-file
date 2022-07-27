@@ -26,7 +26,18 @@ import {
   CalendarResult,
 } from 'ion2-calendar';
 import { Moment } from 'moment';
-import { format, formatDistance, parseISO } from 'date-fns';
+import {
+  format,
+  formatDistance,
+  parseISO,
+  setDate,
+  getDay,
+  isEqual,
+  getDate,
+  getYear,
+  getMonth,
+  isBefore,
+} from 'date-fns';
 
 declare var easepick: any;
 
@@ -234,7 +245,6 @@ export class Tab1Page implements OnInit {
   showPickerEnd = false;
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
   formatedstringEnd = '';
-  test = '';
   result = formatDistance(new Date(2014, 6, 2), new Date());
   formatDateToDisplay(date) {
     if (!date) {
@@ -261,7 +271,8 @@ export class Tab1Page implements OnInit {
     return format(parseISO(date), 'yyyy-MM-dd');
   }
 
-  datePickerInputOnClick(limitName, i) {
+  datePickerInputOnClick(limitName, i, event) {
+    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
   }
@@ -270,9 +281,73 @@ export class Tab1Page implements OnInit {
       this.datePickersInfo[i][limitName].open;
   }
 
-  dateChanged(limitName, value, i) {
+  dateChanged(limitName, value, i, startDateValue?: any) {
+    // console.log('startDateValue::::::', startDateValue);
+    console.log('limitName::::::', limitName, value);
+    // let dateValue;
+    // let monthStart;
+    // let monthEnd;
+    // let dayStart;
+    // let dayEnd;
+    // let yearStart;
+    // let yearEnd;
+    // let isStartAfterEndDate;
+
+    if (limitName === 'start') {
+      const startDateFormated = new Date(value);
+      console.log('startDateFormated::::::', startDateFormated);
+      const endDateFormated = new Date(this.datePickersInfo[i].end.value);
+      console.log('endDateFormated::::::', endDateFormated);
+      let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
+      console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
+      // dateValue = new Date(value);
+      // monthStart = dateValue.getMonth() + 1;
+      // dayStart = dateValue?.getDate();
+      // yearStart = dateValue?.getFullYear();
+      // console.log('dateValue::::::', dateValue);
+      if (isStartAfterEndDate) {
+        this.datePickersInfo[i].end.value = '';
+        console.log('kkk');
+        const clearEndDate = document.querySelector('#date-range-input');
+
+        console.log('clearEndDate::::::', clearEndDate);
+      }
+    }
+
+    if (limitName === 'end') {
+      // dateValue = new Date(value);
+      // monthEnd = dateValue?.getMonth() + 1;
+      // dayEnd = dateValue?.getDate();
+      // yearEnd = dateValue?.getFullYear();
+      // console.log('dateValue::::::', dateValue);
+      // currentValue = new Date(startDateValue.detail.value);
+      // console.log('currentValue::::::', currentValue);
+    }
+
+    // console.log('dateValue::::::', dateValue);
     this.datePickersInfo[i][limitName].open = false;
     this.datePickersInfo[i][limitName].value = value;
+    // if (isStartAfterEndDate) {
+    //   this.datePickersInfo[i].end.value = '';
+    //       }
+    // date-range-input
+    // if (dateValue !== undefined) {
+    //   var result = getMonth(dateValue);
+    //   console.log('result::::::', result);
+    //   console.log('yearStart::::::', yearStart);
+    //   console.log('monthEnd::::::', monthEnd);
+    //   console.log('dayStart::::::', dayStart);
+    //   const test3 = new Date(value);
+    //   console.log('test3::::::', test3);
+    //   console.log('new Date()::::::', new Date());
+    //   const d1 = test3.getDate();
+    //   console.log(d1, 'ddjdjdj'); // 👉️ 16
+    // }
+    // if (dayStart > currentValue.getDate()) {
+    //   console.log('heloo');
+    // } else {
+    //   console.log('everything is okay');
+    // }
   }
 
   //  ngx calender
@@ -302,7 +377,6 @@ export class Tab1Page implements OnInit {
   }
 
   title = 'angular-ngx-daterangepicker-material-app';
-  test2 = '';
   selected: {
     startDate: Moment;
     endDate: Moment;

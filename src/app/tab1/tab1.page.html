@@ -76,7 +76,7 @@
                   Delete Preset
                 </li>
                 <li class="dropdown-item" (click)="clearFilter()">
-                  Clear Presets
+                  Clear Preset
                 </li>
               </ul>
             </div>
@@ -188,7 +188,7 @@
                         "
                         [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                         *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                        (click)="this.datePickerInputOnClick('start',i)"
+                        (click)="this.datePickerInputOnClick('start',i, $event)"
                       >
                       </ion-input>
                       <ion-datetime
@@ -198,7 +198,7 @@
                         [value]="formatDateToDisplay(datePickersInfo?.[i]?.start?.value)"
                         class="ion-datetime-start"
                         formControlName="param3"
-                        (ionChange)="this.dateChanged( 'start',datetime.value,i)"
+                        (ionChange)="this.dateChanged( 'start',datetime.value,i, $event)"
                         showDefaultButtons="true"
                         (ionCancel)="this.datePickersInfo[i].start.open = false"
                       >
@@ -206,7 +206,7 @@
                       </ion-datetime>
 
                       <ion-input
-                        clearInput
+                        clearInput="false"
                         type="date"
                         class="input-box datepicker"
                         formControlName="param3"
@@ -230,7 +230,7 @@
                       [value]="formatDateToDisplay(datePickersInfo?.[i]?.end?.value)"
                       formControlName="param4"
                       class="ion-datetime-end"
-                      (ionChange)="this.dateChanged('end',datetime.value , i)"
+                      (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
                       showDefaultButtons="true"
                       (ionCancel)="this.datePickersInfo[i].end.open = false"
                       [min]="formatDateToDisplayEnd(datePickersInfo?.[i]?.start?.value)"
@@ -246,7 +246,8 @@
                       "
                       [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
                       *ngIf="isDestinationNeeded(i)"
-                      (click)="this.datePickerInputOnClick('end',i)"
+                      (click)="this.datePickerInputOnClick('end',i, $event)"
+                      id="date-range-input"
                     >
                     </ion-input>
                     <div></div>
@@ -327,7 +328,7 @@
                   Delete Preset
                 </li>
                 <li class="dropdown-item" (click)="clearFilter()">
-                  Clear Presets
+                  Clear Preset
                 </li>
               </ul>
             </div>
@@ -339,7 +340,7 @@
 
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Search preset</h4>
+      <h4 class="modal-title" id="modal-basic-title">Save new preset</h4>
       <button
         type="button"
         class="btn-close"
@@ -384,3 +385,19 @@
     </div>
   </ng-template>
 </ion-content>
+
+<!-- 
+  - it should not be possible to enter arbitrary text in the date fields as well as years before 2000
+
+- it is possible to save/update preset with empty/wrong second date in the between filter
+
+- trying to save new preset with existing name should now close save dialog after error message
+
+- date fields should look visually the save in exact and between date variants
+
+- type, should be "Clear preset" not "Clear presets"
+
+- save as new preset says "search preset", should be "Save new preset"
+
+- update current preset option should be enabled only for saved or lodaded presets
+ -->
