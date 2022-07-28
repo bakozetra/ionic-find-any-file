@@ -245,22 +245,15 @@ export class Tab1Page implements OnInit {
   showPickerEnd = false;
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
   formatedstringEnd = '';
-  result = formatDistance(new Date(2014, 6, 2), new Date());
   formatDateToDisplay(date) {
+    console.log('date::::::', date);
+
     if (!date) {
       return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
     }
     return format(parseISO(date), 'yyyy-MM-dd');
   }
-  formatDateToDisplayStart(date) {
-    if (date === '') {
-      return format(
-        parseISO(format(new Date(3000, 8, 5), 'yyyy-MM-dd')),
-        'yyyy-MM-dd'
-      );
-    }
-    return format(parseISO(date), 'yyyy-MM-dd');
-  }
+
   formatDateToDisplayEnd(date) {
     if (date === '') {
       return format(
@@ -282,72 +275,27 @@ export class Tab1Page implements OnInit {
   }
 
   dateChanged(limitName, value, i, startDateValue?: any) {
-    // console.log('startDateValue::::::', startDateValue);
     console.log('limitName::::::', limitName, value);
-    // let dateValue;
-    // let monthStart;
-    // let monthEnd;
-    // let dayStart;
-    // let dayEnd;
-    // let yearStart;
-    // let yearEnd;
-    // let isStartAfterEndDate;
-
     if (limitName === 'start') {
+      this.dateRangePickerStart = format(parseISO(value), 'yyyy-MM-dd');
       const startDateFormated = new Date(value);
       console.log('startDateFormated::::::', startDateFormated);
       const endDateFormated = new Date(this.datePickersInfo[i].end.value);
       console.log('endDateFormated::::::', endDateFormated);
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
       console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
-      // dateValue = new Date(value);
-      // monthStart = dateValue.getMonth() + 1;
-      // dayStart = dateValue?.getDate();
-      // yearStart = dateValue?.getFullYear();
-      // console.log('dateValue::::::', dateValue);
+
       if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.value = '';
-        console.log('kkk');
-        const clearEndDate = document.querySelector('#date-range-input');
-
-        console.log('clearEndDate::::::', clearEndDate);
+        this.dateRangePickerEnd = '';
       }
     }
 
     if (limitName === 'end') {
-      // dateValue = new Date(value);
-      // monthEnd = dateValue?.getMonth() + 1;
-      // dayEnd = dateValue?.getDate();
-      // yearEnd = dateValue?.getFullYear();
-      // console.log('dateValue::::::', dateValue);
-      // currentValue = new Date(startDateValue.detail.value);
-      // console.log('currentValue::::::', currentValue);
+      this.dateRangePickerEnd = format(parseISO(value), 'yyyy-MM-dd');
     }
-
-    // console.log('dateValue::::::', dateValue);
     this.datePickersInfo[i][limitName].open = false;
     this.datePickersInfo[i][limitName].value = value;
-    // if (isStartAfterEndDate) {
-    //   this.datePickersInfo[i].end.value = '';
-    //       }
-    // date-range-input
-    // if (dateValue !== undefined) {
-    //   var result = getMonth(dateValue);
-    //   console.log('result::::::', result);
-    //   console.log('yearStart::::::', yearStart);
-    //   console.log('monthEnd::::::', monthEnd);
-    //   console.log('dayStart::::::', dayStart);
-    //   const test3 = new Date(value);
-    //   console.log('test3::::::', test3);
-    //   console.log('new Date()::::::', new Date());
-    //   const d1 = test3.getDate();
-    //   console.log(d1, 'ddjdjdj'); // 👉️ 16
-    // }
-    // if (dayStart > currentValue.getDate()) {
-    //   console.log('heloo');
-    // } else {
-    //   console.log('everything is okay');
-    // }
   }
 
   //  ngx calender
@@ -372,8 +320,8 @@ export class Tab1Page implements OnInit {
     const to: CalendarResult = date?.to;
     console.log(date, from, to);
     console.log(date, from?.string, to?.string);
-    this.dateRangePickerStart = from?.string;
-    this.dateRangePickerEnd = to?.string;
+    // this.dateRangePickerStart = from?.string;
+    // this.dateRangePickerEnd = to?.string;
   }
 
   title = 'angular-ngx-daterangepicker-material-app';
@@ -593,6 +541,7 @@ export class Tab1Page implements OnInit {
           value: item?.param4,
           disabled: item?.param4 ? false : true,
         },
+        [Validators.required],
       ],
     });
   }
