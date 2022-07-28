@@ -537,4 +537,28 @@ ion-datetime {
   width: 100%;
 }
 
+// update-current-preset
+
+.update-current-preset {
+  color: #dddddd;
+  // background-color: #333333;
+  background-color:inherit;
+  padding: 0;
+}
+
+.update-current-preset:hover {
+  background-color: #535353;
+}
+
+.update-current-preset:disabled,
+.update-current-preset[disabled]{
+  background-color: inherit;
+  color: #dddddd;
+  opacity: 0.5;
+  cursor: not-allowed;
+  padding: 0;
+}
+
+
+
 

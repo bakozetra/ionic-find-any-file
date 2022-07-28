@@ -57,14 +57,15 @@
                 <li
                   class="dropdown-item"
                   (click)="updateCurrentPreset( 
-                  this.searchFilterForm,
-                  this.allSearch(),
-                  this.findInPersistanDataByFilterName(this.currentPresetName),
-                  this.preSelectList,
-                  this.currentPresetName
                 )"
                 >
-                  Update Current Preset
+                  <button
+                    class="update-current-preset"
+                    [disabled]="this.currentPresetName === '' ? true : false"
+                  >
+                    Update Current Preset
+                  </button>
+                  <!-- Update Current Preset -->
                 </li>
                 <li
                   class="dropdown-item"
@@ -306,17 +307,14 @@
                 <li class="dropdown-item" (click)="open(content)">
                   Save As New Preset
                 </li>
-                <li
-                  class="dropdown-item"
-                  (click)="updateCurrentPreset(
-                  this.searchFilterForm,
-                  this.allSearch(),
-                  this.findInPersistanDataByFilterName(this.currentPresetName),
-                  this.preSelectList,
-                  this.currentPresetName
-                )"
-                >
-                  Update Current Preset
+                <li class="dropdown-item" (click)="updateCurrentPreset()">
+                  <button
+                    class="update-current-preset"
+                    [disabled]="this.currentPresetName === '' ? true : false"
+                  >
+                    Update Current Preset
+                  </button>
+                  <!-- Update Current Preset -->
                 </li>
                 <li
                   class="dropdown-item"
