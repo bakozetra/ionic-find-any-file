@@ -181,13 +181,14 @@
                     </ion-input>
                     <ng-template #dates>
                       <ion-input
-                        clearInput
+                        readonly
                         class="input-box range"
                         formControlName="param3"
-                        [value]="this.dateRangePickerStart"
+                        [value]="this.datePickersInfo[i]?.start?.formatedValue"
                         [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                         *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                         (click)="this.datePickerInputOnClick('start',i, $event)"
+                        clearInput
                       >
                       </ion-input>
                       <ion-datetime
@@ -197,9 +198,10 @@
                         class="ion-datetime-start"
                         formControlName="param3"
                         (ionChange)="this.dateChanged( 'start',datetime.value,i, $event)"
-                        [value]="this.dateRangePickerStart"
+                        [value]="this.datePickersInfo[i].start.formatedValue"
                         showDefaultButtons="true"
                         (ionCancel)="this.datePickersInfo[i].start.open = false"
+                        min="2000-01-01T00:00:00"
                       >
                         <span slot="title">Select a start date</span>
                       </ion-datetime>
@@ -226,21 +228,22 @@
                       [presentation]="selectMode"
                       *ngIf="datePickersInfo?.[i]?.end?.open"
                       formControlName="param4"
-                      [value]="this.dateRangePickerEnd"
+                      [value]="this.datePickersInfo[i]?.end?.formatedValue"
                       class="ion-datetime-end"
                       (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
                       showDefaultButtons="true"
-                      (ionCancel)="this.datePickersInfo[i].end.open = false"
-                      [min]="formatDateToDisplayEnd(datePickersInfo?.[i]?.start?.value)"
+                      (ionCancel)="this.datePickersInfo[i]?.end.open = false"
+                      [min]="datePickersInfo?.[i]?.start?.formatedValue"
                     >
                       <span slot="title">Select an end date</span>
                     </ion-datetime>
 
                     <ion-input
                       clearInput
+                      readonly
                       class="input-box range"
                       formControlName="param4"
-                      [value]="dateRangePickerEnd"
+                      [value]="this.datePickersInfo[i].end.formatedValue"
                       [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
                       *ngIf="isDestinationNeeded(i)"
                       (click)="this.datePickerInputOnClick('end',i, $event)"

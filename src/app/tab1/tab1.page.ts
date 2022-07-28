@@ -277,17 +277,18 @@ export class Tab1Page implements OnInit {
   dateChanged(limitName, value, i, startDateValue?: any) {
     console.log('limitName::::::', limitName, value);
     if (limitName === 'start') {
-      this.dateRangePickerStart = format(parseISO(value), 'yyyy-MM-dd');
+      // this.dateRangePickerStart = format(parseISO(value), 'yyyy-MM-dd');
       const startDateFormated = new Date(value);
       console.log('startDateFormated::::::', startDateFormated);
-      const endDateFormated = new Date(this.datePickersInfo[i].end.value);
+      const endDateFormated = new Date(
+        this.datePickersInfo[i].end.formatedValue
+      );
       console.log('endDateFormated::::::', endDateFormated);
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
       console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
 
       if (isStartAfterEndDate) {
-        this.datePickersInfo[i].end.value = '';
-        this.dateRangePickerEnd = '';
+        this.datePickersInfo[i].end.formatedValue = '';
       }
     }
 
@@ -295,7 +296,10 @@ export class Tab1Page implements OnInit {
       this.dateRangePickerEnd = format(parseISO(value), 'yyyy-MM-dd');
     }
     this.datePickersInfo[i][limitName].open = false;
-    this.datePickersInfo[i][limitName].value = value;
+    this.datePickersInfo[i][limitName].formatedValue = format(
+      parseISO(value),
+      'yyyy-MM-dd'
+    );
   }
 
   //  ngx calender
@@ -653,6 +657,14 @@ export class Tab1Page implements OnInit {
     }
   }
 
+  // getWarning(event, fc) {
+  //   console.log('event:::getWarning:::', event);
+  //   const test1 = this.searchFilterForm.value.search[0].param3 !== '';
+  //   if (test1) {
+  //     if (event.target.value == '')
+  //       alert('The Duration should be HH MM SS and 24h clock');
+  //   }
+  // }
   savePreselectForm(localjson, searchFilterForm, preSelectList, prestName) {
     this.submitted = true;
     if (!this.allSearch().valid) {
@@ -945,6 +957,10 @@ export class Tab1Page implements OnInit {
   closeResult = '';
 
   open(content) {
+    if (this.searchFilterForm.value.search[0].param3 == '') {
+      alert('The Duration should be HH MM SS and 24h clock');
+    }
+    console.log('content::::::', content);
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
