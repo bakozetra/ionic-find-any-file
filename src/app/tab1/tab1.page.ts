@@ -238,8 +238,6 @@ export class Tab1Page implements OnInit {
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
   formatedstringEnd = '';
   formatDateToDisplay(date) {
-    console.log('date::::::', date);
-
     if (!date) {
       return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
     }
@@ -257,7 +255,6 @@ export class Tab1Page implements OnInit {
   }
 
   datePickerInputOnClick(limitName, i, event) {
-    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
   }
@@ -267,17 +264,12 @@ export class Tab1Page implements OnInit {
   }
 
   dateChanged(limitName, value, i, startDateValue?: any) {
-    console.log('limitName::::::', limitName, value);
     if (limitName === 'start') {
-      // this.dateRangePickerStart = format(parseISO(value), 'yyyy-MM-dd');
       const startDateFormated = new Date(value);
-      console.log('startDateFormated::::::', startDateFormated);
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
       );
-      console.log('endDateFormated::::::', endDateFormated);
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-      console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
 
       if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.formatedValue = '';
@@ -296,7 +288,6 @@ export class Tab1Page implements OnInit {
 
   //  ngx calender
   async openCalendar() {
-    console.log('openCalendar::::::');
     const options: CalendarModalOptions = {
       pickMode: 'range',
       title: 'Pick date between',
@@ -314,8 +305,6 @@ export class Tab1Page implements OnInit {
     const date = event?.data;
     const from: CalendarResult = date?.from;
     const to: CalendarResult = date?.to;
-    console.log(date, from, to);
-    console.log(date, from?.string, to?.string);
     // this.dateRangePickerStart = from?.string;
     // this.dateRangePickerEnd = to?.string;
   }
@@ -537,7 +526,6 @@ export class Tab1Page implements OnInit {
           value: item?.param4,
           disabled: item?.param4 ? false : true,
         },
-        // [Validators.required],
       ],
     });
   }
@@ -579,14 +567,7 @@ export class Tab1Page implements OnInit {
   }
 
   onParam2Change(i: any, data?: any) {
-    // debugger
-    console.log('data::onParam2Change::::', data);
-    console.log('i::::onParam2Change::', i);
     const row = this.allSearch().controls[i] as FormGroup;
-    console.log(
-      'row.value.param2.toLowerCase() === BETWEEN.toLowerCase()::::::',
-      row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()
-    );
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()) {
       // setTimeout(() => {
       //   this.createDateRangePicker(i, data);
@@ -621,7 +602,6 @@ export class Tab1Page implements OnInit {
     let param1DurationObj =
       this.searchFilterForm.value.search[0].param1 === 'DURATION';
     if (param1DurationObj) {
-      console.log('param1DurationObj::::::', param1DurationObj);
       let value = event.target.value;
       if (value.length === 1 && parseInt(value) != NaN) {
         this.allSearch()
@@ -678,7 +658,6 @@ export class Tab1Page implements OnInit {
         const temp1 = localJSON.map((data) =>
           data?.id === this.id ? data?.filters : ''
         )[0];
-        console.log('temp1::::::', temp1);
         const temp2 = searchFilterForm.value.search;
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
           this.message = 'Your Filter stored successfully';
@@ -724,11 +703,9 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        console.log('finalData:::else:::', finalData.filters);
-        console.log('finalData:::else::: param2', finalData.filters[0]?.param2);
+
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
           if (finalData.filters[0]?.param4 !== '') {
-            console.log('this is the test');
             allFilters.push(finalData);
             this.setPersistPresetSearch(allFilters);
             this.updatePreselectList();
@@ -772,31 +749,14 @@ export class Tab1Page implements OnInit {
     );
     let preselectList = this.preSelectList;
     let presetsName = this.currentPresetName;
-    console.log('allsearch::::::', allsearch);
-    console.log('allsearch.valid::::::', allsearch.valid);
-    console.log(
-      'searchFilterForm.value.search::::::',
-      this.searchFilterForm.value.search
-    );
-
     this.submitted = true;
     let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
 
     if (!allsearch.valid) {
-      console.log('allsearch.valid:::updateCurrentPreset:::', allsearch.valid);
       return;
     }
-    console.log('findInPersistanDataByFilterName::::::', {
-      ...filterData,
-    });
-
+    // to check if the forth is empty
     for (var i = 0, len1 = filterData.length; i < len1; i++) {
-      console.log(
-        'findInPersistanDataByFilterName.filters?.[i]?.param4::::::',
-        filterData?.[i]?.param4
-      );
-      console.log('filterData?.[i]?.param3::::::', filterData?.[i]?.param3);
-      console.log('filterData?.[i]?.param2::::::', filterData?.[i]?.param2);
       if (
         filterData?.[i]?.param4 == '' ||
         (!filterData?.[i]?.param4 &&
@@ -809,16 +769,15 @@ export class Tab1Page implements OnInit {
         return notification;
       }
     }
+
     let every = filterData.every(
       (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
     );
     let messageSpan = document.getElementById('message');
     let isModified = true;
     if (every) {
-      console.log('every::::::', every);
       let temp = findInPersistanDataByFilterName;
       if (temp) {
-        console.log('temp::::::', temp);
         let temp1 = temp.filters;
         const temp2 = filterModel.value.search;
         for (var i = 0, len1 = temp1.length; i < len1; i++) {
@@ -837,7 +796,6 @@ export class Tab1Page implements OnInit {
             delete temp2[i].param4;
           }
         }
-
         // debugger;
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
           messageSpan.style.color = 'green';
@@ -852,7 +810,6 @@ export class Tab1Page implements OnInit {
               presetsName +
               ' Please confirm'
           );
-          console.log('confirmed::::::', confirmed);
           if (!confirmed) {
             return;
           }
@@ -861,7 +818,6 @@ export class Tab1Page implements OnInit {
       }
 
       if (preselectList.some((s) => s.filterName === presetsName)) {
-        console.log('isModified::::::', isModified);
         const message = isModified
           ? 'Your filter updated successfully.'
           : 'Your Filter stored successfully.';
@@ -876,22 +832,8 @@ export class Tab1Page implements OnInit {
         let data = this.getPersistPresetSearchParsed().filter(
           (ele) => ele.id != String(this.presetId)
         );
-        console.log(
-          'finalData::::bbbb::',
-          finalData.map((a) => a.filters)
-        );
-        let filterInBetween = finalData.map((a) => {
-          let test1 = a.filters;
-          test1?.filter((bb) => bb?.param2 === SUB_MENU_BETWEEN_ID);
-          if (test1) {
-            console.log('test1::::::', test1);
-          }
-        });
-        console.log('filterInBetween::::::', filterInBetween);
-        // "BETWEEN"
 
         data = [...data, ...finalData];
-        console.log('data::::::', data);
         this.setPersistPresetSearch(data);
         messageSpan.style.color = 'green';
         this.message = message;
@@ -1038,7 +980,6 @@ export class Tab1Page implements OnInit {
   closeResult = '';
 
   open(content) {
-    console.log('content::::::', content);
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
@@ -1052,7 +993,6 @@ export class Tab1Page implements OnInit {
   }
 
   private getDismissReason(reason: any): string {
-    console.log('reason::::::', reason);
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
