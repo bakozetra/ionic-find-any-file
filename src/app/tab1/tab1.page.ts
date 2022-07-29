@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
   ChangeDetectorRef,
   ViewChild,
+  ElementRef,
 } from '@angular/core';
 import {
   FormArray,
@@ -225,6 +226,7 @@ export class Tab1Page implements OnInit {
     this.addSearch(initialFilterValue);
   }
   @ViewChild(IonDatetime) datetime: IonDatetime;
+  @ViewChild('content') mymodal: ElementRef;
 
   // Ionic date picker
 
@@ -689,7 +691,8 @@ export class Tab1Page implements OnInit {
             'Preset already exists.',
             'Please check the name'
           );
-          return notification;
+          await this.open(this.mymodal);
+          return;
         }
       }
       if (!preSelectList || preSelectList.length === 0) {
