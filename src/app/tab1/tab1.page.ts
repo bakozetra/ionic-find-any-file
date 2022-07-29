@@ -26,18 +26,7 @@ import {
   CalendarResult,
 } from 'ion2-calendar';
 import { Moment } from 'moment';
-import {
-  format,
-  formatDistance,
-  parseISO,
-  setDate,
-  getDay,
-  isEqual,
-  getDate,
-  getYear,
-  getMonth,
-  isBefore,
-} from 'date-fns';
+import { format, parseISO, isBefore } from 'date-fns';
 
 declare var easepick: any;
 
@@ -46,6 +35,7 @@ interface PresetData {
   filterName: string;
   filters: FilterModel[];
 }
+const SUB_MENU_BETWEEN_ID = 'BETWEEN';
 
 const SUB_MENU_TEXT_TYPE_BASE = [
   {
@@ -92,7 +82,7 @@ const SUB_MENU_DATE_TYPE_BASE = [
     name: 'After',
   },
   {
-    id: 'BETWEEN',
+    id: SUB_MENU_BETWEEN_ID,
     name: 'Between',
   },
 ];
@@ -593,9 +583,9 @@ export class Tab1Page implements OnInit {
     const row = this.allSearch().controls[i] as FormGroup;
     console.log(
       'row.value.param2.toLowerCase() === BETWEEN.toLowerCase()::::::',
-      row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()
+      row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()
     );
-    if (row.value.param2.toLowerCase() === 'BETWEEN'.toLowerCase()) {
+    if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()) {
       // setTimeout(() => {
       //   this.createDateRangePicker(i, data);
       // }, 100);
@@ -625,7 +615,7 @@ export class Tab1Page implements OnInit {
     );
   }
 
-  getValue(event: any, fc: any) {
+  async getValue(event: any, fc: any) {
     let param1DurationObj =
       this.searchFilterForm.value.search[0].param1 === 'DURATION';
     if (param1DurationObj) {
@@ -652,29 +642,27 @@ export class Tab1Page implements OnInit {
           .controls[fc].get('param3')
           .setValue(value + 's');
       } else {
-        alert('The Duration should be HH MM SS and 24h clock');
+        const notification = await this.notificationAlert(
+          'The Duration should be HH MM SS and 24h clock.',
+          ''
+        );
+        return notification;
       }
     }
   }
 
-  // getWarning(event, fc) {
-  //   console.log('event:::getWarning:::', event);
-  //   const test1 = this.searchFilterForm.value.search[0].param3 !== '';
-  //   if (test1) {
-  //     if (event.target.value == '')
-  //       alert('The Duration should be HH MM SS and 24h clock');
-  //   }
-  // }
-  savePreselectForm(localjson, searchFilterForm, preSelectList, prestName) {
+  async savePreselectForm(
+    localjson,
+    searchFilterForm,
+    preSelectList,
+    prestName
+  ) {
     this.submitted = true;
     if (!this.allSearch().valid) {
       return;
     }
     let filterData: FilterModel[] = searchFilterForm.value
       .search as FilterModel[];
-    // on the screeen
-    // comment 4 is empty
-
     let every = filterData.every(
       (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
     );
@@ -688,6 +676,7 @@ export class Tab1Page implements OnInit {
         const temp1 = localJSON.map((data) =>
           data?.id === this.id ? data?.filters : ''
         )[0];
+        console.log('temp1::::::', temp1);
         const temp2 = searchFilterForm.value.search;
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
           this.message = 'Your Filter stored successfully';
@@ -696,8 +685,11 @@ export class Tab1Page implements OnInit {
           }
           return;
         } else {
-          alert('Preset already exists.');
-          return false;
+          const notification = await this.notificationAlert(
+            'Preset already exists.',
+            'Please check the name'
+          );
+          return notification;
         }
       }
       if (!preSelectList || preSelectList.length === 0) {
@@ -710,7 +702,7 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        console.log('finalData::::::', finalData);
+
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
@@ -729,14 +721,35 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        console.log('finalData:::else:::', finalData);
-        allFilters.push(finalData);
-        this.setPersistPresetSearch(allFilters);
-        this.updatePreselectList();
-        messageSpan.style.color = 'green';
-        this.message = 'Your Filter stored successfully.';
-        if (this.message) {
-          this.emptyMessageTimeout();
+        console.log('finalData:::else:::', finalData.filters);
+        console.log('finalData:::else::: param2', finalData.filters[0]?.param2);
+        if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
+          if (finalData.filters[0]?.param4 !== '') {
+            console.log('this is the test');
+            allFilters.push(finalData);
+            this.setPersistPresetSearch(allFilters);
+            this.updatePreselectList();
+            messageSpan.style.color = 'green';
+            this.message = 'Your Filter stored successfully.';
+            if (this.message) {
+              this.emptyMessageTimeout();
+            }
+          } else {
+            const notification = await this.notificationAlert(
+              'Both field for the between range has to be valid.',
+              'Please check the form'
+            );
+            return notification;
+          }
+        } else {
+          allFilters.push(finalData);
+          this.setPersistPresetSearch(allFilters);
+          this.updatePreselectList();
+          messageSpan.style.color = 'green';
+          this.message = 'Your Filter stored successfully.';
+          if (this.message) {
+            this.emptyMessageTimeout();
+          }
         }
       }
     }
@@ -758,16 +771,41 @@ export class Tab1Page implements OnInit {
     let presetsName = this.currentPresetName;
     console.log('allsearch::::::', allsearch);
     console.log('allsearch.valid::::::', allsearch.valid);
+    console.log(
+      'searchFilterForm.value.search::::::',
+      this.searchFilterForm.value.search
+    );
+
     this.submitted = true;
+    let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
+
     if (!allsearch.valid) {
       console.log('allsearch.valid:::updateCurrentPreset:::', allsearch.valid);
       return;
     }
-    console.log(
-      'findInPersistanDataByFilterName::::::',
-      findInPersistanDataByFilterName
-    );
-    let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
+    console.log('findInPersistanDataByFilterName::::::', {
+      ...filterData,
+    });
+
+    for (var i = 0, len1 = filterData.length; i < len1; i++) {
+      console.log(
+        'findInPersistanDataByFilterName.filters?.[i]?.param4::::::',
+        filterData?.[i]?.param4
+      );
+      console.log('filterData?.[i]?.param3::::::', filterData?.[i]?.param3);
+      console.log('filterData?.[i]?.param2::::::', filterData?.[i]?.param2);
+      if (
+        filterData?.[i]?.param4 == '' ||
+        (!filterData?.[i]?.param4 &&
+          filterData?.[i]?.param2 === SUB_MENU_BETWEEN_ID)
+      ) {
+        const notification = await this.notificationAlert(
+          'Both field for the between range has to be valid.',
+          'Please check the form'
+        );
+        return notification;
+      }
+    }
     let every = filterData.every(
       (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
     );
@@ -781,12 +819,18 @@ export class Tab1Page implements OnInit {
         let temp1 = temp.filters;
         const temp2 = filterModel.value.search;
         for (var i = 0, len1 = temp1.length; i < len1; i++) {
-          if (temp1?.[i]?.param4 == '') {
+          if (
+            temp1?.[i]?.param4 == '' &&
+            temp1?.[i]?.param2 !== SUB_MENU_BETWEEN_ID
+          ) {
             delete temp1[i].param4;
           }
         }
         for (var i = 0, len2 = temp2.length; i < len2; i++) {
-          if (temp2?.[i]?.param4 == '') {
+          if (
+            temp2?.[i]?.param4 == '' &&
+            temp1?.[i]?.param2 !== SUB_MENU_BETWEEN_ID
+          ) {
             delete temp2[i].param4;
           }
         }
@@ -806,6 +850,9 @@ export class Tab1Page implements OnInit {
               ' Please confirm'
           );
           console.log('confirmed::::::', confirmed);
+          if (!confirmed) {
+            return;
+          }
           isModified = confirmed;
         }
       }
@@ -826,7 +873,20 @@ export class Tab1Page implements OnInit {
         let data = this.getPersistPresetSearchParsed().filter(
           (ele) => ele.id != String(this.presetId)
         );
-        console.log('finalData::::::', finalData);
+        console.log(
+          'finalData::::bbbb::',
+          finalData.map((a) => a.filters)
+        );
+        let filterInBetween = finalData.map((a) => {
+          let test1 = a.filters;
+          test1?.filter((bb) => bb?.param2 === SUB_MENU_BETWEEN_ID);
+          if (test1) {
+            console.log('test1::::::', test1);
+          }
+        });
+        console.log('filterInBetween::::::', filterInBetween);
+        // "BETWEEN"
+
         data = [...data, ...finalData];
         console.log('data::::::', data);
         this.setPersistPresetSearch(data);
@@ -975,9 +1035,6 @@ export class Tab1Page implements OnInit {
   closeResult = '';
 
   open(content) {
-    if (this.searchFilterForm.value.search[0].param3 == '') {
-      alert('The Duration should be HH MM SS and 24h clock');
-    }
     console.log('content::::::', content);
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
@@ -992,6 +1049,7 @@ export class Tab1Page implements OnInit {
   }
 
   private getDismissReason(reason: any): string {
+    console.log('reason::::::', reason);
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -1017,6 +1075,28 @@ export class Tab1Page implements OnInit {
         },
         {
           text: 'Yes',
+          handler: () => resolveFunction(true),
+        },
+      ],
+    });
+    await alert.present();
+    return promise;
+  }
+  private async notificationAlert(
+    message: string,
+    headertitle: string
+  ): Promise<boolean> {
+    let resolveFunction: (confirm: boolean) => void;
+    const promise = new Promise<boolean>((resolve) => {
+      resolveFunction = resolve;
+    });
+    const alert = await this.alertController.create({
+      header: headertitle,
+      message,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'OK',
           handler: () => resolveFunction(true),
         },
       ],
