@@ -287,33 +287,7 @@ export class Tab1Page implements OnInit {
   }
 
   //  ngx calender
-  async openCalendar() {
-    const options: CalendarModalOptions = {
-      pickMode: 'range',
-      title: 'Pick date between',
-      showYearPicker: true,
-    };
 
-    const myCalendar = await this.modalCtrl.create({
-      component: CalendarModal,
-      componentProps: { options },
-    });
-
-    myCalendar.present();
-
-    const event: any = await myCalendar.onDidDismiss();
-    const date = event?.data;
-    const from: CalendarResult = date?.from;
-    const to: CalendarResult = date?.to;
-    // this.dateRangePickerStart = from?.string;
-    // this.dateRangePickerEnd = to?.string;
-  }
-
-  title = 'angular-ngx-daterangepicker-material-app';
-  selected: {
-    startDate: Moment;
-    endDate: Moment;
-  };
   // easipick calender
   createDateRangePicker(i, date?: any) {
     const presetDate = date && date.param3 ? date.param3.split(' - ') : [];
@@ -327,29 +301,6 @@ export class Tab1Page implements OnInit {
       zIndex: 99,
       plugins: ['AmpPlugin', 'RangePlugin'],
     });
-
-    // picker.on('select', (date) => {
-    //   this.allSearch().controls[i].get('param3').setValue(
-    //     date.detail.start.toLocaleString().split(',')[0]
-    //     // +date.detail.end.toLocaleString().split(',')[0]
-    //   );
-    // });
-    // picker.on('select', (date) => {
-    //   console.log('date::: date:::', date);
-    //   this.allSearch().controls[i].get('param4').setValue(
-    //     // date.detail.start.toLocaleString().split(',')[0] + ' - '
-    //     date.detail.end.toLocaleString().split(',')[0]
-    //   );
-    // });
-    // picker.on('show', () => {
-    //   let startDate = presetDate[0] ? new Date(presetDate[0]) : new Date();
-    //   console.log('startDate::::::', startDate);
-    //   // let endDate = presetDate[1] ? new Date(presetDate[1]) : new Date();
-    //   if (startDate) {
-    //     startDate.setMonth(startDate.getMonth());
-    //     picker.setDateRange(startDate);
-    //   }
-    // });
   }
   get f() {
     return this.searchFilterForm.controls;
@@ -363,6 +314,10 @@ export class Tab1Page implements OnInit {
     };
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
+      console.log(
+        '      this.addSearch(initialFilterValue);:createDateRangePicker:::::'
+        // this.addSearch(initialFilterValue)
+      );
       this.addSearch(initialFilterValue);
       return;
     }
@@ -535,8 +490,12 @@ export class Tab1Page implements OnInit {
   }
 
   addSearch(item: any) {
-    console.log('item::::addSearch::', item);
     this.allSearch().push(this.newEvent(item));
+    if (item.param3 && item.param4) {
+      const dateIndex = this.allSearch().value.length - 1;
+      this.datePickersInfo[dateIndex].end.formatedValue = item.param4;
+      this.datePickersInfo[dateIndex].start.formatedValue = item.param3;
+    }
   }
 
   clearFormArray() {
@@ -685,6 +644,7 @@ export class Tab1Page implements OnInit {
           filters: searchFilterForm.value.search,
         };
 
+        console.log('finalData:filterName:::::', finalData.filterName);
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
