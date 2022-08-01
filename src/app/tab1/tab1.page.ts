@@ -28,6 +28,7 @@ import {
 } from 'ion2-calendar';
 import { Moment } from 'moment';
 import { format, parseISO, isBefore } from 'date-fns';
+import { PersistPresetSearchService } from './persist-preset-search.service';
 
 declare var easepick: any;
 
@@ -211,13 +212,18 @@ export class Tab1Page implements OnInit {
   dates = ['Shooting Date', 'Creation Date', 'Modification Date'];
   dateRangePickerStart = '';
   dateRangePickerEnd = '';
+  persistPresetSearchService;
+  // persistPresetSearchParsed;
+  alertService;
 
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     private alertController: AlertController,
     public modalCtrl: ModalController
-  ) {}
+  ) {
+    this.persistPresetSearchService = new PersistPresetSearchService();
+  }
 
   ngOnInit() {
     this.initPriceForm();
@@ -740,7 +746,7 @@ export class Tab1Page implements OnInit {
       if (temp) {
         let temp1 = temp.filters;
         const temp2 = filterModel.value.search;
-        for (var i = 0, len1 = temp1.length; i < len1; i++) {
+        for (var i = 0, len1 = temp1.length as number; i < len1; i++) {
           if (
             temp1?.[i]?.param4 == '' &&
             temp1?.[i]?.param2 !== SUB_MENU_BETWEEN_ID
@@ -806,23 +812,19 @@ export class Tab1Page implements OnInit {
   }
 
   setPersistPresetSearch(data) {
-    localStorage.setItem('presetSearch', JSON.stringify(data));
+    return this.persistPresetSearchService.setPersistPresetSearch(data);
   }
+
   getPersistPresetSearch() {
-    return localStorage.getItem('presetSearch');
+    return this.persistPresetSearchService.getPersistPresetSearch();
   }
-  getPersistPresetSearchParsed(): PresetData[] {
-    let localJSON = [];
-    const localData = this.getPersistPresetSearch();
-    if (localData && localData != null) {
-      localJSON = JSON.parse(localData);
-    }
-    return localJSON;
+  getPersistPresetSearchParsed() {
+    return this.persistPresetSearchService.getPersistPresetSearchParsed();
   }
 
   findInPersistanDataByFilterName(searchParamName) {
-    return this.getPersistPresetSearchParsed().find(
-      (f) => f?.filterName?.toLowerCase() === searchParamName
+    return this.persistPresetSearchService.findInPersistanDataByFilterName(
+      searchParamName
     );
   }
 
