@@ -18,7 +18,12 @@ import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
-import { AlertController, IonDatetime, ModalController } from '@ionic/angular';
+import {
+  AlertController,
+  IonDatetime,
+  ModalController,
+  Platform,
+} from '@ionic/angular';
 import { areFiltersEqual } from '../utils';
 import {
   CalendarModal,
@@ -223,7 +228,8 @@ export class Tab1Page implements OnInit {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private alertController: AlertController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public platform: Platform
   ) {
     this.persistPresetSearchService = new PersistPresetSearchService();
   }
@@ -267,6 +273,13 @@ export class Tab1Page implements OnInit {
     console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
+    const android = this.platform.is('android');
+    if (android) {
+      if (null) {
+        let ionDatetimeStartStyle = document.getElementById('test1');
+        ionDatetimeStartStyle?.classList?.add('ion-datetime-mobile');
+      }
+    }
   }
   datePickerInputClose(limitName, i) {
     this.datePickersInfo[i][limitName].open =
