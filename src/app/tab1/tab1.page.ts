@@ -769,7 +769,7 @@ export class Tab1Page implements OnInit {
     for (var i = 0, len1 = filterData.length; i < len1; i++) {
       if (
         filterData?.[i]?.param4 == '' &&
-        !filterData?.[i]?.param4 &&
+        // !filterData?.[i]?.param4 &&
         filterData?.[i]?.param2 === SUB_MENU_BETWEEN_ID
       ) {
         const notification = await this.notificationAlert(
