@@ -768,9 +768,9 @@ export class Tab1Page implements OnInit {
     // to check if the forth is empty
     for (var i = 0, len1 = filterData.length; i < len1; i++) {
       if (
-        filterData?.[i]?.param4 == '' ||
-        (!filterData?.[i]?.param4 &&
-          filterData?.[i]?.param2 === SUB_MENU_BETWEEN_ID)
+        filterData?.[i]?.param4 == '' &&
+        !filterData?.[i]?.param4 &&
+        filterData?.[i]?.param2 === SUB_MENU_BETWEEN_ID
       ) {
         const notification = await this.notificationAlert(
           'Both field for the between range has to be valid.',
