@@ -111,6 +111,10 @@ const initialFilterValue = {
 };
 
 const INITIALCURRENTPRESETNAME = '';
+const INITIALDATEPICKEINFO = {
+  start: { open: false, value: '' },
+  end: { open: false, value: '' },
+};
 
 @Component({
   selector: 'app-tab1',
@@ -213,7 +217,6 @@ export class Tab1Page implements OnInit {
   dateRangePickerStart = '';
   dateRangePickerEnd = '';
   persistPresetSearchService;
-  // persistPresetSearchParsed;
   alertService;
 
   constructor(
@@ -238,7 +241,7 @@ export class Tab1Page implements OnInit {
 
   selectMode = 'date';
   datePickersInfo = {
-    '0': { start: { open: false, value: '' }, end: { open: false, value: '' } },
+    '0': INITIALDATEPICKEINFO,
   };
   showPickerEnd = false;
   dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
@@ -261,6 +264,7 @@ export class Tab1Page implements OnInit {
   }
 
   datePickerInputOnClick(limitName, i, event) {
+    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
   }
@@ -499,8 +503,17 @@ export class Tab1Page implements OnInit {
     this.allSearch().push(this.newEvent(item));
     if (item.param3 && item.param4) {
       const dateIndex = this.allSearch().value.length - 1;
-      this.datePickersInfo[dateIndex].end.formatedValue = item.param4;
-      this.datePickersInfo[dateIndex].start.formatedValue = item.param3;
+      console.log(
+        'this.datePickersInfo[dateIndex]::::::',
+        this.datePickersInfo[dateIndex]
+      );
+      if (!this.datePickersInfo[dateIndex]) {
+        this.datePickersInfo[dateIndex] = INITIALDATEPICKEINFO;
+        console.log('this.datePickersInfo::::::', this.datePickersInfo);
+      }
+      console.log('dateIndex::::::', dateIndex);
+      this.datePickersInfo[dateIndex].end.formatedValue = item?.param4;
+      this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
     }
   }
 
@@ -509,6 +522,7 @@ export class Tab1Page implements OnInit {
   }
 
   onParam1Change(i: any) {
+    console.log('i::::::', i);
     if (i == 0) {
       this.isParam2Select = true;
     }
@@ -531,14 +545,42 @@ export class Tab1Page implements OnInit {
     row.get('param2')?.setValue(this?.param2List[i][0]?.id);
   }
 
-  onParam2Change(i: any, data?: any) {
+  onParam2Change(i: any, isUserInteraction?: any) {
     const row = this.allSearch().controls[i] as FormGroup;
+
+    console.log('row::::::', row);
+    console.log('row:::value:::', row.value.param3.value);
+    console.log('row::controls::::', row.controls.param3);
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()) {
-      // setTimeout(() => {
-      //   this.createDateRangePicker(i, data);
-      // }, 100);
+      // console.log('row:::value:::', row.value.param3);
+      // console.log('jjjhh');
+      // const newDate = this.allSearch().controls[i].get('param3').value;
+      // const newDateRow = row.value.param3;
+      // console.log(
+      //   'this.allSearch().controls[i].get param3::::::',
+      //   this.allSearch().controls[i].get('param3').value
+      // );
+      // if (Date.parse(newDate)) {
+      //   this.allSearch().controls[i].get('param3').setValue(newDate);
+      //   console.log('validDateStr is a valid date');
+      // } else {
+      //   this.allSearch().controls[i].get('param3').setValue('');
+      isUserInteraction &&
+        this.allSearch().controls[i].get('param3').setValue('');
+      /// this.datePickersInfo[i].end.formatedValue = '';
+      // }
+      // }
+      // if (newDate === newDateRow) {
+      //   this.allSearch().controls[i].get('param3').setValue('');
+      // } else {
+      //   console.log('kkkk');
+      // }
     }
   }
+  // clearDateInfoAtRow(i) {
+  //   this.datePickersInfo[i].end.formatedValue = '';
+  //   this.datePickersInfo[i].start.formatedValue = '';
+  // }
 
   findParamById(formControl) {
     const param = this.searchData.find(
@@ -604,6 +646,7 @@ export class Tab1Page implements OnInit {
     preSelectList,
     prestName
   ) {
+    console.log('  async savePreselectForm(::::::');
     this.submitted = true;
     if (!this.allSearch().valid) {
       return;
@@ -708,6 +751,7 @@ export class Tab1Page implements OnInit {
   }
 
   async updateCurrentPreset() {
+    console.log('updateCurrentPreset::::::');
     let filterModel = this.searchFilterForm;
     let allsearch = this.allSearch();
     let findInPersistanDataByFilterName = this.findInPersistanDataByFilterName(
@@ -840,6 +884,7 @@ export class Tab1Page implements OnInit {
   }
 
   onPreselectDDLChange(e: any) {
+    console.log('onPreselectDDLChange::::::', e);
     if (e === 1) {
       this.currentPresetName = INITIALCURRENTPRESETNAME;
     } else {
@@ -898,7 +943,8 @@ export class Tab1Page implements OnInit {
         });
         tempArray.map((m, i) => {
           this.addSearch(m);
-          this.onParam2Change(i, m);
+          console.log('tempArray::::::');
+          this.onParam2Change(i, false);
         });
       } else {
         this.allSearch().clear();

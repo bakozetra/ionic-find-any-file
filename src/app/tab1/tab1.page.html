@@ -157,7 +157,7 @@
                       class="select-class"
                       formControlName="param2"
                       onselect=""
-                      (change)="onParam2Change(i)"
+                      (change)="onParam2Change(i,true)"
                       [ngClass]="!allSearch().controls[i].get('param2')?.valid && submitted ? 'error' : ''"
                     >
                       <option
@@ -172,6 +172,7 @@
                   <ion-col size-xs="12" size-sm="" class="input-wrapper">
                     <ion-input
                       clearInput
+                      clearOnEdit="true"
                       type="text"
                       class="input-box"
                       formControlName="param3"
