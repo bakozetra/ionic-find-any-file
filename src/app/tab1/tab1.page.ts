@@ -513,6 +513,7 @@ export class Tab1Page implements OnInit {
   }
 
   addSearch(item: any) {
+    console.log('item::::addSearch::', item);
     this.allSearch().push(this.newEvent(item));
     if (item.param3 && item.param4) {
       const dateIndex = this.allSearch().value.length - 1;
@@ -564,36 +565,25 @@ export class Tab1Page implements OnInit {
     console.log('row::::::', row);
     console.log('row:::value:::', row.value.param3.value);
     console.log('row::controls::::', row.controls.param3);
+    console.log(
+      'row.value.param2.toLowerCase()::::::',
+      row.value.param2.toLowerCase()
+    );
+    console.log(
+      'SUB_MENU_BETWEEN_ID.toLowerCase()::::::',
+      SUB_MENU_BETWEEN_ID.toLowerCase()
+    );
+
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()) {
-      // console.log('row:::value:::', row.value.param3);
-      // console.log('jjjhh');
-      // const newDate = this.allSearch().controls[i].get('param3').value;
-      // const newDateRow = row.value.param3;
-      // console.log(
-      //   'this.allSearch().controls[i].get param3::::::',
-      //   this.allSearch().controls[i].get('param3').value
-      // );
-      // if (Date.parse(newDate)) {
-      //   this.allSearch().controls[i].get('param3').setValue(newDate);
-      //   console.log('validDateStr is a valid date');
-      // } else {
-      //   this.allSearch().controls[i].get('param3').setValue('');
-      isUserInteraction &&
-        this.allSearch().controls[i].get('param3').setValue('');
-      /// this.datePickersInfo[i].end.formatedValue = '';
-      // }
-      // }
-      // if (newDate === newDateRow) {
-      //   this.allSearch().controls[i].get('param3').setValue('');
-      // } else {
-      //   console.log('kkkk');
-      // }
+      if (isNaN(Date.parse(row.value.param3))) {
+        console.log('isUserInteraction');
+        isUserInteraction &&
+          this.allSearch().controls[i].get('param3').setValue('');
+      } else {
+        return row.value.param3;
+      }
     }
   }
-  // clearDateInfoAtRow(i) {
-  //   this.datePickersInfo[i].end.formatedValue = '';
-  //   this.datePickersInfo[i].start.formatedValue = '';
-  // }
 
   findParamById(formControl) {
     const param = this.searchData.find(
@@ -666,6 +656,7 @@ export class Tab1Page implements OnInit {
     }
     let filterData: FilterModel[] = searchFilterForm.value
       .search as FilterModel[];
+    console.log('filterData:::prestName:::', filterData);
     let every = filterData.every(
       (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
     );
@@ -676,10 +667,12 @@ export class Tab1Page implements OnInit {
         localJSON?.length > 0 &&
         localJSON.filter((s) => s.filterName == prestName)?.length > 0
       ) {
+        console.log('temp1::::::');
         const temp1 = localJSON.map((data) =>
           data?.id === this.id ? data?.filters : ''
         )[0];
         const temp2 = searchFilterForm.value.search;
+        console.log('temp2::::::', temp2);
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
           this.message = 'Your Filter stored successfully';
           if (this.message) {
@@ -687,6 +680,7 @@ export class Tab1Page implements OnInit {
           }
           return;
         } else {
+          console.log('notification:::::else every:');
           const notification = await this.notificationAlert(
             'Preset already exists.',
             'Please check the name'
@@ -695,6 +689,7 @@ export class Tab1Page implements OnInit {
           return;
         }
       }
+      console.log('prestName::::downnotication::', prestName);
       if (!preSelectList || preSelectList.length === 0) {
         const allFilters = [];
         filterData = filterData.filter(
@@ -705,28 +700,8 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-
-        console.log('finalData:filterName:::::', finalData.filterName);
-        allFilters.push(finalData);
-        this.setPersistPresetSearch(allFilters);
-        this.updatePreselectList();
-        messageSpan.style.color = 'green';
-        this.message = 'Your Filter stored successfully.';
-        if (this.message) {
-          this.emptyMessageTimeout();
-        }
-      } else {
-        const allFilters = preSelectList;
-        filterData = filterData.filter(
-          (data) => data?.param1 && data?.param2 && data?.param3
-        );
-        const finalData = {
-          id: UUID.UUID(),
-          filterName: prestName,
-          filters: searchFilterForm.value.search,
-        };
-
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
+          console.log('finalData::::::', finalData);
           if (finalData.filters[0]?.param4 !== '') {
             allFilters.push(finalData);
             this.setPersistPresetSearch(allFilters);
@@ -737,6 +712,49 @@ export class Tab1Page implements OnInit {
               this.emptyMessageTimeout();
             }
           } else {
+            console.log('notification::::::');
+            const notification = await this.notificationAlert(
+              'Both field for the between range has to be valid.',
+              'Please check the form'
+            );
+            return notification;
+          }
+        } else {
+          allFilters.push(finalData);
+          this.setPersistPresetSearch(allFilters);
+          this.updatePreselectList();
+          messageSpan.style.color = 'green';
+          this.message = 'Your Filter stored successfully.';
+          if (this.message) {
+            this.emptyMessageTimeout();
+          }
+        }
+      } else {
+        console.log('allFilters::::::else');
+        const allFilters = preSelectList;
+        filterData = filterData.filter(
+          (data) => data?.param1 && data?.param2 && data?.param3
+        );
+        const finalData = {
+          id: UUID.UUID(),
+          filterName: prestName,
+          filters: searchFilterForm.value.search,
+        };
+        console.log('prestName::::::', prestName);
+        console.log('finalData::::::', finalData);
+        if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
+          console.log('finalData::::::', finalData);
+          if (finalData.filters[0]?.param4 !== '') {
+            allFilters.push(finalData);
+            this.setPersistPresetSearch(allFilters);
+            this.updatePreselectList();
+            messageSpan.style.color = 'green';
+            this.message = 'Your Filter stored successfully.';
+            if (this.message) {
+              this.emptyMessageTimeout();
+            }
+          } else {
+            console.log('notification::::::');
             const notification = await this.notificationAlert(
               'Both field for the between range has to be valid.',
               'Please check the form'
@@ -869,6 +887,7 @@ export class Tab1Page implements OnInit {
   }
 
   setPersistPresetSearch(data) {
+    console.log('data::::setPersistPresetSearch::', data);
     return this.persistPresetSearchService.setPersistPresetSearch(data);
   }
 
@@ -880,6 +899,10 @@ export class Tab1Page implements OnInit {
   }
 
   findInPersistanDataByFilterName(searchParamName) {
+    console.log(
+      'searchParamName:::findInPersistanDataByFilterName:::',
+      searchParamName
+    );
     return this.persistPresetSearchService.findInPersistanDataByFilterName(
       searchParamName
     );
@@ -1005,9 +1028,11 @@ export class Tab1Page implements OnInit {
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
         (result) => {
+          console.log('result::::::', result);
           this.closeResult = `Closed with: ${result}`;
         },
         (reason) => {
+          console.log('reason:::::open:', reason);
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
       );

@@ -65,7 +65,6 @@
                   >
                     Update Current Preset
                   </button>
-                  <!-- Update Current Preset -->
                 </li>
                 <li
                   class="dropdown-item"
@@ -74,7 +73,13 @@
                   this.currentPresetName,
                   this.allSearch())"
                 >
-                  Delete Preset
+                  <button
+                    class="update-current-preset"
+                    [disabled]="this.currentPresetName === '' ? true : false"
+                  >
+                    Delete Preset
+                  </button>
+                  <!-- Delete Preset -->
                 </li>
                 <li class="dropdown-item" (click)="clearFilter()">
                   Clear Preset
@@ -92,7 +97,6 @@
                 class="example-list"
               >
                 <ion-row
-                  cdkDrag
                   *ngFor="let quantity of allSearch()?.controls; let i = index"
                   [formGroupName]="i"
                   class="example-box"
@@ -123,7 +127,7 @@
                       ></ion-icon>
                     </ion-button>
                     <ng-template #disableMinus>
-                      <ion-button class="update disablebutton">
+                      <ion-button class="update disablebutton" disabled>
                         <ion-icon
                           name="remove-circle-outline"
                           size="large"
@@ -140,9 +144,7 @@
                       (change)="onParam1Change(i)"
                       onchange=""
                     >
-                      <option class="select-options" value="select" selected>
-                        select
-                      </option>
+                      <option disabled selected value>select an option</option>
                       <option
                         class="select-options"
                         [value]="param1?.id"
@@ -209,7 +211,7 @@
                         <span slot="title">Select a start date</span>
                       </ion-datetime>
                       <ion-input
-                        clearInput="false"
+                        clearInput="true"
                         type="date"
                         class="input-box datepicker"
                         formControlName="param3"
@@ -344,16 +346,16 @@
   <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Save new preset</h4>
-      <button
+      <!-- <button
         type="button"
         class="btn-close"
         aria-label="Close"
         (click)="modal.dismiss('Cross click')"
-      ></button>
+      ></button> -->
     </div>
     <div class="modal-body">
       <div class="mb-3">
-        <label for="dateOfBirth">Enter search name:</label>
+        <label for="dateOfBirth">Enter preset name:</label>
         <div class="input-group">
           <input
             clearInput

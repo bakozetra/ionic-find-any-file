@@ -284,6 +284,9 @@ ion-item::part(native) {
 .select-options {
   color: black !important;
 }
+.select-options::placeholder {
+  background-color: #008000;
+}
 
 input::placeholder {
   color: red;
@@ -580,7 +583,6 @@ ion-datetime {
     top: -2rem;
   }
   
-// }
 
 
 
