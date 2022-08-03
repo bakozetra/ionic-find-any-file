@@ -223,6 +223,8 @@ export class Tab1Page implements OnInit {
   dateRangePickerEnd = '';
   persistPresetSearchService;
   alertService;
+  showDatePicker = false;
+  valueInputPicker = '';
 
   constructor(
     private fb: FormBuilder,
@@ -249,9 +251,9 @@ export class Tab1Page implements OnInit {
   datePickersInfo = {
     '0': INITIALDATEPICKEINFO,
   };
+
   showPickerEnd = false;
-  dateValueEnd = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
-  formatedstringEnd = '';
+
   formatDateToDisplay(date) {
     if (!date) {
       return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
@@ -277,14 +279,16 @@ export class Tab1Page implements OnInit {
     if (android) {
       if (null) {
         let ionDatetimeStartStyle = document.getElementById('test1');
+        console.log('ionDatetimeStartStyle::::::', ionDatetimeStartStyle);
         ionDatetimeStartStyle?.classList?.add('ion-datetime-mobile');
       }
     }
   }
-  datePickerInputClose(limitName, i) {
-    this.datePickersInfo[i][limitName].open =
-      this.datePickersInfo[i][limitName].open;
-  }
+
+  // datePickerInputClose(limitName, i) {
+  //   this.datePickersInfo[i][limitName].open =
+  //     this.datePickersInfo[i][limitName].open;
+  // }
 
   dateChanged(limitName, value, i, startDateValue?: any) {
     if (limitName === 'start') {
@@ -307,6 +311,17 @@ export class Tab1Page implements OnInit {
       parseISO(value),
       'yyyy-MM-dd'
     );
+  }
+
+  // Date picker for exatly before and after.
+
+  datePickerInputOnClickNotBetween(i, event) {
+    this.showDatePicker = !this.showDatePicker;
+  }
+  dateChangedInputPicker(value) {
+    console.log('value::::::', value);
+    this.valueInputPicker = format(parseISO(value), 'yyyy-MM-dd');
+    this.showDatePicker = false;
   }
 
   //  ngx calender

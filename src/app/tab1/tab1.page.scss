@@ -562,27 +562,24 @@ ion-datetime {
   padding: 0;
 }
 
-
-// .ios  {
-//   color: black;
-// }
-// @media screen() {
-  
-// }
-// @media(max-width: 375px) {
   .form-wrapper {
     position: relative;
   }
-  // .md form{
-  //    position: relative;
-  // }
-  #test1 {
+ 
+  @media (max-width: 375px) {
+   
+}
+@media only screen and (max-width: 600px) {
+  .ion-datetime-start, .datepicker-input,.ion-datetime-end  {
     z-index: 1000;
-    color: blue;
     position: absolute;
-    top: -2rem;
-  }
-  
+    top: -3rem;
+   }
+   .ion-datetime-end {
+    top: -5rem;
+   }
+}
+ 
 
 
 
