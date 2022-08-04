@@ -881,6 +881,7 @@ export class Tab1Page implements OnInit {
         }
         // debugger;
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
+          console.log('Your Filter stored successfully');
           messageSpan.style.color = 'green';
           this.message = 'Your Filter stored successfully';
           if (this.message) {
@@ -1071,6 +1072,7 @@ export class Tab1Page implements OnInit {
   closeResult = '';
 
   open(content) {
+    console.log('content::::::', content);
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
@@ -1079,8 +1081,13 @@ export class Tab1Page implements OnInit {
           this.closeResult = `Closed with: ${result}`;
         },
         (reason) => {
-          console.log('reason:::::open:', reason);
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          if (
+            this.closeResult !== `Dismissed ${this.getDismissReason('button')}`
+          ) {
+            console.log('click::::::');
+            this.currentPresetName = INITIALCURRENTPRESETNAME;
+          }
         }
       );
   }
