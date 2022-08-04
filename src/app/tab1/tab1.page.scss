@@ -548,21 +548,21 @@ ion-datetime {
   width: 100%;
 }
 
-// update-current-preset
+// disable preset menu
 
-.update-current-preset {
+.disable-preset-menu {
   color: #dddddd;
   // background-color: #333333;
   background-color:inherit;
   padding: 0;
 }
 
-.update-current-preset:hover {
+.disable-preset-menu:hover {
   background-color: #535353;
 }
 
-.update-current-preset:disabled,
-.update-current-preset[disabled]{
+.disable-preset-menu:disabled,
+.disable-preset-menu[disabled]{
   background-color: inherit;
   color: #dddddd;
   opacity: 0.5;
@@ -577,12 +577,10 @@ ion-datetime {
   cursor: not-allowed;
 }
 
-
-
   .form-wrapper {
     position: relative;
   }
- 
+
 
 @media only screen and (max-width: 600px) {
   .list {

@@ -60,7 +60,7 @@
                 )"
                 >
                   <button
-                    class="update-current-preset"
+                    class="disable-preset-menu"
                     [disabled]="this.currentPresetName === '' ? true : false"
                   >
                     Update Current Preset
@@ -74,7 +74,7 @@
                   this.allSearch())"
                 >
                   <button
-                    class="update-current-preset"
+                    class="disable-preset-menu"
                     [disabled]="this.currentPresetName === '' ? true : false"
                   >
                     Delete Preset
@@ -331,7 +331,7 @@
                 </li>
                 <li class="dropdown-item" (click)="updateCurrentPreset()">
                   <button
-                    class="update-current-preset"
+                    class="disable-preset-menu"
                     [disabled]="this.currentPresetName === '' ? true : false"
                   >
                     Update Current Preset
@@ -345,7 +345,12 @@
                   this.allSearch()
                 )"
                 >
-                  Delete Preset
+                  <button
+                    class="disable-preset-menu"
+                    [disabled]="this.currentPresetName === '' ? true : false"
+                  >
+                    Delete Preset
+                  </button>
                 </li>
                 <li class="dropdown-item" (click)="clearFilter()">
                   Clear Preset
