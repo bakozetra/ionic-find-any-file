@@ -279,7 +279,7 @@ export class Tab1Page implements OnInit {
     return format(parseISO(date), 'yyyy-MM-dd');
   }
 
-  datePickerInputOnClick(limitName, i, event) {
+  async datePickerInputOnClick(limitName, i, event) {
     console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
@@ -289,6 +289,21 @@ export class Tab1Page implements OnInit {
         let ionDatetimeStartStyle = document.getElementById('test1');
         console.log('ionDatetimeStartStyle::::::', ionDatetimeStartStyle);
         ionDatetimeStartStyle?.classList?.add('ion-datetime-mobile');
+      }
+    }
+    if (limitName == 'end') {
+      console.log('limitName::::::', limitName);
+      if (!this.datePickersInfo[i].start.formatedValue) {
+        console.log(
+          'this.datePickersInfo[i].start.value::::::',
+          this.datePickersInfo[i].start.formatedValue
+        );
+        this.datePickersInfo[i][limitName].open =
+          !this.datePickersInfo[i][limitName].open;
+        const notification = await this.notificationAlert(
+          'Please fill out the third field!',
+          ''
+        );
       }
     }
   }
