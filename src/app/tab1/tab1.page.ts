@@ -352,6 +352,7 @@ export class Tab1Page implements OnInit {
   get f() {
     return this.searchFilterForm.controls;
   }
+
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
@@ -460,6 +461,7 @@ export class Tab1Page implements OnInit {
       this.updatePreselectList();
       for (let i = 0; i < this.allSearch().length; i++) {
         this.onParam1Change(i);
+        console.log('onParam1Change::::::');
       }
     }
   }
@@ -559,7 +561,6 @@ export class Tab1Page implements OnInit {
         this.datePickerInfo[dateIndex] = INITIALDATEPICKEINFO;
       }
       this.datePickerInfo[dateIndex].value = item?.param3;
-      console.log('item.param2::::::', item.param2);
     }
   }
 
@@ -568,22 +569,31 @@ export class Tab1Page implements OnInit {
   }
 
   onParam1Change(i: any) {
-    console.log('i::::::', i);
+    console.log('i::::onParam1Change::', i);
     if (i == 0) {
       this.isParam2Select = true;
     }
     const row = this.allSearch().controls[i] as FormGroup;
+    console.log('row::::onParam1Change::', row);
+    console.log('this.searchData::onParam1Change::::', this.searchData);
+    console.log(
+      'allSearch().controls[i].get',
+      this.allSearch().controls[i].get('param1')
+    );
     const menu = this.searchData.find(
       (f) => f.id.toLowerCase() === row.get('param1').value.toLowerCase()
     );
+    console.log('menu::::::', menu);
     row.get('param2').enable();
     row.get('param3').enable();
     row.get('param4').enable();
 
     if (this.param2List && this.param2List.length > 0) {
       this.param2List[i] = menu?.subMenu;
+      console.log('this.param2List[i]::::::', this.param2List[i]);
     } else {
       this.param2List.push(menu?.subMenu);
+      console.log('this.param2List[i]:::else:::', this.param2List[i]);
     }
 
     row.get('param2').markAllAsTouched();
@@ -964,12 +974,17 @@ export class Tab1Page implements OnInit {
     }
 
     const changes = this.trackChanges(this.presetId);
+    console.log('changes::::onPreselectDDLChange::', changes);
     // to check if newly created presets after fresh load app should be saved
     const compareSearchParam =
       this.currentPresetName &&
       this.currentPresetName !== INITIALCURRENTPRESETNAME;
+    console.log('compareSearchParam:::::above change:', compareSearchParam);
     if (!changes) {
+      console.log('changes::::::', changes);
+      console.log('compareSearchParam::::::', compareSearchParam);
       if (compareSearchParam) {
+        console.log('compareSearchParam:::if:::', compareSearchParam);
         if (!confirm('Do you want to discard the current filter changes')) {
           setTimeout(() => {
             this.selectedPresetId = this.presetId;

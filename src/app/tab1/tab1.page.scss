@@ -82,6 +82,7 @@ ion-input {
   // height: 100%;
   overflow: hidden;
   padding-bottom: 2rem;
+  position: relative;
   // margin: 0;
 
 }
@@ -569,14 +570,24 @@ ion-datetime {
   padding: 0;
 }
 
+.disableSelect:disabled,
+.disableSelect:disabled[disabled] {
+  background-color: grey;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
   .form-wrapper {
     position: relative;
   }
  
-  @media (max-width: 375px) {
-   
-}
+
 @media only screen and (max-width: 600px) {
+  .list {
+    position: relative;
+   }
   .ion-datetime-start, .datepicker-input,.ion-datetime-end  {
     z-index: 1000;
     position: absolute;
@@ -585,6 +596,7 @@ ion-datetime {
    .ion-datetime-end {
     top: -5rem;
    }
+   
 }
  
 
