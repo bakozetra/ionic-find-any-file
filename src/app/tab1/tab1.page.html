@@ -213,7 +213,7 @@
                       <ion-input
                         clearInput="true"
                         class="input-box datepicker"
-                        [value]="this.valueInputPicker"
+                        [value]="this.datePickerInfo[i].value"
                         formControlName="param3"
                         [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                         *ngIf="allSearch().controls[i].get('param2')?.value !== 'BETWEEN'"
@@ -223,12 +223,12 @@
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
-                        *ngIf="showDatePicker"
+                        *ngIf="this.datePickerInfo[i].open"
                         showDefaultButtons="true"
                         [value]="this.valueInputPicker"
                         class="datepicker-input"
-                        (ionCancel)="showDatePicker= false"
-                        (ionChange)="dateChangedInputPicker(datetime.value)"
+                        (ionCancel)="this.datePickerInfo[i].open = false"
+                        (ionChange)="dateChangedInputPicker(i,datetime.value)"
                       >
                         <span slot="title"> Pick date </span>
                       </ion-datetime>

@@ -35,7 +35,6 @@
   outline: none;
   background-color: white;
   color: #000;
-  // color: #fff !important;
 }
 
 ion-input {
@@ -52,8 +51,8 @@ ion-input {
 }
 
 .accordion-grp {
-  padding: 3vh;
-
+  padding: 1vh;
+  // height: 100vh;
 }
 
 .input-wrapper {
@@ -69,6 +68,7 @@ ion-input {
   border: 2px solid #fff;
   border-radius: 5px;
   background: transparent;
+
 }
 
 .accordion-label {
@@ -77,6 +77,13 @@ ion-input {
 
 .list {
   background: transparent;
+  height: 84vh;
+  // width: 100%;
+  // height: 100%;
+  overflow: hidden;
+  padding-bottom: 2rem;
+  // margin: 0;
+
 }
 
 .search-box {

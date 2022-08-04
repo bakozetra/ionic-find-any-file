@@ -116,11 +116,15 @@ const initialFilterValue = {
 };
 
 const INITIALCURRENTPRESETNAME = '';
-const INITIALDATEPICKEINFO = {
+const INITIALDATEPICKERSINFO = {
   start: { open: false, value: '' },
   end: { open: false, value: '' },
 };
 
+const INITIALDATEPICKEINFO = {
+  open: false,
+  value: '',
+};
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -249,6 +253,10 @@ export class Tab1Page implements OnInit {
 
   selectMode = 'date';
   datePickersInfo = {
+    '0': INITIALDATEPICKERSINFO,
+  };
+
+  datePickerInfo = {
     '0': INITIALDATEPICKEINFO,
   };
 
@@ -285,11 +293,6 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  // datePickerInputClose(limitName, i) {
-  //   this.datePickersInfo[i][limitName].open =
-  //     this.datePickersInfo[i][limitName].open;
-  // }
-
   dateChanged(limitName, value, i, startDateValue?: any) {
     if (limitName === 'start') {
       const startDateFormated = new Date(value);
@@ -317,11 +320,17 @@ export class Tab1Page implements OnInit {
 
   datePickerInputOnClickNotBetween(i, event) {
     this.showDatePicker = !this.showDatePicker;
+    this.datePickerInfo[i].open = !this.datePickerInfo[i].open;
+    console.log(
+      'this.datePickerInfo[i].open::::::',
+      this.datePickerInfo[i].open
+    );
   }
-  dateChangedInputPicker(value) {
+  dateChangedInputPicker(i, value) {
     console.log('value::::::', value);
-    this.valueInputPicker = format(parseISO(value), 'yyyy-MM-dd');
+    this.datePickerInfo[i].value = format(parseISO(value), 'yyyy-MM-dd');
     this.showDatePicker = false;
+    this.datePickerInfo[i].open = false;
   }
 
   //  ngx calender
@@ -346,6 +355,10 @@ export class Tab1Page implements OnInit {
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
+    this.datePickerInfo[rowIndex + 1] = {
+      open: false,
+      value: '',
+    };
     this.datePickersInfo[rowIndex + 1] = {
       start: { open: false, value: '' },
       end: { open: false, value: '' },
@@ -530,19 +543,23 @@ export class Tab1Page implements OnInit {
   addSearch(item: any) {
     console.log('item::::addSearch::', item);
     this.allSearch().push(this.newEvent(item));
+    console.log('item.param::::::', item.param2);
     if (item.param3 && item.param4) {
       const dateIndex = this.allSearch().value.length - 1;
-      console.log(
-        'this.datePickersInfo[dateIndex]::::::',
-        this.datePickersInfo[dateIndex]
-      );
       if (!this.datePickersInfo[dateIndex]) {
-        this.datePickersInfo[dateIndex] = INITIALDATEPICKEINFO;
-        console.log('this.datePickersInfo::::::', this.datePickersInfo);
+        this.datePickersInfo[dateIndex] = INITIALDATEPICKERSINFO;
+        // console.log('this.datePickersInfo::::::', this.datePickersInfo);
       }
-      console.log('dateIndex::::::', dateIndex);
       this.datePickersInfo[dateIndex].end.formatedValue = item?.param4;
       this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
+    }
+    if (item.param2 == 'EXACTLY' || 'AFTER' || 'BEFORE') {
+      const dateIndex = this.allSearch().value.length - 1;
+      if (!this.datePickerInfo[dateIndex]) {
+        this.datePickerInfo[dateIndex] = INITIALDATEPICKEINFO;
+      }
+      this.datePickerInfo[dateIndex].value = item?.param3;
+      console.log('item.param2::::::', item.param2);
     }
   }
 
