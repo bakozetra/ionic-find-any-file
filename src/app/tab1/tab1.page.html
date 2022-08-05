@@ -169,9 +169,6 @@
                         {{p2.name}}
                       </option>
                     </select>
-                    <ng-template #kkkk>
-                      <p>Hello</p>
-                    </ng-template>
                   </ion-col>
                   <ion-col size-xs="12" size-sm="" class="input-wrapper">
                     <ion-input
@@ -208,11 +205,11 @@
                         showDefaultButtons="true"
                         (ionCancel)="this.datePickersInfo[i].start.open = false"
                         min="2000-01-01T00:00:00"
-                        id="test1"
                       >
                         <span slot="title">Select a start date</span>
                       </ion-datetime>
                       <ion-input
+                        readonly
                         clearInput="true"
                         class="input-box datepicker"
                         [value]="this.datePickerInfo[i].value"
@@ -222,6 +219,7 @@
                         (click)="this.datePickerInputOnClickNotBetween(i, $event)"
                       >
                       </ion-input>
+
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
@@ -365,12 +363,6 @@
   <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Save new preset</h4>
-      <!-- <button
-        type="button"
-        class="btn-close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      ></button> -->
     </div>
     <div class="modal-body">
       <div class="mb-3">
@@ -394,16 +386,16 @@
         Cancel
       </button>
       <button
-        [disabled]="currentPresetName?.length < 1"
+        [disabled]="!this.isfieldsHasValue(currentPresetName)"
         (click)="savePreselectForm(
-          this.getPersistPresetSearchParsed(),
-          this.searchFilterForm,
-          this.preSelectList,
-          this.currentPresetName
+        this.getPersistPresetSearchParsed(),
+        this.searchFilterForm,
+        this.preSelectList,
+        this.currentPresetName
         ); 
         modal.dismiss('button')
         "
-        class="btn btn-outline-dark"
+        class="btn btn-outline-dark save-button"
       >
         Save
       </button>

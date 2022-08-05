@@ -25,13 +25,7 @@ import {
   Platform,
 } from '@ionic/angular';
 import { areFiltersEqual } from '../utils';
-import {
-  CalendarModal,
-  CalendarModalOptions,
-  DayConfig,
-  CalendarResult,
-} from 'ion2-calendar';
-import { Moment } from 'moment';
+import { fieldsHasValue } from '../utils';
 import { format, parseISO, isBefore } from 'date-fns';
 import { PersistPresetSearchService } from './persist-preset-search.service';
 
@@ -229,6 +223,9 @@ export class Tab1Page implements OnInit {
   alertService;
   showDatePicker = false;
   valueInputPicker = '';
+  selectMode = 'date';
+  datePickersInfo = { '0': INITIALDATEPICKERSINFO };
+  datePickerInfo = { '0': INITIALDATEPICKEINFO };
 
   constructor(
     private fb: FormBuilder,
@@ -251,17 +248,6 @@ export class Tab1Page implements OnInit {
 
   // Ionic date picker
 
-  selectMode = 'date';
-  datePickersInfo = {
-    '0': INITIALDATEPICKERSINFO,
-  };
-
-  datePickerInfo = {
-    '0': INITIALDATEPICKEINFO,
-  };
-
-  showPickerEnd = false;
-
   formatDateToDisplay(date) {
     if (!date) {
       return format(parseISO(format(new Date(), 'yyyy-MM-dd')), 'yyyy-MM-dd');
@@ -280,24 +266,17 @@ export class Tab1Page implements OnInit {
   }
 
   async datePickerInputOnClick(limitName, i, event) {
-    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
     const android = this.platform.is('android');
     if (android) {
       if (null) {
         let ionDatetimeStartStyle = document.getElementById('test1');
-        console.log('ionDatetimeStartStyle::::::', ionDatetimeStartStyle);
         ionDatetimeStartStyle?.classList?.add('ion-datetime-mobile');
       }
     }
     if (limitName == 'end') {
-      console.log('limitName::::::', limitName);
       if (!this.datePickersInfo[i].start.formatedValue) {
-        console.log(
-          'this.datePickersInfo[i].start.value::::::',
-          this.datePickersInfo[i].start.formatedValue
-        );
         this.datePickersInfo[i][limitName].open =
           !this.datePickersInfo[i][limitName].open;
         const notification = await this.notificationAlert(
@@ -307,6 +286,9 @@ export class Tab1Page implements OnInit {
       }
     }
   }
+  isfieldsHasValue(value) {
+    return fieldsHasValue(value);
+  }
 
   dateChanged(limitName, value, i, startDateValue?: any) {
     if (limitName === 'start') {
@@ -315,7 +297,6 @@ export class Tab1Page implements OnInit {
         this.datePickersInfo[i].end.formatedValue
       );
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-
       if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.formatedValue = '';
       }
@@ -332,37 +313,15 @@ export class Tab1Page implements OnInit {
   }
 
   // Date picker for exatly before and after.
-
   datePickerInputOnClickNotBetween(i, event) {
     this.showDatePicker = !this.showDatePicker;
     this.datePickerInfo[i].open = !this.datePickerInfo[i].open;
-    console.log(
-      'this.datePickerInfo[i].open::::::',
-      this.datePickerInfo[i].open
-    );
   }
   dateChangedInputPicker(i, value) {
     console.log('value::::::', value);
     this.datePickerInfo[i].value = format(parseISO(value), 'yyyy-MM-dd');
     this.showDatePicker = false;
     this.datePickerInfo[i].open = false;
-  }
-
-  //  ngx calender
-
-  // easipick calender
-  createDateRangePicker(i, date?: any) {
-    const presetDate = date && date.param3 ? date.param3.split(' - ') : [];
-    // const presetDateParm4 = date && date.param3 ? date.param4.split(' - ') : [];
-
-    const picker = new easepick.create({
-      element: '#datepicker' + i,
-      css: [
-        'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.css',
-      ],
-      zIndex: 99,
-      plugins: ['AmpPlugin', 'RangePlugin'],
-    });
   }
   get f() {
     return this.searchFilterForm.controls;
@@ -381,10 +340,6 @@ export class Tab1Page implements OnInit {
     };
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
-      console.log(
-        '      this.addSearch(initialFilterValue);:createDateRangePicker:::::'
-        // this.addSearch(initialFilterValue)
-      );
       this.addSearch(initialFilterValue);
       return;
     }
@@ -560,7 +515,7 @@ export class Tab1Page implements OnInit {
   addSearch(item: any) {
     console.log('item::::addSearch::', item);
     this.allSearch().push(this.newEvent(item));
-    console.log('item.param::::::', item.param2);
+    console.log('item.param::::::', item.param3);
     if (item.param3 && item.param4) {
       const dateIndex = this.allSearch().value.length - 1;
       if (!this.datePickersInfo[dateIndex]) {
@@ -706,16 +661,17 @@ export class Tab1Page implements OnInit {
     preSelectList,
     prestName
   ) {
-    console.log('  async savePreselectForm(::::::');
     this.submitted = true;
     if (!this.allSearch().valid) {
       return;
     }
     let filterData: FilterModel[] = searchFilterForm.value
       .search as FilterModel[];
-    console.log('filterData:::prestName:::', filterData);
     let every = filterData.every(
-      (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
+      (m) =>
+        fieldsHasValue(m.param1) &&
+        fieldsHasValue(m.param2) &&
+        fieldsHasValue(m.param3)
     );
     let messageSpan = document.getElementById('message');
     if (every) {
@@ -724,7 +680,6 @@ export class Tab1Page implements OnInit {
         localJSON?.length > 0 &&
         localJSON.filter((s) => s.filterName == prestName)?.length > 0
       ) {
-        console.log('temp1::::::');
         const temp1 = localJSON.map((data) =>
           data?.id === this.id ? data?.filters : ''
         )[0];
@@ -746,7 +701,6 @@ export class Tab1Page implements OnInit {
           return;
         }
       }
-      console.log('prestName::::downnotication::', prestName);
       if (!preSelectList || preSelectList.length === 0) {
         const allFilters = [];
         filterData = filterData.filter(
@@ -849,15 +803,19 @@ export class Tab1Page implements OnInit {
     let presetsName = this.currentPresetName;
     this.submitted = true;
     let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
-
+    console.log('allsearch.valid::::::', allsearch.valid);
     if (!allsearch.valid) {
       return;
     }
     // to check if the forth is empty
+
     for (var i = 0, len1 = filterData.length; i < len1; i++) {
+      if (!fieldsHasValue(filterData?.[i]?.param3) && filterData?.[i]?.param3) {
+        filterData[i].param3 = '';
+      }
+
       if (
         filterData?.[i]?.param4 == '' &&
-        // !filterData?.[i]?.param4 &&
         filterData?.[i]?.param2 === SUB_MENU_BETWEEN_ID
       ) {
         const notification = await this.notificationAlert(
@@ -868,9 +826,17 @@ export class Tab1Page implements OnInit {
       }
     }
 
-    let every = filterData.every(
-      (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
-    );
+    // let every = filterData.every(
+    //   (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
+    // );
+    let every = filterData.every((m) => {
+      return (
+        fieldsHasValue(m.param1) &&
+        fieldsHasValue(m.param2) &&
+        fieldsHasValue(m.param3)
+      );
+    });
+    console.log('every::::::', every);
     let messageSpan = document.getElementById('message');
     let isModified = true;
     if (every) {
@@ -1084,11 +1050,6 @@ export class Tab1Page implements OnInit {
         }
       }
 
-      console.log(
-        'JSON.stringify(temp1) !== JSON.stringify(temp2)::::::',
-        JSON.stringify(temp1) !== JSON.stringify(temp2)
-      );
-
       if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
         return false;
       } else {
@@ -1188,6 +1149,13 @@ export class Tab1Page implements OnInit {
       );
     }
   }
+
+  // clearFields = (e) => {
+  //   console.log('e::::::', e);
+  // };
+
+  // <button onclick="document.getElementById('myInput').value = ''">Clear input field</button>
+  // <input type="text" value="Blabla" id="myInput">
 
   drop(event: CdkDragDrop<any>) {
     const previous = this.allSearch().at(event.previousIndex);
