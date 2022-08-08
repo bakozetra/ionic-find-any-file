@@ -221,7 +221,6 @@ export class Tab1Page implements OnInit {
   dateRangePickerEnd = '';
   persistPresetSearchService;
   alertService;
-  showDatePicker = false;
   valueInputPicker = '';
   selectMode = 'date';
   datePickersInfo = { '0': INITIALDATEPICKERSINFO };
@@ -266,16 +265,14 @@ export class Tab1Page implements OnInit {
   }
 
   async datePickerInputOnClick(limitName, i, event) {
+    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
-    const android = this.platform.is('android');
-    if (android) {
-      if (null) {
-        let ionDatetimeStartStyle = document.getElementById('test1');
-        ionDatetimeStartStyle?.classList?.add('ion-datetime-mobile');
-      }
-    }
     if (limitName == 'end') {
+      console.log(
+        'this.datePickersInfo[i].start.formatedValue::::::',
+        this.datePickersInfo[i].start.formatedValue
+      );
       if (!this.datePickersInfo[i].start.formatedValue) {
         this.datePickersInfo[i][limitName].open =
           !this.datePickersInfo[i][limitName].open;
@@ -305,6 +302,7 @@ export class Tab1Page implements OnInit {
     if (limitName === 'end') {
       this.dateRangePickerEnd = format(parseISO(value), 'yyyy-MM-dd');
     }
+
     this.datePickersInfo[i][limitName].open = false;
     this.datePickersInfo[i][limitName].formatedValue = format(
       parseISO(value),
@@ -314,13 +312,11 @@ export class Tab1Page implements OnInit {
 
   // Date picker for exatly before and after.
   datePickerInputOnClickNotBetween(i, event) {
-    this.showDatePicker = !this.showDatePicker;
     this.datePickerInfo[i].open = !this.datePickerInfo[i].open;
   }
   dateChangedInputPicker(i, value) {
     console.log('value::::::', value);
     this.datePickerInfo[i].value = format(parseISO(value), 'yyyy-MM-dd');
-    this.showDatePicker = false;
     this.datePickerInfo[i].open = false;
   }
   get f() {
@@ -385,7 +381,7 @@ export class Tab1Page implements OnInit {
         });
         if (checkIfExist && checkIfExist?.length > 0) {
           const confirmed = await this.confirmationAlert(
-            `Are you sure to delete ${presetName} preset.`
+            `Are you sure to delete : <b>${presetName}</b> preset.`
           );
           if (confirmed) {
             let data = localJSON.filter((ele) => ele?.id != this?.id);
@@ -431,7 +427,6 @@ export class Tab1Page implements OnInit {
       this.updatePreselectList();
       for (let i = 0; i < this.allSearch().length; i++) {
         this.onParam1Change(i);
-        console.log('onParam1Change::::::');
       }
     }
   }
@@ -455,7 +450,7 @@ export class Tab1Page implements OnInit {
 
     if (areEqual) {
       const confirmed = await this.confirmationAlert(
-        'Do you want to clear the current preset: ' + this.currentPresetName
+        `Do you want to clear the current preset: <b>${this.currentPresetName}</b>`
       );
       if (confirmed) {
         this.clearObject();
@@ -464,8 +459,7 @@ export class Tab1Page implements OnInit {
     }
     if (!areEqual) {
       const confirmed = await this.confirmationAlert(
-        'Do you want to clear preset including your unsaved changes : ' +
-          this.currentPresetName
+        `Do you want to clear preset including your unsaved changes : <b>${this.currentPresetName}</b>`
       );
       if (confirmed) {
         this.clearObject();
@@ -485,7 +479,6 @@ export class Tab1Page implements OnInit {
   }
 
   newEvent(item?): FormGroup {
-    console.log('item::::::', item);
     return this.fb.group({
       param1: [item?.param1, [Validators.required]],
       param2: [
@@ -513,14 +506,11 @@ export class Tab1Page implements OnInit {
   }
 
   addSearch(item: any) {
-    console.log('item::::addSearch::', item);
     this.allSearch().push(this.newEvent(item));
-    console.log('item.param::::::', item.param3);
     if (item.param3 && item.param4) {
       const dateIndex = this.allSearch().value.length - 1;
       if (!this.datePickersInfo[dateIndex]) {
         this.datePickersInfo[dateIndex] = INITIALDATEPICKERSINFO;
-        // console.log('this.datePickersInfo::::::', this.datePickersInfo);
       }
       this.datePickersInfo[dateIndex].end.formatedValue = item?.param4;
       this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
@@ -539,31 +529,21 @@ export class Tab1Page implements OnInit {
   }
 
   onParam1Change(i: any) {
-    console.log('i::::onParam1Change::', i);
     if (i == 0) {
       this.isParam2Select = true;
     }
     const row = this.allSearch().controls[i] as FormGroup;
-    console.log('row::::onParam1Change::', row);
-    console.log('this.searchData::onParam1Change::::', this.searchData);
-    console.log(
-      'allSearch().controls[i].get',
-      this.allSearch().controls[i].get('param1')
-    );
     const menu = this.searchData.find(
       (f) => f.id.toLowerCase() === row.get('param1').value.toLowerCase()
     );
-    console.log('menu::::::', menu);
     row.get('param2').enable();
     row.get('param3').enable();
     row.get('param4').enable();
 
     if (this.param2List && this.param2List.length > 0) {
       this.param2List[i] = menu?.subMenu;
-      console.log('this.param2List[i]::::::', this.param2List[i]);
     } else {
       this.param2List.push(menu?.subMenu);
-      console.log('this.param2List[i]:::else:::', this.param2List[i]);
     }
 
     row.get('param2').markAllAsTouched();
@@ -573,22 +553,8 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, isUserInteraction?: any) {
     const row = this.allSearch().controls[i] as FormGroup;
-
-    console.log('row::::::', row);
-    console.log('row:::value:::', row.value.param3.value);
-    console.log('row::controls::::', row.controls.param3);
-    console.log(
-      'row.value.param2.toLowerCase()::::::',
-      row.value.param2.toLowerCase()
-    );
-    console.log(
-      'SUB_MENU_BETWEEN_ID.toLowerCase()::::::',
-      SUB_MENU_BETWEEN_ID.toLowerCase()
-    );
-
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()) {
       if (isNaN(Date.parse(row.value.param3))) {
-        console.log('isUserInteraction');
         isUserInteraction &&
           this.allSearch().controls[i].get('param3').setValue('');
       } else {
@@ -684,7 +650,6 @@ export class Tab1Page implements OnInit {
           data?.id === this.id ? data?.filters : ''
         )[0];
         const temp2 = searchFilterForm.value.search;
-        console.log('temp2::::::', temp2);
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
           this.message = 'Your Filter stored successfully';
           if (this.message) {
@@ -692,7 +657,6 @@ export class Tab1Page implements OnInit {
           }
           return;
         } else {
-          console.log('notification:::::else every:');
           const notification = await this.notificationAlert(
             'Preset already exists.',
             'Please check the name'
@@ -712,7 +676,6 @@ export class Tab1Page implements OnInit {
           filters: searchFilterForm.value.search,
         };
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
-          console.log('finalData::::::', finalData);
           if (finalData.filters[0]?.param4 !== '') {
             allFilters.push(finalData);
             this.setPersistPresetSearch(allFilters);
@@ -723,11 +686,11 @@ export class Tab1Page implements OnInit {
               this.emptyMessageTimeout();
             }
           } else {
-            console.log('notification::::::');
             const notification = await this.notificationAlert(
               'Both field for the between range has to be valid.',
               'Please check the form'
             );
+            this.currentPresetName = '';
             return notification;
           }
         } else {
@@ -741,7 +704,6 @@ export class Tab1Page implements OnInit {
           }
         }
       } else {
-        console.log('allFilters::::::else');
         const allFilters = preSelectList;
         filterData = filterData.filter(
           (data) => data?.param1 && data?.param2 && data?.param3
@@ -751,10 +713,7 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        console.log('prestName::::::', prestName);
-        console.log('finalData::::::', finalData);
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
-          console.log('finalData::::::', finalData);
           if (finalData.filters[0]?.param4 !== '') {
             allFilters.push(finalData);
             this.setPersistPresetSearch(allFilters);
@@ -765,7 +724,6 @@ export class Tab1Page implements OnInit {
               this.emptyMessageTimeout();
             }
           } else {
-            console.log('notification::::::');
             const notification = await this.notificationAlert(
               'Both field for the between range has to be valid.',
               'Please check the form'
@@ -793,7 +751,6 @@ export class Tab1Page implements OnInit {
   }
 
   async updateCurrentPreset() {
-    console.log('updateCurrentPreset::::::');
     let filterModel = this.searchFilterForm;
     let allsearch = this.allSearch();
     let findInPersistanDataByFilterName = this.findInPersistanDataByFilterName(
@@ -803,7 +760,6 @@ export class Tab1Page implements OnInit {
     let presetsName = this.currentPresetName;
     this.submitted = true;
     let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
-    console.log('allsearch.valid::::::', allsearch.valid);
     if (!allsearch.valid) {
       return;
     }
@@ -826,9 +782,6 @@ export class Tab1Page implements OnInit {
       }
     }
 
-    // let every = filterData.every(
-    //   (m) => m.param1 !== '' && m.param2 !== '' && m.param3 !== ''
-    // );
     let every = filterData.every((m) => {
       return (
         fieldsHasValue(m.param1) &&
@@ -836,7 +789,6 @@ export class Tab1Page implements OnInit {
         fieldsHasValue(m.param3)
       );
     });
-    console.log('every::::::', every);
     let messageSpan = document.getElementById('message');
     let isModified = true;
     if (every) {
@@ -862,7 +814,6 @@ export class Tab1Page implements OnInit {
         }
         // debugger;
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
-          console.log('Your Filter stored successfully');
           messageSpan.style.color = 'green';
           this.message = 'Your Filter stored successfully';
           if (this.message) {
@@ -871,9 +822,8 @@ export class Tab1Page implements OnInit {
           return;
         } else {
           const confirmed = await this.confirmationAlert(
-            'Your are updating the current filter: ' +
-              presetsName +
-              ' Please confirm'
+            `Your are updating the current filter: <b>${presetsName}</b>  
+              <p>Please confirm.</p>`
           );
           if (!confirmed) {
             return;
@@ -911,7 +861,6 @@ export class Tab1Page implements OnInit {
   }
 
   setPersistPresetSearch(data) {
-    console.log('data::::setPersistPresetSearch::', data);
     return this.persistPresetSearchService.setPersistPresetSearch(data);
   }
 
@@ -923,10 +872,6 @@ export class Tab1Page implements OnInit {
   }
 
   findInPersistanDataByFilterName(searchParamName) {
-    console.log(
-      'searchParamName:::findInPersistanDataByFilterName:::',
-      searchParamName
-    );
     return this.persistPresetSearchService.findInPersistanDataByFilterName(
       searchParamName
     );
@@ -953,42 +898,29 @@ export class Tab1Page implements OnInit {
       this.currentPresetName =
         currentPreset?.filterName || INITIALCURRENTPRESETNAME;
     }
-    console.log('this.presetId:::onPreselectDDLChange:::', this.presetId);
     const changes = this.trackChanges(this.presetId);
-    console.log('changes::::onPreselectDDLChange::', changes);
     // to check if newly created presets after fresh load app should be saved
-    console.log('this.currentPresetName::::::', this.currentPresetName);
     const compareSearchParam =
       this.currentPresetName &&
       this.currentPresetName !== INITIALCURRENTPRESETNAME;
-    console.log('compareSearchParam:::::above change:', compareSearchParam);
+    this.presetId = e.target?.value;
     if (!changes) {
-      console.log('changes::::::', changes);
-      console.log('compareSearchParam::::::', compareSearchParam);
       if (compareSearchParam) {
-        console.log('compareSearchParam:::if:::', compareSearchParam);
         const confirmed = await this.confirmationAlert(
           `Do you want to discard the current filter changes`
         );
         if (confirmed) {
           this.selectedPresetId = this.presetId;
-          console.log(
-            'this.selectedPresetId::confirmed::::',
-            this.selectedPresetId
-          );
         }
       }
     }
     this.id = e.target?.value;
-
-    this.presetId = e.target?.value;
     if (
       this.currentPresetName &&
       this.currentPresetName === INITIALCURRENTPRESETNAME
     ) {
       this.allSearch().clear();
     }
-
     if (compareSearchParam) {
       this.clearFormArray();
       const localJSON = this.getPersistPresetSearchParsed();
@@ -1013,7 +945,6 @@ export class Tab1Page implements OnInit {
         });
         tempArray.map((m, i) => {
           this.addSearch(m);
-          console.log('tempArray::::::');
           this.onParam2Change(i, false);
         });
       } else {
@@ -1024,21 +955,16 @@ export class Tab1Page implements OnInit {
   }
 
   trackChanges = (param: any) => {
-    console.log('param::::::', param);
     if (!param) return true;
     const localJSON = this.getPersistPresetSearchParsed();
     let data = localJSON.find((f) => f.id == param);
-    console.log('data::::::', data);
-
     if (!data) {
       return false;
     }
     if (data?.filters?.length === this.allSearch().controls.length) {
       const temp1 = this.allSearch().getRawValue();
-      console.log('temp1:::trackChanges:::', temp1);
       const temp2 = data?.filters;
 
-      console.log('temp2::trackChanges::::', temp2);
       for (var i = 0, len1 = temp1.length; i < len1; i++) {
         if (temp1?.[i]?.param4 == '') {
           delete temp1[i].param4;
@@ -1062,12 +988,10 @@ export class Tab1Page implements OnInit {
   closeResult = '';
 
   open(content) {
-    console.log('content::::::', content);
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
         (result) => {
-          console.log('result::::::', result);
           this.closeResult = `Closed with: ${result}`;
         },
         (reason) => {
@@ -1075,7 +999,6 @@ export class Tab1Page implements OnInit {
           if (
             this.closeResult !== `Dismissed ${this.getDismissReason('button')}`
           ) {
-            console.log('click::::::');
             this.currentPresetName = INITIALCURRENTPRESETNAME;
           }
         }
@@ -1100,6 +1023,7 @@ export class Tab1Page implements OnInit {
     const alert = await this.alertController.create({
       header: 'Confirmation',
       message,
+      cssClass: 'alert-confirmation',
       backdropDismiss: false,
       buttons: [
         {
@@ -1149,13 +1073,6 @@ export class Tab1Page implements OnInit {
       );
     }
   }
-
-  // clearFields = (e) => {
-  //   console.log('e::::::', e);
-  // };
-
-  // <button onclick="document.getElementById('myInput').value = ''">Clear input field</button>
-  // <input type="text" value="Blabla" id="myInput">
 
   drop(event: CdkDragDrop<any>) {
     const previous = this.allSearch().at(event.previousIndex);
