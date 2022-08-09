@@ -755,6 +755,7 @@ export class Tab1Page implements OnInit {
               'Both field for the between range has to be valid.',
               'Please check the form'
             );
+            this.currentPresetName = '';
             return notification;
           }
         } else {
@@ -805,7 +806,8 @@ export class Tab1Page implements OnInit {
           'Both field for the between range has to be valid.',
           'Please check the form'
         );
-        return notification;
+        // return notification;
+        this.currentPresetName = '';
       }
     }
 

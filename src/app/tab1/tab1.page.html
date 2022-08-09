@@ -13,6 +13,7 @@
           class="search-row search-row-select"
         >
           <div class="select-search">
+            <span class="span-presets">Presets :</span>
             <div class="select-item">
               <ion-select
                 interface="popover"
@@ -170,7 +171,11 @@
                       </option>
                     </select>
                   </ion-col>
-                  <ion-col size-xs="12" size-sm="" class="input-wrapper">
+                  <ion-col
+                    size-xs="12"
+                    size-sm=""
+                    class="input-wrapper input-range"
+                  >
                     <ion-input
                       clearInput
                       clearOnEdit="true"
@@ -185,6 +190,7 @@
                     <ng-template #dates>
                       <ion-input
                         readonly
+                        type="none"
                         class="input-box range"
                         formControlName="param3"
                         [value]="this.datePickersInfo[i]?.start?.formatedValue"
@@ -194,6 +200,15 @@
                         clearInput
                       >
                       </ion-input>
+                      <!-- <ion-button
+                        class="input-icons"
+                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
+                      >
+                        <ion-icon
+                          slot="icon-only"
+                          src="../../assets/icon/close-outline.svg"
+                        ></ion-icon>
+                      </ion-button> -->
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
@@ -219,7 +234,15 @@
                         (click)="this.datePickerInputOnClickNotBetween(i, $event)"
                       >
                       </ion-input>
-
+                      <!-- <ion-button
+                        class="input-icons-notbetween"
+                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
+                      >
+                        <ion-icon
+                          slot="icon-only"
+                          src="../../assets/icon/close-outline.svg"
+                        ></ion-icon>
+                      </ion-button> -->
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
@@ -260,8 +283,8 @@
                       <span slot="title">Select an end date</span>
                     </ion-datetime>
                     <ion-input
-                      clearInput
                       readonly
+                      clearInput
                       class="input-box range"
                       formControlName="param4"
                       [value]="this.datePickersInfo[i].end.formatedValue"
@@ -402,6 +425,33 @@
       <ng-template #button1> </ng-template>
     </div>
   </ng-template>
+  <div class="my-progress">
+    <li>
+      Feature :
+      <p>- Add a "Presets: " label to the left of current preset name.</p>
+      <p>- Add this icon "▼" next to the preset label.</p>
+      <p>- Add this icon "▼" on the right of the first and second selectors.</p>
+      <p>
+        - Working in progress with adding X to clear input both "Between" dates
+        , exactly...
+      </p>
+    </li>
+    <li>
+      Bugs/issues :
+      <p>
+        - Fixing : (load a preset, do any modifications, try to load another
+        preset, confirm this - then the same preset that was already loaded
+        loads again, not a new selected one)
+      </p>
+      <p>
+        - Fixing : ( select modification date, exactly and set a date. then
+        change the second selecter to between. first date got filled correctly,
+        but when try to select the second date, then Please fill third field
+        message got displayed despite it's filled ). But I need to fix the date
+        validation
+      </p>
+    </li>
+  </div>
 </ion-content>
 
 <!-- 

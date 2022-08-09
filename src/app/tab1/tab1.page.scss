@@ -186,6 +186,10 @@ select {
   display: flex;
   width: 100%;
   align-items: center;
+  .span-presets {
+    color: white;
+    padding-inline-start: 1rem;
+  }
 
 }
 
@@ -205,6 +209,7 @@ select {
   .save-btn1 {
     margin-left: 1rem;
   }
+  
   .select-item {
     width:250px;
     background-color: #333333;
@@ -460,6 +465,7 @@ label {
 }
 
 
+
 ul li ul {
   display: none; /* Hide the nested list first */
 }
@@ -535,9 +541,17 @@ ul li.active ul {
 }
 
 #presets-select::part(icon) {
-  display: none !important;
+  content: url(../../assets/icon/dropdown.svg);
+
 }
 
+.select-class {
+  background-image: url(../../assets/icon/dark-dropdown.svg);
+  background-repeat: no-repeat;
+  background-position-x: 98%;
+  background-position-y: center;
+  background-size: 19px,19px;
+}
 // ion-date time 
 ion-datetime {
   position: absolute;
@@ -545,11 +559,25 @@ ion-datetime {
   width: 100%;
 }
 
+.input-range {
+  position: relative;
+  ::ng-deep ion-button {
+    position: absolute;
+    right: 0.5rem;
+  }
+  ::ng-deep input-icons-notbetween {
+
+  }
+}
+// .input-icons  {
+//   position: absolute;
+//   top: 2rem;
+//   color: #fff;
+// }
 // disable preset menu
 
 .disable-preset-menu {
   color: #dddddd;
-  // background-color: #333333;
   background-color:inherit;
   padding: 0;
 }
@@ -565,7 +593,7 @@ ion-datetime {
   opacity: 0.5;
   cursor: not-allowed;
   padding: 0;
-}
+} 
 
 .disableSelect:disabled,
 .disableSelect:disabled[disabled] {
@@ -582,9 +610,6 @@ ion-datetime {
   .form-wrapper {
     position: relative;
   }
-
-
-
 
 
 @media only screen and (max-width: 600px) {
@@ -608,10 +633,10 @@ ion-datetime {
    }
   
 }
- 
-// .alert-1-msg {
-//   background-color: #008000;
-// }
 
 
-
+.my-progress {
+  li {
+    color :white
+  }
+}
