@@ -251,7 +251,7 @@
                       (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
                       showDefaultButtons="true"
                       (ionCancel)="this.datePickersInfo[i]?.end.open = false"
-                      [min]="datePickersInfo?.[i]?.start?.formatedValue || '2000-01-01T00:00:00'"
+                      [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
                       max="2500-01-01T00:00:00"
                     >
                       <!-- 

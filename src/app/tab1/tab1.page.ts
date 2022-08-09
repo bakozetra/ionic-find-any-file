@@ -268,12 +268,30 @@ export class Tab1Page implements OnInit {
     console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
+
+    console.log(
+      'this.allSearch().controls[fc].get(param3)::::::',
+      this.allSearch().controls[i].get('param3')
+    );
+    console.log(
+      'this.datePickersInfo[i].start::::::',
+      this.datePickersInfo[i].start
+    );
+    console.log('limitName::::::', limitName);
     if (limitName == 'end') {
       console.log(
         'this.datePickersInfo[i].start.formatedValue::::::',
-        this.datePickersInfo[i].start.formatedValue
+        !this.datePickersInfo[i].start.formatedValue
       );
-      if (!this.datePickersInfo[i].start.formatedValue) {
+      console.log(
+        '        !this.datePickerInfo[i].value::::::',
+        !this.datePickerInfo[i].value
+      );
+
+      if (
+        !this.datePickersInfo[i].start.formatedValue &&
+        !this.allSearch().controls[i].get('param3').value
+      ) {
         this.datePickersInfo[i][limitName].open =
           !this.datePickersInfo[i][limitName].open;
         const notification = await this.notificationAlert(
@@ -293,8 +311,12 @@ export class Tab1Page implements OnInit {
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
       );
+      const test = new Date(this.allSearch().controls[i].get('param3').value);
+
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-      if (isStartAfterEndDate) {
+      let tes2 = isBefore(endDateFormated, test);
+      console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
+      if (isStartAfterEndDate || tes2) {
         this.datePickersInfo[i].end.formatedValue = '';
       }
     }
@@ -302,6 +324,10 @@ export class Tab1Page implements OnInit {
     if (limitName === 'end') {
       this.dateRangePickerEnd = format(parseISO(value), 'yyyy-MM-dd');
     }
+
+    const dateStartedFormAfter = new Date(
+      this.allSearch().controls[i].get('param3').value
+    );
 
     this.datePickersInfo[i][limitName].open = false;
     this.datePickersInfo[i][limitName].formatedValue = format(
@@ -319,6 +345,7 @@ export class Tab1Page implements OnInit {
     this.datePickerInfo[i].value = format(parseISO(value), 'yyyy-MM-dd');
     this.datePickerInfo[i].open = false;
   }
+
   get f() {
     return this.searchFilterForm.controls;
   }
