@@ -349,6 +349,7 @@ export class Tab1Page implements OnInit {
   get f() {
     return this.searchFilterForm.controls;
   }
+  test = [];
 
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
@@ -361,6 +362,10 @@ export class Tab1Page implements OnInit {
       start: { open: false, value: '' },
       end: { open: false, value: '' },
     };
+    const storeIndex = [];
+    const addRowIndex = this.test.push(...[rowIndex]);
+    console.log('storeIndex::::::', storeIndex);
+    console.log('addRowIndex::::::', addRowIndex);
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -1101,6 +1106,35 @@ export class Tab1Page implements OnInit {
         'unfocusFirstelement'
       );
     }
+  }
+
+  moveUp(e, currentRowIndex) {
+    // console.log('rowIndex::::::', );
+    const targetRowIndex = currentRowIndex - 1;
+
+    const datePickerInforCurrent = {
+      ...this.datePickersInfo[currentRowIndex],
+    };
+
+    const datePickerInfoTarget = {
+      ...this.datePickersInfo[targetRowIndex],
+    };
+
+    const previous = this.allSearch().at(targetRowIndex);
+    const current = this.allSearch().at(currentRowIndex);
+    this.allSearch().setControl(currentRowIndex, previous);
+    this.allSearch().setControl(targetRowIndex, current);
+    this.datePickersInfo[currentRowIndex] = datePickerInfoTarget;
+    this.datePickersInfo[targetRowIndex] = datePickerInforCurrent;
+  }
+
+  moveDown(e, currentRowIndex) {
+    console.log(e, 'dragDown');
+    const targetRowIndex = currentRowIndex + 1;
+    const previous = this.allSearch().at(targetRowIndex);
+    const current = this.allSearch().at(currentRowIndex);
+    this.allSearch().setControl(currentRowIndex, previous);
+    this.allSearch().setControl(targetRowIndex, current);
   }
 
   drop(event: CdkDragDrop<any>) {

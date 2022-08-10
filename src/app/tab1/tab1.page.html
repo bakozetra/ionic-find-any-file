@@ -13,8 +13,8 @@
           class="search-row search-row-select"
         >
           <div class="select-search">
+            <span class="span-presets">Presets :</span>
             <div class="select-item">
-              <span class="span-presets">Presets :</span>
               <ion-select
                 interface="popover"
                 placeholder="Presets"
@@ -102,42 +102,81 @@
                   [formGroupName]="i"
                   class="example-box preset-row"
                 >
-                  <div>
-                    <ion-col class="row-add">
-                      <ion-button
-                        (click)="addRow(false,i,$event)"
-                        [tooltip]="'Add row'"
-                      >
-                        <ion-icon
-                          name="add-circle-outline"
-                          size="large"
-                          slot="icon-only"
-                        ></ion-icon>
-                      </ion-button>
-                    </ion-col>
-                    <ion-col lines="none" class="row-delete">
-                      <ion-button
-                        class="update"
-                        *ngIf="allSearch()?.controls.length > 1 else disableMinus"
-                        (click)="removeRow(i)"
-                        [tooltip]="'remove row'"
-                      >
-                        <ion-icon
-                          name="remove-circle-outline"
-                          size="large"
-                          slot="icon-only"
-                        ></ion-icon>
-                      </ion-button>
-                      <ng-template #disableMinus>
-                        <ion-button class="update disablebutton" disabled>
+                  <div class="icon">
+                    <div>
+                      <ion-col class="row-add">
+                        <ion-button
+                          (click)="addRow(false,i,$event)"
+                          [tooltip]="'Add row'"
+                        >
+                          <ion-icon
+                            name="add-circle-outline"
+                            size="large"
+                            slot="icon-only"
+                          ></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                      <ion-col lines="none" class="row-delete">
+                        <ion-button
+                          class="update"
+                          *ngIf="allSearch()?.controls.length > 1 else disableMinus"
+                          (click)="removeRow(i)"
+                          [tooltip]="'remove row'"
+                        >
                           <ion-icon
                             name="remove-circle-outline"
                             size="large"
                             slot="icon-only"
                           ></ion-icon>
                         </ion-button>
-                      </ng-template>
-                    </ion-col>
+                        <ng-template #disableMinus>
+                          <ion-button class="update disablebutton" disabled>
+                            <ion-icon
+                              name="remove-circle-outline"
+                              size="large"
+                              slot="icon-only"
+                            ></ion-icon>
+                          </ion-button>
+                        </ng-template>
+                      </ion-col>
+                    </div>
+                    <div>
+                      <ion-col class="row-add">
+                        <ion-button
+                          (click)="moveUp($event , i)"
+                          [tooltip]="'drag up'"
+                        >
+                          <ion-icon
+                            slot="icon-only"
+                            size="large"
+                            src="../../assets/icon/arrow-up-circle-outline.svg"
+                          ></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                      <ion-col lines="none" class="row-delete">
+                        <ion-button
+                          class="update"
+                          *ngIf="allSearch()?.controls.length > 1 else disableArrowDown"
+                          (click)="moveDown($event,i)"
+                          [tooltip]="'drag down'"
+                        >
+                          <ion-icon
+                            src="../../assets/icon/arrow-down-circle-outline.svg"
+                            size="large"
+                            slot="icon-only"
+                          ></ion-icon>
+                        </ion-button>
+                        <ng-template #disableArrowDown>
+                          <ion-button class="update disablebutton" disabled>
+                            <ion-icon
+                              src="../../assets/icon/arrow-down-circle-outline.svg"
+                              size="large"
+                              slot="icon-only"
+                            ></ion-icon>
+                          </ion-button>
+                        </ng-template>
+                      </ion-col>
+                    </div>
                   </div>
                   <ion-col size-lg="3" size-md="4" size-sm="4" size-xl="2">
                     <select
@@ -242,7 +281,7 @@
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
-                        *ngIf="this.datePickerInfo[i].open"
+                        *ngIf="this.datePickerInfo[i]?.open"
                         showDefaultButtons="true"
                         [value]="this.valueInputPicker"
                         class="datepicker-input"
@@ -284,7 +323,7 @@
                       clearInput
                       class="input-box range"
                       formControlName="param4"
-                      [value]="this.datePickersInfo[i].end.formatedValue"
+                      [value]="this.datePickersInfo[i]?.end?.formatedValue"
                       [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
                       *ngIf="isDestinationNeeded(i)"
                       (click)="this.datePickerInputOnClick('end',i, $event)"

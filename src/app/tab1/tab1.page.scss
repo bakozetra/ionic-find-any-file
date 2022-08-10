@@ -187,7 +187,7 @@ select {
   align-items: center;
   .span-presets {
     color: white;
-    padding-inline-start: 1rem;
+    // padding-inline-start: 1rem;
     width: inherit;
     max-width: fit-content;
   }
@@ -195,20 +195,21 @@ select {
 }
 
 .search-row-select {
-  width: 100%;
+  width: 96%;
+  margin: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin:0;
-  margin-right: 3rem;
+  // gap: 1rem;
+  // margin:0;
+  // margin-right: 3rem;
 
   .select-class {
     width: 100%;
   }
   .save-btn1 {
-    margin-left: 1rem;
+    // margin-left: 1rem;
   }
   
   .select-item {
@@ -233,7 +234,7 @@ select {
     }
   }
   ion-icon {
-    margin-right: 1rem;
+    // margin-right: 1rem;
   }
 }
 
@@ -612,6 +613,9 @@ ion-datetime {
     position: relative;
   }
 
+.icon {
+  display: flex;
+}
 
 @media only screen and (max-width: 600px) {
   .list {
@@ -627,6 +631,9 @@ ion-datetime {
    }
    .preset-row {
     display: grid;
+    .icon {
+      justify-content: space-between;
+    }
    }
    .span-presets {
     // width: 26%;
