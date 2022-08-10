@@ -283,11 +283,6 @@ export class Tab1Page implements OnInit {
         'this.datePickersInfo[i].start.formatedValue::::::',
         !this.datePickersInfo[i].start.formatedValue
       );
-      console.log(
-        '        !this.datePickerInfo[i].value::::::',
-        !this.datePickerInfo[i].value
-      );
-
       if (
         !this.datePickersInfo[i].start.formatedValue &&
         !this.allSearch().controls[i].get('param3').value
@@ -338,12 +333,15 @@ export class Tab1Page implements OnInit {
 
   // Date picker for exatly before and after.
   datePickerInputOnClickNotBetween(i, event) {
-    this.datePickerInfo[i].open = !this.datePickerInfo[i].open;
+    this.datePickersInfo[i].start.open = !this.datePickersInfo[i]?.start?.open;
   }
   dateChangedInputPicker(i, value) {
     console.log('value::::::', value);
-    this.datePickerInfo[i].value = format(parseISO(value), 'yyyy-MM-dd');
-    this.datePickerInfo[i].open = false;
+    this.datePickersInfo[i].start.formatedValue = format(
+      parseISO(value),
+      'yyyy-MM-dd'
+    );
+    this.datePickersInfo[i].start.open = false;
   }
 
   get f() {
@@ -354,10 +352,10 @@ export class Tab1Page implements OnInit {
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
-    this.datePickerInfo[rowIndex + 1] = {
-      open: false,
-      value: '',
-    };
+    // this.datePickerInfo[rowIndex + 1] = {
+    //   open: false,
+    //   value: '',
+    // };
     this.datePickersInfo[rowIndex + 1] = {
       start: { open: false, value: '' },
       end: { open: false, value: '' },
@@ -549,10 +547,18 @@ export class Tab1Page implements OnInit {
     }
     if (item.param2 == 'EXACTLY' || 'AFTER' || 'BEFORE') {
       const dateIndex = this.allSearch().value.length - 1;
-      if (!this.datePickerInfo[dateIndex]) {
-        this.datePickerInfo[dateIndex] = INITIALDATEPICKEINFO;
+      if (!this.datePickersInfo[dateIndex]) {
+        this.datePickersInfo[dateIndex] = INITIALDATEPICKERSINFO;
+        console.log(
+          'this.datePickersInfo[dateIndex].start::::::',
+          this.datePickersInfo[dateIndex].start
+        );
       }
-      this.datePickerInfo[dateIndex].value = item?.param3;
+      this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
+      console.log(
+        'this.datePickersInfo[dateIndex].start.formatedValue::::::',
+        this.datePickersInfo[dateIndex].start.formatedValue
+      );
     }
   }
 
@@ -1108,10 +1114,7 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  moveUp(e, currentRowIndex) {
-    // console.log('rowIndex::::::', );
-    const targetRowIndex = currentRowIndex - 1;
-
+  swapRows(currentRowIndex, targetRowIndex) {
     const datePickerInforCurrent = {
       ...this.datePickersInfo[currentRowIndex],
     };
@@ -1127,14 +1130,15 @@ export class Tab1Page implements OnInit {
     this.datePickersInfo[currentRowIndex] = datePickerInfoTarget;
     this.datePickersInfo[targetRowIndex] = datePickerInforCurrent;
   }
+  moveUp(e, currentRowIndex) {
+    // console.log('rowIndex::::::', );
+    const targetRowIndex = currentRowIndex - 1;
+    this.swapRows(currentRowIndex, targetRowIndex);
+  }
 
   moveDown(e, currentRowIndex) {
-    console.log(e, 'dragDown');
     const targetRowIndex = currentRowIndex + 1;
-    const previous = this.allSearch().at(targetRowIndex);
-    const current = this.allSearch().at(currentRowIndex);
-    this.allSearch().setControl(currentRowIndex, previous);
-    this.allSearch().setControl(targetRowIndex, current);
+    this.swapRows(currentRowIndex, targetRowIndex);
   }
 
   drop(event: CdkDragDrop<any>) {
