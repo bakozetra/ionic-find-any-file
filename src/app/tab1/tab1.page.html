@@ -144,6 +144,7 @@
                       <ion-col class="row-add">
                         <ion-button
                           (click)="moveUp($event , i)"
+                          *ngIf="allSearch()?.controls.length > 1 && i !== 0 else disableArrowUp"
                           [tooltip]="'drag up'"
                         >
                           <ion-icon
@@ -152,11 +153,20 @@
                             src="../../assets/icon/arrow-up-circle-outline.svg"
                           ></ion-icon>
                         </ion-button>
+                        <ng-template #disableArrowUp>
+                          <ion-button class="update disablebutton" disabled>
+                            <ion-icon
+                              src="../../assets/icon/arrow-up-circle-outline.svg"
+                              size="large"
+                              slot="icon-only"
+                            ></ion-icon>
+                          </ion-button>
+                        </ng-template>
                       </ion-col>
                       <ion-col lines="none" class="row-delete">
                         <ion-button
                           class="update"
-                          *ngIf="allSearch()?.controls.length > 1 else disableArrowDown"
+                          *ngIf="allSearch()?.controls.length > 1 && allSearch()?.controls.length-1 > i  else disableArrowDown"
                           (click)="moveDown($event,i)"
                           [tooltip]="'drag down'"
                         >

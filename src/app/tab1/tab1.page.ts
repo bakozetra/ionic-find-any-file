@@ -265,24 +265,9 @@ export class Tab1Page implements OnInit {
   }
 
   async datePickerInputOnClick(limitName, i, event) {
-    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
-
-    console.log(
-      'this.allSearch().controls[fc].get(param3)::::::',
-      this.allSearch().controls[i].get('param3')
-    );
-    console.log(
-      'this.datePickersInfo[i].start::::::',
-      this.datePickersInfo[i].start
-    );
-    console.log('limitName::::::', limitName);
     if (limitName == 'end') {
-      console.log(
-        'this.datePickersInfo[i].start.formatedValue::::::',
-        !this.datePickersInfo[i].start.formatedValue
-      );
       if (
         !this.datePickersInfo[i].start.formatedValue &&
         !this.allSearch().controls[i].get('param3').value
@@ -307,10 +292,8 @@ export class Tab1Page implements OnInit {
         this.datePickersInfo[i].end.formatedValue
       );
       const test = new Date(this.allSearch().controls[i].get('param3').value);
-
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
       let tes2 = isBefore(endDateFormated, test);
-      console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
       if (isStartAfterEndDate || tes2) {
         this.datePickersInfo[i].end.formatedValue = '';
       }
@@ -336,7 +319,6 @@ export class Tab1Page implements OnInit {
     this.datePickersInfo[i].start.open = !this.datePickersInfo[i]?.start?.open;
   }
   dateChangedInputPicker(i, value) {
-    console.log('value::::::', value);
     this.datePickersInfo[i].start.formatedValue = format(
       parseISO(value),
       'yyyy-MM-dd'
@@ -362,8 +344,6 @@ export class Tab1Page implements OnInit {
     };
     const storeIndex = [];
     const addRowIndex = this.test.push(...[rowIndex]);
-    console.log('storeIndex::::::', storeIndex);
-    console.log('addRowIndex::::::', addRowIndex);
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -549,16 +529,8 @@ export class Tab1Page implements OnInit {
       const dateIndex = this.allSearch().value.length - 1;
       if (!this.datePickersInfo[dateIndex]) {
         this.datePickersInfo[dateIndex] = INITIALDATEPICKERSINFO;
-        console.log(
-          'this.datePickersInfo[dateIndex].start::::::',
-          this.datePickersInfo[dateIndex].start
-        );
       }
       this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
-      console.log(
-        'this.datePickersInfo[dateIndex].start.formatedValue::::::',
-        this.datePickersInfo[dateIndex].start.formatedValue
-      );
     }
   }
 
@@ -1131,7 +1103,6 @@ export class Tab1Page implements OnInit {
     this.datePickersInfo[targetRowIndex] = datePickerInforCurrent;
   }
   moveUp(e, currentRowIndex) {
-    // console.log('rowIndex::::::', );
     const targetRowIndex = currentRowIndex - 1;
     this.swapRows(currentRowIndex, targetRowIndex);
   }
