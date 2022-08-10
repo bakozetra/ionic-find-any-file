@@ -334,10 +334,6 @@ export class Tab1Page implements OnInit {
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
-    // this.datePickerInfo[rowIndex + 1] = {
-    //   open: false,
-    //   value: '',
-    // };
     this.datePickersInfo[rowIndex + 1] = {
       start: { open: false, value: '' },
       end: { open: false, value: '' },
