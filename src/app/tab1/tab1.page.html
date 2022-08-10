@@ -13,8 +13,8 @@
           class="search-row search-row-select"
         >
           <div class="select-search">
-            <span class="span-presets">Presets :</span>
             <div class="select-item">
+              <span class="span-presets">Presets :</span>
               <ion-select
                 interface="popover"
                 placeholder="Presets"
@@ -100,43 +100,45 @@
                   *ngFor="let quantity of allSearch()?.controls; let i = index ;
                   "
                   [formGroupName]="i"
-                  class="example-box"
+                  class="example-box preset-row"
                 >
-                  <ion-col class="row-add">
-                    <ion-button
-                      (click)="addRow(false,i,$event)"
-                      [tooltip]="'Add row'"
-                    >
-                      <ion-icon
-                        name="add-circle-outline"
-                        size="large"
-                        slot="icon-only"
-                      ></ion-icon>
-                    </ion-button>
-                  </ion-col>
-                  <ion-col lines="none" class="row-delete">
-                    <ion-button
-                      class="update"
-                      *ngIf="allSearch()?.controls.length > 1 else disableMinus"
-                      (click)="removeRow(i)"
-                      [tooltip]="'remove row'"
-                    >
-                      <ion-icon
-                        name="remove-circle-outline"
-                        size="large"
-                        slot="icon-only"
-                      ></ion-icon>
-                    </ion-button>
-                    <ng-template #disableMinus>
-                      <ion-button class="update disablebutton" disabled>
+                  <div>
+                    <ion-col class="row-add">
+                      <ion-button
+                        (click)="addRow(false,i,$event)"
+                        [tooltip]="'Add row'"
+                      >
+                        <ion-icon
+                          name="add-circle-outline"
+                          size="large"
+                          slot="icon-only"
+                        ></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                    <ion-col lines="none" class="row-delete">
+                      <ion-button
+                        class="update"
+                        *ngIf="allSearch()?.controls.length > 1 else disableMinus"
+                        (click)="removeRow(i)"
+                        [tooltip]="'remove row'"
+                      >
                         <ion-icon
                           name="remove-circle-outline"
                           size="large"
                           slot="icon-only"
                         ></ion-icon>
                       </ion-button>
-                    </ng-template>
-                  </ion-col>
+                      <ng-template #disableMinus>
+                        <ion-button class="update disablebutton" disabled>
+                          <ion-icon
+                            name="remove-circle-outline"
+                            size="large"
+                            slot="icon-only"
+                          ></ion-icon>
+                        </ion-button>
+                      </ng-template>
+                    </ion-col>
+                  </div>
                   <ion-col size-lg="3" size-md="4" size-sm="4" size-xl="2">
                     <select
                       class="select-class"
@@ -187,9 +189,11 @@
                       *ngIf="!isDateType(i) else dates"
                     >
                     </ion-input>
+                    <!-- readonly -->
                     <ng-template #dates>
                       <ion-input
-                        readonly
+                        onkeypress="return false;"
+                        onkeydown="return false"
                         type="none"
                         class="input-box range"
                         formControlName="param3"
@@ -200,15 +204,6 @@
                         clearInput
                       >
                       </ion-input>
-                      <!-- <ion-button
-                        class="input-icons"
-                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                      >
-                        <ion-icon
-                          slot="icon-only"
-                          src="../../assets/icon/close-outline.svg"
-                        ></ion-icon>
-                      </ion-button> -->
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
@@ -224,7 +219,8 @@
                         <span slot="title">Select a start date</span>
                       </ion-datetime>
                       <ion-input
-                        readonly
+                        onkeypress="return false;"
+                        onkeydown="return false"
                         clearInput="true"
                         class="input-box datepicker"
                         [value]="this.datePickerInfo[i].value"
@@ -283,7 +279,8 @@
                       <span slot="title">Select an end date</span>
                     </ion-datetime>
                     <ion-input
-                      readonly
+                      onkeypress="return false;"
+                      onkeydown="return false"
                       clearInput
                       class="input-box range"
                       formControlName="param4"
@@ -453,19 +450,3 @@
     </li>
   </div>
 </ion-content>
-
-<!-- 
-  - it should not be possible to enter arbitrary text in the date fields as well as years before 2000
-
-- it is possible to save/update preset with empty/wrong second date in the between filter
-
-- trying to save new preset with existing name should now close save dialog after error message
-
-- date fields should look visually the save in exact and between date variants
-
-- type, should be "Clear preset" not "Clear presets"
-
-- save as new preset says "search preset", should be "Save new preset"
-
-- update current preset option should be enabled only for saved or lodaded presets
- -->

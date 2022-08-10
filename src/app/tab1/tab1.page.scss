@@ -107,8 +107,7 @@ form {
       padding: 0;
   }
   select,.datepicker {
-    max-width: 250px;
-    // min-width: 150px;
+    // max-width: 250px;
     width: 100%;
   }
   .row-add,.row-delete {
@@ -189,6 +188,8 @@ select {
   .span-presets {
     color: white;
     padding-inline-start: 1rem;
+    width: inherit;
+    max-width: fit-content;
   }
 
 }
@@ -212,10 +213,14 @@ select {
   
   .select-item {
     width:250px;
-    background-color: #333333;
+    // background-color: #333333;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
+    // display: contents;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     select {
       height: 28px;
       border:none;
@@ -537,12 +542,14 @@ ul li.active ul {
   --placeholder-color:white;
   --placeholder-opacity:none;
   color: white;
+  max-width: min-content;
+  width: 250px;
   
 }
 
 #presets-select::part(icon) {
   content: url(../../assets/icon/dropdown.svg);
-
+  padding-right: 6rem;
 }
 
 .select-class {
@@ -569,12 +576,6 @@ ion-datetime {
 
   }
 }
-// .input-icons  {
-//   position: absolute;
-//   top: 2rem;
-//   color: #fff;
-// }
-// disable preset menu
 
 .disable-preset-menu {
   color: #dddddd;
@@ -624,6 +625,14 @@ ion-datetime {
    .ion-datetime-end {
     top: -5rem;
    }
+   .preset-row {
+    display: grid;
+   }
+   .span-presets {
+    // width: 26%;
+  }
+
+
 }
 
 @media only screen and (max-height: 780px) {
@@ -633,6 +642,7 @@ ion-datetime {
    }
   
 }
+
 
 .my-progress {
   li {
