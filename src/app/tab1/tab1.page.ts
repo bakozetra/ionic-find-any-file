@@ -29,8 +29,6 @@ import { fieldsHasValue } from '../utils';
 import { format, parseISO, isBefore } from 'date-fns';
 import { PersistPresetSearchService } from './persist-preset-search.service';
 
-declare var easepick: any;
-
 interface PresetData {
   id: string;
   filterName: string;
@@ -224,7 +222,7 @@ export class Tab1Page implements OnInit {
   valueInputPicker = '';
   selectMode = 'date';
   datePickersInfo = { '0': INITIALDATEPICKERSINFO };
-  datePickerInfo = { '0': INITIALDATEPICKEINFO };
+  // datePickerInfo = { '0': INITIALDATEPICKEINFO };
 
   constructor(
     private fb: FormBuilder,
@@ -319,9 +317,18 @@ export class Tab1Page implements OnInit {
   }
 
   // Date picker for exatly before and after.
-  datePickerInputOnClickNotBetween(i, event) {
-    console.log('event:::datePickerInputOnClickNotBetween:::', event);
-    this.datePickersInfo[i].start.open = !this.datePickersInfo[i]?.start?.open;
+  datePickerInputOnClickNotBetween(i) {
+    console.log('i::::::', i);
+    // console.log('event:::datePickerInputOnClickNotBetween:::', event);
+    console.log(
+      'this.datePickersInfo[i].start.open::::::',
+      this.datePickersInfo[i]
+    );
+
+    if (this.datePickersInfo[i]) {
+      this.datePickersInfo[i].start.open =
+        !this.datePickersInfo[i]?.start?.open;
+    }
   }
   dateChangedInputPicker(i, value, event?) {
     console.log('event::dateChangedInputPicker::::', event);
@@ -338,6 +345,7 @@ export class Tab1Page implements OnInit {
   }
 
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
+    console.log('rowIndex::::::', rowIndex);
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
     this.datePickersInfo[rowIndex + 1] = {
@@ -550,29 +558,33 @@ export class Tab1Page implements OnInit {
     row.get('param2').enable();
     row.get('param3').enable();
     row.get('param4').enable();
-
-    if (this.param2List && this.param2List.length > 0) {
-      this.param2List[i] = menu?.subMenu;
-    } else {
-      this.param2List.push(menu?.subMenu);
-    }
+    console.log('this.param2List::::::', this.param2List);
+    console.log('this.param2List.length::::::', this.param2List.length);
+    // if (this.param2List && this.param2List.length > 0) {
+    this.param2List[i] = menu?.subMenu;
+    // } else {
+    //   this.param2List.push(menu?.subMenu);
+    // }
 
     row.get('param2').markAllAsTouched();
     row.get('param2').markAsDirty();
     row.get('param2')?.setValue(this?.param2List[i][0]?.id);
+    if (row.value.param2.toLowerCase() === 'exactly') {
+      if (isNaN(Date.parse(row.value.param3))) {
+        this.allSearch().controls[i].get('param3').setValue('');
+      } else {
+        return row.value.param3;
+      }
+    }
   }
 
   onParam2Change(i: any, isUserInteraction?: any) {
-    console.log(
-      'this.datePickersInfo[i].end.formatedValue::::::onParam2Change',
-      this.datePickersInfo[i].end.formatedValue
-    );
     const row = this.allSearch().controls[i] as FormGroup;
     if (this.datePickersInfo[i]) {
       this.datePickersInfo[i].end.formatedValue = '';
       this.allSearch().controls[i].get('param4').setValue('');
     }
-    if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()) {
+    if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID) {
       if (isNaN(Date.parse(row.value.param3))) {
         isUserInteraction &&
           this.allSearch().controls[i].get('param3').setValue('');
@@ -650,7 +662,7 @@ export class Tab1Page implements OnInit {
     if (!this.allSearch().valid) {
       const notification = await this.notificationAlert(
         'all field need to be filled.',
-        'Please check the form'
+        'Please check the form.'
       );
       this.currentPresetName = '';
       return notification;
@@ -971,11 +983,12 @@ export class Tab1Page implements OnInit {
           const menu = this.searchData.find(
             (fn) => fn.id.toLowerCase() === f.param1.toLowerCase()
           );
-          if (this.param2List && this.param2List.length > 0) {
-            this.param2List[index] = menu?.subMenu;
-          } else {
-            this.param2List.push(menu.subMenu);
-          }
+          // if (this.param2List && this.param2List.length > 0) {
+          this.param2List[index] = menu?.subMenu;
+          // }
+          // else {
+          //   this.param2List.push(menu.subMenu);
+          // }
           tempArray.push({
             param1: f.param1,
             param2: f.param2,

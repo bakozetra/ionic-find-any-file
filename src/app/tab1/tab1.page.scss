@@ -305,6 +305,7 @@ input::placeholder {
   color: red;
 }
 
+
 ion-item:not(.item-label) .sc-ion-input-md-h {
   --padding-start: 1vh;
   --color: white !important;
@@ -544,6 +545,11 @@ ul li.active ul {
   width: 250px;
   
 }
+.range , .datepicker{
+  --placeholder-color:white;
+  --placeholder-opacity:none;
+  color: white;
+}
 
 #presets-select::part(icon) {
   content: url(../../assets/icon/dropdown.svg);
@@ -562,6 +568,7 @@ ion-datetime {
   position: absolute;
   top: 2rem;
   width: 100%;
+  z-index: 999;
 }
 
 .input-range {
@@ -653,3 +660,4 @@ ion-datetime {
     color :white
   }
 }
+
