@@ -648,7 +648,12 @@ export class Tab1Page implements OnInit {
   ) {
     this.submitted = true;
     if (!this.allSearch().valid) {
-      return;
+      const notification = await this.notificationAlert(
+        'all field need to be filled.',
+        'Please check the form'
+      );
+      this.currentPresetName = '';
+      return notification;
     }
     let filterData: FilterModel[] = searchFilterForm.value
       .search as FilterModel[];
@@ -659,6 +664,10 @@ export class Tab1Page implements OnInit {
         fieldsHasValue(m.param3)
     );
     let messageSpan = document.getElementById('message');
+    console.log('every::::::', every);
+    if (!every) {
+      console.log('all filled need to be filled');
+    }
     if (every) {
       const localJSON = localjson;
       if (
@@ -694,6 +703,11 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
+
+        if (finalData.filters[0]?.param2 !== SUB_MENU_BETWEEN_ID) {
+          console.log('heloo if');
+        }
+
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
           if (finalData.filters[0]?.param4 !== '') {
             allFilters.push(finalData);
@@ -732,7 +746,12 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
+        if (finalData.filters[0]?.param2 !== SUB_MENU_BETWEEN_ID) {
+          console.log('heloo else');
+        }
+
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
+          console.log('heloo else');
           if (finalData.filters[0]?.param4 !== '') {
             allFilters.push(finalData);
             this.setPersistPresetSearch(allFilters);
