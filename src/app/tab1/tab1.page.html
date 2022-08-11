@@ -241,9 +241,9 @@
                     >
                     </ion-input>
                     <ng-template #dates>
-                      <!-- placeholder="Start Date" -->
                       <ion-input
                         onkeypress="return false;"
+                        placeholder="Start Date"
                         onkeydown="return false"
                         class="input-box range"
                         formControlName="param3"
@@ -268,10 +268,10 @@
                       >
                         <span slot="title">Select a start date</span>
                       </ion-datetime>
-                      <!-- placeholder=" Pick Date" -->
                       <ion-input
                         onkeypress="return false;"
                         onkeydown="return false"
+                        placeholder=" Pick Date"
                         clearInput="true"
                         class="input-box datepicker"
                         [value]="this.datePickersInfo[i]?.start?.formatedValue"
@@ -320,9 +320,9 @@
                      -->
                       <span slot="title">Select an end date</span>
                     </ion-datetime>
-                    <!-- placeholder="End Date" -->
                     <ion-input
                       onkeypress="return false;"
+                      placeholder="End Date"
                       onkeydown="return false"
                       clearInput
                       class="input-box range"

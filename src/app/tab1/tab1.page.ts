@@ -109,14 +109,14 @@ const initialFilterValue = {
 
 const INITIALCURRENTPRESETNAME = '';
 const INITIALDATEPICKERSINFO = {
-  start: { open: false, value: '' },
-  end: { open: false, value: '' },
+  start: { open: false, formatedValue: '' },
+  end: { open: false, formatedValue: '' },
 };
 
-const INITIALDATEPICKEINFO = {
-  open: false,
-  value: '',
-};
+// const INITIALDATEPICKEINFO = {
+//   open: false,
+//   value: '',
+// };
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -221,7 +221,7 @@ export class Tab1Page implements OnInit {
   alertService;
   valueInputPicker = '';
   selectMode = 'date';
-  datePickersInfo = { '0': INITIALDATEPICKERSINFO };
+  datePickersInfo = [JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))];
   // datePickerInfo = { '0': INITIALDATEPICKEINFO };
 
   constructor(
@@ -305,10 +305,6 @@ export class Tab1Page implements OnInit {
       this.dateRangePickerEnd = format(parseISO(value), 'yyyy-MM-dd');
     }
 
-    const dateStartedFormAfter = new Date(
-      this.allSearch().controls[i].get('param3').value
-    );
-
     this.datePickersInfo[i][limitName].open = false;
     this.datePickersInfo[i][limitName].formatedValue = format(
       parseISO(value),
@@ -329,7 +325,12 @@ export class Tab1Page implements OnInit {
       this.datePickersInfo[i].start.open =
         !this.datePickersInfo[i]?.start?.open;
     }
+    console.log(
+      'this.datePickersInfo:::datePickerInputOnClickNotBetween:::',
+      this.datePickersInfo
+    );
   }
+
   dateChangedInputPicker(i, value, event?) {
     console.log('event::dateChangedInputPicker::::', event);
     console.log('event::dateChangedInputPicker:::target:', event.detail);
@@ -348,11 +349,19 @@ export class Tab1Page implements OnInit {
     console.log('rowIndex::::::', rowIndex);
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
-    this.datePickersInfo[rowIndex + 1] = {
-      start: { open: false, value: '' },
-      end: { open: false, value: '' },
-    };
+    // this.datePickersInfo[rowIndex + 1] = {
+    //   start: { open: false, formatedValue: '' },
+    //   end: { open: false, formatedValue: '' },
+    // };
+    const datePickerCopy = [...this.datePickersInfo];
 
+    datePickerCopy.splice(
+      rowIndex + 1,
+      0,
+      JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))
+    );
+    this.datePickersInfo = [...datePickerCopy];
+    console.log('his.datePickersInfo::::::', this.datePickersInfo);
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -529,7 +538,9 @@ export class Tab1Page implements OnInit {
     if (item.param3 && item.param4) {
       const dateIndex = this.allSearch().value.length - 1;
       if (!this.datePickersInfo[dateIndex]) {
-        this.datePickersInfo[dateIndex] = INITIALDATEPICKERSINFO;
+        this.datePickersInfo[dateIndex] = JSON.parse(
+          JSON.stringify(INITIALDATEPICKERSINFO)
+        );
       }
       this.datePickersInfo[dateIndex].end.formatedValue = item?.param4;
       this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
@@ -537,7 +548,9 @@ export class Tab1Page implements OnInit {
     if (item.param2 == 'EXACTLY' || 'AFTER' || 'BEFORE') {
       const dateIndex = this.allSearch().value.length - 1;
       if (!this.datePickersInfo[dateIndex]) {
-        this.datePickersInfo[dateIndex] = INITIALDATEPICKERSINFO;
+        this.datePickersInfo[dateIndex] = JSON.parse(
+          JSON.stringify(INITIALDATEPICKERSINFO)
+        );
       }
       this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
     }
