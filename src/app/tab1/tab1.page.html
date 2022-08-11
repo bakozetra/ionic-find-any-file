@@ -489,6 +489,8 @@
         - Replaced Drag-and-drop with to additional buttons to the right of
         "(-)" button: arrow up and arrow down ( it is with functionality)
       </p>
+      <h1>11 of August</h1>
+      <p>- Adding placeholder to the date</p>
     </li>
     <li>
       2) Bugs fixed :
@@ -505,7 +507,29 @@
         message got displayed despite it's filled ). But I need to fix the date
         validation
       </p>
-      <h1>10 of August</h1>
+      <h1>11 of August</h1>
+      <p>
+        - visual style difference: third text field and date fields in between
+        selector mode have sharp corners, right is how you display data for
+        exactly mode (Fixed)
+      </p>
+      <p>
+        - data validation bug: select modification date, between and set a dates
+        (A and B). then change the second selecter to exactly. change date to
+        the date (C) that is in future comparing to (B). change the second
+        selecter to between. both dates are filled, but in the incorrect meneer
+        when second date (B) is in the past comparing to the first (C). AND it
+        is possible to save preset or update existing with those dates that
+        break logic (Fixed)
+      </p>
+      <p>
+        - select first and second selectors with the combination that uses text
+        field. then switch first selector to modification date - date field
+        becomes pre-filled with whatever text was in the text field. AND it is
+        possible to save preset or update existing with this wrong text as date
+        value (Fixed)
+      </p>
+      <p>Fixing the bugs when I added multiple row</p>
     </li>
     <li>
       3) UI redesigned.
