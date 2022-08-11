@@ -279,15 +279,6 @@
                         (click)="this.datePickerInputOnClickNotBetween(i, $event)"
                       >
                       </ion-input>
-                      <!-- <ion-button
-                        class="input-icons-notbetween"
-                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                      >
-                        <ion-icon
-                          slot="icon-only"
-                          src="../../assets/icon/close-outline.svg"
-                        ></ion-icon>
-                      </ion-button> -->
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
@@ -296,7 +287,7 @@
                         [value]="this.valueInputPicker"
                         class="datepicker-input"
                         (ionCancel)="this.datePickersInfo[i]?.start.open = false"
-                        (ionChange)="dateChangedInputPicker(i,datetime.value)"
+                        (ionChange)="dateChangedInputPicker(i,datetime.value , $event)"
                       >
                         <span slot="title"> Pick date </span>
                       </ion-datetime>

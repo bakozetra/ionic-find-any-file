@@ -265,6 +265,7 @@ export class Tab1Page implements OnInit {
   }
 
   async datePickerInputOnClick(limitName, i, event) {
+    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
     if (limitName == 'end') {
@@ -286,15 +287,18 @@ export class Tab1Page implements OnInit {
   }
 
   dateChanged(limitName, value, i, startDateValue?: any) {
+    console.log('startDateValue::::::', startDateValue);
     if (limitName === 'start') {
       const startDateFormated = new Date(value);
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
       );
-      const test = new Date(this.allSearch().controls[i].get('param3').value);
+      // const isParam3Value = new Date(
+      //   this.allSearch().controls[i].get('param3').value
+      // );
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-      let tes2 = isBefore(endDateFormated, test);
-      if (isStartAfterEndDate || tes2) {
+      // let isStartAndEndWithParam3 = isBefore(endDateFormated, isParam3Value);
+      if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.formatedValue = '';
       }
     }
@@ -316,9 +320,12 @@ export class Tab1Page implements OnInit {
 
   // Date picker for exatly before and after.
   datePickerInputOnClickNotBetween(i, event) {
+    console.log('event:::datePickerInputOnClickNotBetween:::', event);
     this.datePickersInfo[i].start.open = !this.datePickersInfo[i]?.start?.open;
   }
-  dateChangedInputPicker(i, value) {
+  dateChangedInputPicker(i, value, event?) {
+    console.log('event::dateChangedInputPicker::::', event);
+    console.log('event::dateChangedInputPicker:::target:', event.detail);
     this.datePickersInfo[i].start.formatedValue = format(
       parseISO(value),
       'yyyy-MM-dd'
@@ -329,7 +336,6 @@ export class Tab1Page implements OnInit {
   get f() {
     return this.searchFilterForm.controls;
   }
-  test = [];
 
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
@@ -338,8 +344,7 @@ export class Tab1Page implements OnInit {
       start: { open: false, value: '' },
       end: { open: false, value: '' },
     };
-    const storeIndex = [];
-    const addRowIndex = this.test.push(...[rowIndex]);
+
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -558,7 +563,15 @@ export class Tab1Page implements OnInit {
   }
 
   onParam2Change(i: any, isUserInteraction?: any) {
+    console.log(
+      'this.datePickersInfo[i].end.formatedValue::::::onParam2Change',
+      this.datePickersInfo[i].end.formatedValue
+    );
     const row = this.allSearch().controls[i] as FormGroup;
+    if (this.datePickersInfo[i]) {
+      this.datePickersInfo[i].end.formatedValue = '';
+      this.allSearch().controls[i].get('param4').setValue('');
+    }
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID.toLowerCase()) {
       if (isNaN(Date.parse(row.value.param3))) {
         isUserInteraction &&
