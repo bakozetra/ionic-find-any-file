@@ -964,18 +964,21 @@ export class Tab1Page implements OnInit {
       this.currentPresetName =
         currentPreset?.filterName || INITIALCURRENTPRESETNAME;
     }
+    // debugger;
     const changes = this.trackChanges(this.presetId);
     // to check if newly created presets after fresh load app should be saved
     const compareSearchParam =
       this.currentPresetName &&
       this.currentPresetName !== INITIALCURRENTPRESETNAME;
     this.presetId = e.target?.value;
+    // debugger;
     if (!changes) {
       if (compareSearchParam) {
         const confirmed = await this.confirmationAlert(
           `Do you want to discard the current filter changes`
         );
         console.log('confirmed::::::', confirmed);
+        // debugger;
         if (confirmed) {
           this.selectedPresetId = this.presetId;
         }
@@ -1024,6 +1027,8 @@ export class Tab1Page implements OnInit {
   }
 
   trackChanges = (param: any) => {
+    console.log('param::::::', param);
+    // debugger;
     if (!param) return true;
     const localJSON = this.getPersistPresetSearchParsed();
     let data = localJSON.find((f) => f.id == param);
@@ -1034,18 +1039,24 @@ export class Tab1Page implements OnInit {
       const temp1 = this.allSearch().getRawValue();
       const temp2 = data?.filters;
 
-      for (var i = 0, len1 = temp1.length; i < len1; i++) {
-        if (temp1?.[i]?.param4 == '') {
-          delete temp1[i].param4;
-        }
-      }
-      for (var i = 0, len2 = temp2.length; i < len2; i++) {
-        if (temp2?.[i]?.param4 == '') {
-          delete temp2[i].param4;
-        }
-      }
-
+      // for (var i = 0, len1 = temp1.length; i < len1; i++) {
+      //   if (temp1?.[i]?.param4 == '') {
+      //     delete temp1[i].param4;
+      //   }
+      // }
+      // for (var i = 0, len2 = temp2.length; i < len2; i++) {
+      //   if (temp2?.[i]?.param4 == '') {
+      //     delete temp2[i].param4;
+      //   }
+      // }
+      console.log('temp1::::::', temp1);
+      console.log('temp2::::::', temp2);
+      console.log(
+        'JSON.stringify(temp1) !== JSON.stringify(temp2)::::::',
+        JSON.stringify(temp1) !== JSON.stringify(temp2)
+      );
       if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
+        console.log('param:::temp1:::', param);
         return false;
       } else {
         return true;
