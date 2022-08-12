@@ -264,6 +264,7 @@ export class Tab1Page implements OnInit {
 
   async datePickerInputOnClick(limitName, i, event) {
     console.log('event::::::', event);
+    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
     if (limitName == 'end') {
@@ -974,6 +975,7 @@ export class Tab1Page implements OnInit {
         const confirmed = await this.confirmationAlert(
           `Do you want to discard the current filter changes`
         );
+        console.log('confirmed::::::', confirmed);
         if (confirmed) {
           this.selectedPresetId = this.presetId;
         }
@@ -986,6 +988,7 @@ export class Tab1Page implements OnInit {
     ) {
       this.allSearch().clear();
     }
+    console.log('compareSearchParam::::::', compareSearchParam);
     if (compareSearchParam) {
       this.clearFormArray();
       const localJSON = this.getPersistPresetSearchParsed();

@@ -8,363 +8,371 @@
         >
       </ion-item>
       <ion-list slot="content" class="list">
-        <ion-infinite-scroll>
-          <div
-            *ngIf="preSelectList.length > 0 else emptyList"
-            class="search-row search-row-select"
-          >
-            <div class="select-search">
-              <span class="span-presets">Presets :</span>
-              <div class="select-item">
-                <ion-select
-                  interface="popover"
-                  placeholder="Presets"
-                  value="Presets"
-                  [(ngModel)]="selectedPresetId"
-                  (ionChange)="this.onPreselectDDLChange($event)"
-                  id="presets-select"
-                  [tooltip]="'presets list'"
+        <!-- <ion-infinite-scroll> -->
+        <div
+          *ngIf="preSelectList.length > 0 else emptyList"
+          class="search-row search-row-select"
+        >
+          <div class="select-search">
+            <span class="span-presets">Presets :</span>
+            <div class="select-item">
+              <ion-select
+                interface="popover"
+                placeholder="Presets"
+                value="Presets"
+                [(ngModel)]="selectedPresetId"
+                (ionChange)="this.onPreselectDDLChange($event)"
+                id="presets-select"
+                [tooltip]="'presets list'"
+                (ionFocus)="onSelectFocus($event)"
+              >
+                <ion-select-option
                   (ionFocus)="onSelectFocus($event)"
+                  *ngFor="let pre of preSelectList; let i2 = index"
+                  [value]="pre?.id"
+                  class="preset-option"
                 >
-                  <ion-select-option
-                    (ionFocus)="onSelectFocus($event)"
-                    *ngFor="let pre of preSelectList; let i2 = index"
-                    [value]="pre?.id"
-                    class="preset-option"
-                  >
-                    {{pre?.filterName}}
-                  </ion-select-option>
-                </ion-select>
-              </div>
+                  {{pre?.filterName}}
+                </ion-select-option>
+              </ion-select>
             </div>
-            <div>
-              <div class="dropdown save-btn1">
-                <ion-button
-                  class="btn-primary dropdown-toggle plus-button"
-                  type="button"
-                  id="dropdown"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  [tooltip]="'menu'"
-                >
-                  <ion-icon
-                    slot="icon-only"
-                    src="../../assets/icon/dots.svg"
-                  ></ion-icon>
-                </ion-button>
-                <ul class="dropdown-menu" aria-labelledby="dropdown">
-                  <li class="dropdown-item" (click)="open(content)">
-                    Save As New Preset
-                  </li>
-                  <li
-                    class="dropdown-item"
-                    (click)="updateCurrentPreset( 
+          </div>
+          <div>
+            <div class="dropdown save-btn1">
+              <ion-button
+                class="btn-primary dropdown-toggle plus-button"
+                type="button"
+                id="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                [tooltip]="'menu'"
+              >
+                <ion-icon
+                  slot="icon-only"
+                  src="../../assets/icon/dots.svg"
+                ></ion-icon>
+              </ion-button>
+              <ul class="dropdown-menu" aria-labelledby="dropdown">
+                <li class="dropdown-item" (click)="open(content)">
+                  Save As New Preset
+                </li>
+                <li
+                  class="dropdown-item"
+                  (click)="updateCurrentPreset( 
                 )"
+                >
+                  <button
+                    class="disable-preset-menu"
+                    [disabled]="this.currentPresetName === '' ? true : false"
                   >
-                    <button
-                      class="disable-preset-menu"
-                      [disabled]="this.currentPresetName === '' ? true : false"
-                    >
-                      Update Current Preset
-                    </button>
-                  </li>
-                  <li
-                    class="dropdown-item"
-                    (click)="deletePreset(
+                    Update Current Preset
+                  </button>
+                </li>
+                <li
+                  class="dropdown-item"
+                  (click)="deletePreset(
                   this.selectedPresetId,
                   this.currentPresetName,
                   this.allSearch())"
+                >
+                  <button
+                    class="disable-preset-menu"
+                    [disabled]="this.currentPresetName === '' ? true : false"
                   >
-                    <button
-                      class="disable-preset-menu"
-                      [disabled]="this.currentPresetName === '' ? true : false"
-                    >
-                      Delete Preset
-                    </button>
-                  </li>
-                  <li class="dropdown-item" (click)="clearFilter()">
-                    Clear Preset
-                  </li>
-                </ul>
-              </div>
+                    Delete Preset
+                  </button>
+                </li>
+                <li class="dropdown-item" (click)="clearFilter()">
+                  Clear Preset
+                </li>
+              </ul>
             </div>
           </div>
-        </ion-infinite-scroll>
-        <ion-grid class="form-wrapper" style="overflow: overlay; height: 100vh">
-          <form class="" [formGroup]="searchFilterForm">
-            <div formArrayName="search">
-              <ion-grid
-                cdkDropList
-                (cdkDropListDropped)="drop($event)"
-                class="example-list"
-              >
-                <ion-row
-                  *ngFor="let quantity of allSearch()?.controls; let i = index ;
-                  "
-                  [formGroupName]="i"
-                  class="example-box preset-row"
+        </div>
+        <!-- </ion-infinite-scroll> -->
+        <ion-infinite-scroll threshold="100px">
+          <ion-grid
+            class="form-wrapper"
+            style="overflow: overlay; height: 77vh"
+          >
+            <form class="" [formGroup]="searchFilterForm">
+              <div formArrayName="search">
+                <ion-grid
+                  cdkDropList
+                  (cdkDropListDropped)="drop($event)"
+                  class="example-list"
                 >
-                  <div class="icon">
-                    <div>
-                      <ion-col class="row-add">
-                        <ion-button
-                          (click)="addRow(false,i,$event)"
-                          [tooltip]="'Add row'"
-                        >
-                          <ion-icon
-                            name="add-circle-outline"
-                            size="large"
-                            slot="icon-only"
-                          ></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                      <ion-col lines="none" class="row-delete">
-                        <ion-button
-                          class="update"
-                          *ngIf="allSearch()?.controls.length > 1 else disableMinus"
-                          (click)="removeRow(i)"
-                          [tooltip]="'remove row'"
-                        >
-                          <ion-icon
-                            name="remove-circle-outline"
-                            size="large"
-                            slot="icon-only"
-                          ></ion-icon>
-                        </ion-button>
-                        <ng-template #disableMinus>
-                          <ion-button class="update disablebutton" disabled>
+                  <ion-row
+                    *ngFor="let quantity of allSearch()?.controls; let i = index ;
+                  "
+                    [formGroupName]="i"
+                    class="example-box preset-row"
+                  >
+                    <div class="icon">
+                      <div>
+                        <ion-col class="row-add">
+                          <ion-button
+                            (click)="addRow(false,i,$event)"
+                            [tooltip]="'Add row'"
+                          >
+                            <ion-icon
+                              name="add-circle-outline"
+                              size="large"
+                              slot="icon-only"
+                            ></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                        <ion-col lines="none" class="row-delete">
+                          <ion-button
+                            class="update"
+                            *ngIf="allSearch()?.controls.length > 1 else disableMinus"
+                            (click)="removeRow(i)"
+                            [tooltip]="'remove row'"
+                          >
                             <ion-icon
                               name="remove-circle-outline"
                               size="large"
                               slot="icon-only"
                             ></ion-icon>
                           </ion-button>
-                        </ng-template>
-                      </ion-col>
-                    </div>
-                    <div>
-                      <ion-col class="row-add">
-                        <ion-button
-                          (click)="moveUp($event , i)"
-                          *ngIf="allSearch()?.controls.length > 1 && i !== 0 else disableArrowUp"
-                          [tooltip]="'drag up'"
-                        >
-                          <ion-icon
-                            slot="icon-only"
-                            size="large"
-                            src="../../assets/icon/arrow-up-circle-outline.svg"
-                          ></ion-icon>
-                        </ion-button>
-                        <ng-template #disableArrowUp>
-                          <ion-button class="update disablebutton" disabled>
+                          <ng-template #disableMinus>
+                            <ion-button class="update disablebutton" disabled>
+                              <ion-icon
+                                name="remove-circle-outline"
+                                size="large"
+                                slot="icon-only"
+                              ></ion-icon>
+                            </ion-button>
+                          </ng-template>
+                        </ion-col>
+                      </div>
+                      <div>
+                        <ion-col class="row-add">
+                          <ion-button
+                            (click)="moveUp($event , i)"
+                            *ngIf="allSearch()?.controls.length > 1 && i !== 0 else disableArrowUp"
+                            [tooltip]="'drag up'"
+                          >
                             <ion-icon
-                              src="../../assets/icon/arrow-up-circle-outline.svg"
-                              size="large"
                               slot="icon-only"
+                              size="large"
+                              src="../../assets/icon/arrow-up-circle-outline.svg"
                             ></ion-icon>
                           </ion-button>
-                        </ng-template>
-                      </ion-col>
-                      <ion-col lines="none" class="row-delete">
-                        <ion-button
-                          class="update"
-                          *ngIf="allSearch()?.controls.length > 1 && allSearch()?.controls.length-1 > i  else disableArrowDown"
-                          (click)="moveDown($event,i)"
-                          [tooltip]="'drag down'"
-                        >
-                          <ion-icon
-                            src="../../assets/icon/arrow-down-circle-outline.svg"
-                            size="large"
-                            slot="icon-only"
-                          ></ion-icon>
-                        </ion-button>
-                        <ng-template #disableArrowDown>
-                          <ion-button class="update disablebutton" disabled>
+                          <ng-template #disableArrowUp>
+                            <ion-button class="update disablebutton" disabled>
+                              <ion-icon
+                                src="../../assets/icon/arrow-up-circle-outline.svg"
+                                size="large"
+                                slot="icon-only"
+                              ></ion-icon>
+                            </ion-button>
+                          </ng-template>
+                        </ion-col>
+                        <ion-col lines="none" class="row-delete">
+                          <ion-button
+                            class="update"
+                            *ngIf="allSearch()?.controls.length > 1 && allSearch()?.controls.length-1 > i  else disableArrowDown"
+                            (click)="moveDown($event,i)"
+                            [tooltip]="'drag down'"
+                          >
                             <ion-icon
                               src="../../assets/icon/arrow-down-circle-outline.svg"
                               size="large"
                               slot="icon-only"
                             ></ion-icon>
                           </ion-button>
-                        </ng-template>
-                      </ion-col>
+                          <ng-template #disableArrowDown>
+                            <ion-button class="update disablebutton" disabled>
+                              <ion-icon
+                                src="../../assets/icon/arrow-down-circle-outline.svg"
+                                size="large"
+                                slot="icon-only"
+                              ></ion-icon>
+                            </ion-button>
+                          </ng-template>
+                        </ion-col>
+                      </div>
                     </div>
-                  </div>
-                  <ion-col size-lg="3" size-md="4" size-sm="4" size-xl="2">
-                    <select
-                      class="select-class"
-                      formControlName="param1"
-                      [ngClass]="(!allSearch().controls[i].get('param1').valid && submitted) ? 'error' : ''"
-                      (change)="onParam1Change(i)"
-                    >
-                      <option disabled selected value>select an option</option>
-                      <option
-                        class="select-options"
-                        [value]="param1?.id"
-                        *ngFor="let param1 of searchData; let i= index"
+                    <ion-col size-lg="3" size-md="4" size-sm="4" size-xl="2">
+                      <select
+                        class="select-class"
+                        formControlName="param1"
+                        [ngClass]="(!allSearch().controls[i].get('param1').valid && submitted) ? 'error' : ''"
+                        (change)="onParam1Change(i)"
                       >
-                        {{param1?.name}}
-                      </option>
-                    </select>
-                  </ion-col>
-                  <ion-col size-lg="3" size-md="4" size-sm="3" size-xl="2">
-                    <select
-                      class="select-class disableSelect"
-                      formControlName="param2"
-                      onselect=""
-                      (change)="onParam2Change(i,true)"
-                      [ngClass]="!allSearch().controls[i].get('param2')?.valid && submitted ? 'error' : ''"
-                    >
-                      <option
-                        class="select-options"
-                        [value]="p2.id"
-                        *ngFor="let p2  of param2List[i];"
+                        <option disabled selected value>
+                          select an option
+                        </option>
+                        <option
+                          class="select-options"
+                          [value]="param1?.id"
+                          *ngFor="let param1 of searchData; let i= index"
+                        >
+                          {{param1?.name}}
+                        </option>
+                      </select>
+                    </ion-col>
+                    <ion-col size-lg="3" size-md="4" size-sm="3" size-xl="2">
+                      <select
+                        class="select-class disableSelect"
+                        formControlName="param2"
+                        onselect=""
+                        (change)="onParam2Change(i,true)"
+                        [ngClass]="!allSearch().controls[i].get('param2')?.valid && submitted ? 'error' : ''"
                       >
-                        {{p2.name}}
-                      </option>
-                    </select>
-                  </ion-col>
-                  <ion-col
-                    size-xs="12"
-                    size-sm=""
-                    class="input-wrapper input-range"
-                  >
-                    <ion-input
-                      clearInput
-                      clearOnEdit="true"
-                      type="text"
-                      class="input-box"
-                      formControlName="param3"
-                      (focusout)="getValue($event, i)"
-                      [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
-                      *ngIf="!isDateType(i) else dates"
+                        <option
+                          class="select-options"
+                          [value]="p2.id"
+                          *ngFor="let p2  of param2List[i];"
+                        >
+                          {{p2.name}}
+                        </option>
+                      </select>
+                    </ion-col>
+                    <ion-col
+                      size-xs="12"
+                      size-sm=""
+                      class="input-wrapper input-range"
                     >
-                    </ion-input>
-                    <ng-template #dates>
                       <ion-input
-                        onkeypress="return false;"
-                        placeholder="Start Date"
-                        onkeydown="return false"
-                        class="input-box range"
-                        formControlName="param3"
-                        [value]="this.datePickersInfo[i]?.start?.formatedValue"
-                        [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
-                        *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                        (click)="this.datePickerInputOnClick('start',i, $event)"
                         clearInput
+                        clearOnEdit="true"
+                        type="text"
+                        class="input-box"
+                        formControlName="param3"
+                        (focusout)="getValue($event, i)"
+                        [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
+                        *ngIf="!isDateType(i) else dates"
                       >
                       </ion-input>
+                      <ng-template #dates>
+                        <ion-input
+                          onkeypress="return false;"
+                          placeholder="Start Date"
+                          onkeydown="return false"
+                          class="input-box range"
+                          formControlName="param3"
+                          [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                          [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
+                          *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
+                          (click)="this.datePickerInputOnClick('start',i, $event)"
+                          clearInput
+                          (mousedown)="$event.preventDefault()"
+                        >
+                        </ion-input>
+                        <ion-datetime
+                          #datetime
+                          [presentation]="selectMode"
+                          *ngIf="datePickersInfo?.[i]?.start?.open"
+                          class="ion-datetime-start"
+                          formControlName="param3"
+                          (ionChange)="this.dateChanged( 'start',datetime.value,i, $event)"
+                          [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                          showDefaultButtons="true"
+                          (ionCancel)="this.datePickersInfo[i].start.open = false"
+                          min="2000-01-01T00:00:00"
+                        >
+                          <span slot="title">Select a start date</span>
+                        </ion-datetime>
+                        <ion-input
+                          onkeypress="return false;"
+                          onkeydown="return false"
+                          placeholder=" Pick Date"
+                          clearInput="true"
+                          class="input-box datepicker"
+                          [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                          formControlName="param3"
+                          (mousedown)="$event.preventDefault()"
+                          [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
+                          *ngIf="allSearch().controls[i]?.get('param2')?.value !== 'BETWEEN'"
+                          (click)="this.datePickerInputOnClickNotBetween(i)"
+                        >
+                        </ion-input>
+                        <ion-datetime
+                          #datetime
+                          [presentation]="selectMode"
+                          *ngIf="this.datePickersInfo[i]?.start?.open"
+                          showDefaultButtons="true"
+                          [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                          class="datepicker-input"
+                          (ionCancel)="this.datePickersInfo[i].start.open = false"
+                          (ionChange)="dateChangedInputPicker(i,datetime.value , $event)"
+                        >
+                          <span slot="title"> Pick date </span>
+                        </ion-datetime>
+                      </ng-template>
+                    </ion-col>
+
+                    <ion-col
+                      size-xs="12"
+                      size-sm=""
+                      class="input"
+                      *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
+                    >
                       <ion-datetime
                         #datetime
                         [presentation]="selectMode"
-                        *ngIf="datePickersInfo?.[i]?.start?.open"
-                        class="ion-datetime-start"
-                        formControlName="param3"
-                        (ionChange)="this.dateChanged( 'start',datetime.value,i, $event)"
-                        [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                        *ngIf="datePickersInfo?.[i]?.end?.open"
+                        formControlName="param4"
+                        [value]="this.datePickersInfo[i]?.end?.formatedValue"
+                        class="ion-datetime-end"
+                        (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
                         showDefaultButtons="true"
-                        (ionCancel)="this.datePickersInfo[i].start.open = false"
-                        min="2000-01-01T00:00:00"
+                        (ionCancel)="this.datePickersInfo[i]?.end.open = false"
+                        [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
+                        max="2500-01-01T00:00:00"
                       >
-                        <span slot="title">Select a start date</span>
+                        <span slot="title">Select an end date</span>
                       </ion-datetime>
                       <ion-input
                         onkeypress="return false;"
+                        placeholder="End Date"
                         onkeydown="return false"
-                        placeholder=" Pick Date"
-                        clearInput="true"
-                        class="input-box datepicker"
-                        [value]="this.datePickersInfo[i]?.start?.formatedValue"
-                        formControlName="param3"
-                        [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
-                        *ngIf="allSearch().controls[i]?.get('param2')?.value !== 'BETWEEN'"
-                        (click)="this.datePickerInputOnClickNotBetween(i)"
+                        clearInput
+                        class="input-box range"
+                        formControlName="param4"
+                        (mousedown)="$event.preventDefault()"
+                        [value]="this.datePickersInfo[i]?.end?.formatedValue"
+                        [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
+                        *ngIf="isDestinationNeeded(i)"
+                        (click)="this.datePickerInputOnClick('end',i, $event)"
+                        id="date-range-input"
                       >
                       </ion-input>
-                      <ion-datetime
-                        #datetime
-                        [presentation]="selectMode"
-                        *ngIf="this.datePickersInfo[i]?.start?.open"
-                        showDefaultButtons="true"
-                        [value]="this.datePickersInfo[i]?.start?.formatedValue"
-                        class="datepicker-input"
-                        (ionCancel)="this.datePickersInfo[i].start.open = false"
-                        (ionChange)="dateChangedInputPicker(i,datetime.value , $event)"
-                      >
-                        <span slot="title"> Pick date </span>
-                      </ion-datetime>
-                    </ng-template>
-                  </ion-col>
-
-                  <ion-col
-                    size-xs="12"
-                    size-sm=""
-                    class="input"
-                    *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
+                      <div></div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </form>
+            <ion-item>
+              <ion-row class="btn-group">
+                <ion-col size-xs="12" size-sm="12" class="apply-filter">
+                  <ion-button
+                    (click)="applyFilter()"
+                    class="apply-btn"
+                    [tooltip]="'search filter'"
+                    >Search</ion-button
                   >
-                    <ion-datetime
-                      #datetime
-                      [presentation]="selectMode"
-                      *ngIf="datePickersInfo?.[i]?.end?.open"
-                      formControlName="param4"
-                      [value]="this.datePickersInfo[i]?.end?.formatedValue"
-                      class="ion-datetime-end"
-                      (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
-                      showDefaultButtons="true"
-                      (ionCancel)="this.datePickersInfo[i]?.end.open = false"
-                      [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
-                      max="2500-01-01T00:00:00"
-                    >
-                      <!-- 
-                      datePickersInfo?.[i]?.start?.formatedValue == '' ?
-                     -->
-                      <span slot="title">Select an end date</span>
-                    </ion-datetime>
-                    <ion-input
-                      onkeypress="return false;"
-                      placeholder="End Date"
-                      onkeydown="return false"
-                      clearInput
-                      class="input-box range"
-                      formControlName="param4"
-                      [value]="this.datePickersInfo[i]?.end?.formatedValue"
-                      [ngClass]="!allSearch().controls[i].get('param4')?.valid && submitted ? 'error' : ''"
-                      *ngIf="isDestinationNeeded(i)"
-                      (click)="this.datePickerInputOnClick('end',i, $event)"
-                      id="date-range-input"
-                    >
-                    </ion-input>
-                    <div></div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </div>
-          </form>
-          <ion-item>
-            <ion-row class="btn-group">
-              <ion-col size-xs="12" size-sm="12" class="apply-filter">
-                <ion-button
-                  (click)="applyFilter()"
-                  class="apply-btn"
-                  [tooltip]="'search filter'"
-                  >Search</ion-button
-                >
-              </ion-col>
-            </ion-row>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-row class="save-row ion-align-items-center">
-              <ion-col size-xs="3" size-sm="2" class="modi-btn"> </ion-col>
-              <ion-col class="error-col" size-xs="4" size-sm="3">
-                <ion-text
-                  ><span class="message" id="message"
-                    >{{message}}</span
-                  ></ion-text
-                >
-              </ion-col>
-            </ion-row>
-          </ion-item>
-        </ion-grid>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-row class="save-row ion-align-items-center">
+                <ion-col size-xs="3" size-sm="2" class="modi-btn"> </ion-col>
+                <ion-col class="error-col" size-xs="4" size-sm="3">
+                  <ion-text
+                    ><span class="message" id="message"
+                      >{{message}}</span
+                    ></ion-text
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-grid>
+        </ion-infinite-scroll>
+
         <ng-template #emptyList>
           <div class="no-saved-presets">
             <div>

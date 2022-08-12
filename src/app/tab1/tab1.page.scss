@@ -300,6 +300,10 @@ ion-item::part(native) {
 .select-options::placeholder {
   background-color: #008000;
 }
+.select-options {
+  width: 150px;
+
+}
 
 input::placeholder {
   color: red;
@@ -628,7 +632,7 @@ ion-datetime {
   .ion-datetime-start, .datepicker-input,.ion-datetime-end  {
     z-index: 1000;
     position: absolute;
-    top: -3rem;
+    top:  2.05rem;
    }
    .ion-datetime-end {
     top: -5rem;
@@ -639,10 +643,6 @@ ion-datetime {
       justify-content: space-between;
     }
    }
-   .span-presets {
-    // width: 26%;
-  }
-
 
 }
 
@@ -659,5 +659,9 @@ ion-datetime {
   li {
     color :white
   }
+}
+
+.datetime-selected-date{
+  margin-top: 0;
 }
 
