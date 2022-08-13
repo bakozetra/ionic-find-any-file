@@ -333,6 +333,7 @@ export class Tab1Page implements OnInit {
   }
 
   dateChangedInputPicker(i, value, event?) {
+    console.log('value:::::dateChangedInputPicker:', value);
     this.datePickersInfo[i].start.formatedValue = format(
       parseISO(value),
       'yyyy-MM-dd'
@@ -347,7 +348,11 @@ export class Tab1Page implements OnInit {
     if (isStartAfterEndDate) {
       this.datePickersInfo[i].end.formatedValue = '';
       this.allSearch().controls[i].get('param4').setValue('');
+      if (value === '') {
+        console.log('endDateFormated:::endDateFormated:::', endDateFormated);
+      }
     }
+    // if()
     // I need to add if the param3 is empty then clear param4
   }
 
@@ -965,6 +970,7 @@ export class Tab1Page implements OnInit {
   }
 
   async onPreselectDDLChange(e: any) {
+    const previousPresetId = this.presetId;
     if (e === 1) {
       this.currentPresetName = INITIALCURRENTPRESETNAME;
     } else {
@@ -980,7 +986,6 @@ export class Tab1Page implements OnInit {
     const compareSearchParam =
       this.currentPresetName &&
       this.currentPresetName !== INITIALCURRENTPRESETNAME;
-    this.presetId = e.target?.value;
     // debugger;
     if (!changes) {
       if (compareSearchParam) {
@@ -990,10 +995,15 @@ export class Tab1Page implements OnInit {
         console.log('confirmed::::::', confirmed);
         // debugger;
         if (confirmed) {
+          this.selectedPresetId = e.target?.value;
+        } else {
           this.selectedPresetId = this.presetId;
+          return false;
         }
       }
     }
+
+    this.presetId = e.target?.value;
     this.id = e.target?.value;
     if (
       this.currentPresetName &&
