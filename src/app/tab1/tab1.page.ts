@@ -333,13 +333,22 @@ export class Tab1Page implements OnInit {
   }
 
   dateChangedInputPicker(i, value, event?) {
-    console.log('event::dateChangedInputPicker::::', event);
-    console.log('event::dateChangedInputPicker:::target:', event.detail);
     this.datePickersInfo[i].start.formatedValue = format(
       parseISO(value),
       'yyyy-MM-dd'
     );
     this.datePickersInfo[i].start.open = false;
+    const startDateFormated = new Date(value);
+    const endDateFormated = new Date(
+      this.allSearch().controls[i].get('param4').value
+    );
+    let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
+    console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
+    if (isStartAfterEndDate) {
+      this.datePickersInfo[i].end.formatedValue = '';
+      this.allSearch().controls[i].get('param4').setValue('');
+    }
+    // I need to add if the param3 is empty then clear param4
   }
 
   get f() {
@@ -594,10 +603,11 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, isUserInteraction?: any) {
     const row = this.allSearch().controls[i] as FormGroup;
-    if (this.datePickersInfo[i]) {
-      this.datePickersInfo[i].end.formatedValue = '';
-      this.allSearch().controls[i].get('param4').setValue('');
-    }
+    console.log('this.datePickersInfo[i]::::::', this.datePickersInfo[i]);
+    // if (this.datePickersInfo[i]) {
+    //   this.datePickersInfo[i].end.formatedValue = '';
+    //   this.allSearch().controls[i].get('param4').setValue('');
+    // }
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID) {
       if (isNaN(Date.parse(row.value.param3))) {
         isUserInteraction &&
@@ -1039,16 +1049,16 @@ export class Tab1Page implements OnInit {
       const temp1 = this.allSearch().getRawValue();
       const temp2 = data?.filters;
 
-      // for (var i = 0, len1 = temp1.length; i < len1; i++) {
-      //   if (temp1?.[i]?.param4 == '') {
-      //     delete temp1[i].param4;
-      //   }
-      // }
-      // for (var i = 0, len2 = temp2.length; i < len2; i++) {
-      //   if (temp2?.[i]?.param4 == '') {
-      //     delete temp2[i].param4;
-      //   }
-      // }
+      for (var i = 0, len1 = temp1.length; i < len1; i++) {
+        if (temp1?.[i]?.param4 == '') {
+          delete temp1[i].param4;
+        }
+      }
+      for (var i = 0, len2 = temp2.length; i < len2; i++) {
+        if (temp2?.[i]?.param4 == '') {
+          delete temp2[i].param4;
+        }
+      }
       console.log('temp1::::::', temp1);
       console.log('temp2::::::', temp2);
       console.log(

@@ -184,5 +184,6 @@ export const areFiltersEqual = (f1, f2) => {
 console.log('areEqual', areEqual(obj1, obj2));
 
 export const fieldsHasValue = (value: string) => {
+  // console.log('value::fieldsHasValue::::', value);
   return Boolean(value && value?.trim()?.length !== 0);
 };
