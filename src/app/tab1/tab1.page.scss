@@ -52,7 +52,6 @@ ion-input {
 
 .accordion-grp {
   padding: 1vh;
-  // height: 100vh;
 }
 
 .input-wrapper {
@@ -169,7 +168,7 @@ select {
   -moz-appearance: none;
   /* for Safari, Chrome, Opera */
   -webkit-appearance: none;
-    padding-left: 1rem;
+    padding-left: 0.5rem;
 }
 .select-item select {
   /* for Firefox */
@@ -578,8 +577,9 @@ ion-datetime {
   position: relative;
   ::ng-deep .clear-param3 {
     position: absolute;
-    right: 0.5rem;
+    right: 0.65rem;
     z-index: 1000;
+    bottom: 0.25rem; 
     /* width: 0.75rem; */
     height: auto;
   }
@@ -588,7 +588,7 @@ ion-datetime {
   position: relative;
   ::ng-deep .clear-param4 {
     position: absolute;
-      right: 0.5rem;
+      right: 0.65rem;
       /* top: 0rem; */
       bottom: 0.25rem;
       z-index: 1000;
@@ -646,9 +646,7 @@ ion-datetime {
     position: absolute;
     top:  2.05rem;
    }
-   .ion-datetime-end {
-    top: -5rem;
-   }
+ 
    .preset-row {
     display: grid;
     .icon {
