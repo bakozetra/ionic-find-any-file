@@ -235,8 +235,8 @@
                       size-sm=""
                       class="input-wrapper input-range"
                     >
+                      <!-- clearInput -->
                       <ion-input
-                        clearInput
                         clearOnEdit="true"
                         type="text"
                         class="input-box"
@@ -246,6 +246,14 @@
                         *ngIf="!isDateType(i) else dates"
                       >
                       </ion-input>
+                      <ion-button
+                        class="clear-param3"
+                        *ngIf="this.allSearch().controls[i].get('param3')?.value !== ''"
+                        (click)="handleClear(i)"
+                      >
+                        <ion-icon src="../../assets/icon/close-outline.svg">
+                        </ion-icon>
+                      </ion-button>
                       <ng-template #dates>
                         <ion-input
                           onkeypress="return false;"
@@ -257,7 +265,6 @@
                           [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                           *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                           (click)="this.datePickerInputOnClick('start',i, $event)"
-                          clearInput
                           (mousedown)="$event.preventDefault()"
                         >
                         </ion-input>
@@ -279,7 +286,6 @@
                           onkeypress="return false;"
                           onkeydown="return false"
                           placeholder=" Pick Date"
-                          clearInput="true"
                           class="input-box datepicker"
                           [value]="this.datePickersInfo[i]?.start?.formatedValue"
                           formControlName="param3"
@@ -288,6 +294,7 @@
                           *ngIf="allSearch().controls[i]?.get('param2')?.value !== 'BETWEEN'"
                           (click)="this.datePickerInputOnClickNotBetween(i)"
                         >
+                          <!-- clearInput="true" -->
                         </ion-input>
                         <ion-datetime
                           #datetime
@@ -307,7 +314,7 @@
                     <ion-col
                       size-xs="12"
                       size-sm=""
-                      class="input"
+                      class="input input-range-end"
                       *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                     >
                       <ion-datetime
@@ -325,11 +332,11 @@
                       >
                         <span slot="title">Select an end date</span>
                       </ion-datetime>
+                      <!-- clearInput -->
                       <ion-input
                         onkeypress="return false;"
                         placeholder="End Date"
                         onkeydown="return false"
-                        clearInput
                         class="input-box range"
                         formControlName="param4"
                         (mousedown)="$event.preventDefault()"
@@ -340,6 +347,14 @@
                         id="date-range-input"
                       >
                       </ion-input>
+                      <ion-button
+                        class="clear-param4"
+                        *ngIf="this.allSearch().controls[i].get('param4')?.value !== ''"
+                        (click)="handleClearFourthField(i)"
+                      >
+                        <ion-icon src="../../assets/icon/close-outline.svg">
+                        </ion-icon>
+                      </ion-button>
                       <div></div>
                     </ion-col>
                   </ion-row>

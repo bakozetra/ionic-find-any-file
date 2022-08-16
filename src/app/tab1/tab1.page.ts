@@ -223,6 +223,7 @@ export class Tab1Page implements OnInit {
   selectMode = 'date';
   datePickersInfo = [JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))];
   // datePickerInfo = { '0': INITIALDATEPICKEINFO };
+  skipOnPreselectDDLChange = false;
 
   constructor(
     private fb: FormBuilder,
@@ -339,21 +340,34 @@ export class Tab1Page implements OnInit {
       'yyyy-MM-dd'
     );
     this.datePickersInfo[i].start.open = false;
-    const startDateFormated = new Date(value);
-    const endDateFormated = new Date(
-      this.allSearch().controls[i].get('param4').value
-    );
-    let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-    console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
-    if (isStartAfterEndDate) {
-      this.datePickersInfo[i].end.formatedValue = '';
-      this.allSearch().controls[i].get('param4').setValue('');
-      if (value === '') {
-        console.log('endDateFormated:::endDateFormated:::', endDateFormated);
-      }
-    }
+    // const startDateFormated = new Date(value);
+    // const endDateFormated = new Date(
+    //   this.allSearch().controls[i].get('param4').value
+    // );
+    // let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
+    // console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
+    // if (isStartAfterEndDate) {
+    //   this.datePickersInfo[i].end.formatedValue = '';
+    //   this.allSearch().controls[i].get('param4').setValue('');
+    //   if (value === '') {
+    //     console.log('endDateFormated:::endDateFormated:::', endDateFormated);
+    //   }
+    // }
     // if()
     // I need to add if the param3 is empty then clear param4
+    const row = this.allSearch().controls[i] as FormGroup;
+    console.log('row::::::', row);
+    console.log(
+      'row.value.param2.toLowerCase()::::::',
+      row.value.param2.toLowerCase()
+    );
+    if (row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID) {
+      console.log('this.datePickersInfo[i]::::::', this.datePickersInfo[i]);
+      if (this.datePickersInfo[i]) {
+        this.datePickersInfo[i].end.formatedValue = '';
+        this.allSearch().controls[i].get('param4').setValue('');
+      }
+    }
   }
 
   get f() {
@@ -613,6 +627,7 @@ export class Tab1Page implements OnInit {
     //   this.datePickersInfo[i].end.formatedValue = '';
     //   this.allSearch().controls[i].get('param4').setValue('');
     // }
+
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID) {
       if (isNaN(Date.parse(row.value.param3))) {
         isUserInteraction &&
@@ -970,6 +985,10 @@ export class Tab1Page implements OnInit {
   }
 
   async onPreselectDDLChange(e: any) {
+    if (this.skipOnPreselectDDLChange) {
+      this.skipOnPreselectDDLChange = false;
+      return;
+    }
     const previousPresetId = this.presetId;
     if (e === 1) {
       this.currentPresetName = INITIALCURRENTPRESETNAME;
@@ -998,7 +1017,8 @@ export class Tab1Page implements OnInit {
           this.selectedPresetId = e.target?.value;
         } else {
           this.selectedPresetId = this.presetId;
-          return false;
+          this.skipOnPreselectDDLChange = true;
+          return;
         }
       }
     }
@@ -1198,6 +1218,30 @@ export class Tab1Page implements OnInit {
   moveDown(e, currentRowIndex) {
     const targetRowIndex = currentRowIndex + 1;
     this.swapRows(currentRowIndex, targetRowIndex);
+  }
+
+  handleClear(i) {
+    if (this.allSearch().controls[i].get('param3')) {
+      this.allSearch().controls[i].get('param3').setValue('');
+      this.datePickersInfo[i].start.formatedValue = '';
+      // } else if (this.allSearch().controls[i].get('param4')) {
+      //   this.allSearch().controls[i].get('param4').setValue('');
+      //   this.datePickersInfo[i].end.formatedValue = '';
+      // }
+      console.log('i::::::', i);
+    }
+  }
+
+  handleClearFourthField(i) {
+    // if (this.allSearch().controls[i].get('param3')) {
+    //   this.allSearch().controls[i].get('param3').setValue('');
+    //   this.datePickersInfo[i].start.formatedValue = '';
+    // } else
+    if (this.allSearch().controls[i].get('param4')) {
+      this.allSearch().controls[i].get('param4').setValue('');
+      this.datePickersInfo[i].end.formatedValue = '';
+    }
+    console.log('i::::::', i);
   }
 
   drop(event: CdkDragDrop<any>) {

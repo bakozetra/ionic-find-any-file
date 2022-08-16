@@ -577,13 +577,26 @@ ion-datetime {
 
 .input-range {
   position: relative;
-  ::ng-deep ion-button {
+  ::ng-deep .clear-param3 {
     position: absolute;
     right: 0.5rem;
+    z-index: 1000;
+    /* width: 0.75rem; */
+    height: auto;
   }
-  ::ng-deep input-icons-notbetween {
+}
+.input-range-end {
+  position: relative;
+  ::ng-deep .clear-param4 {
+    position: absolute;
+      right: 0.5rem;
+      /* top: 0rem; */
+      bottom: 0.25rem;
+      z-index: 1000;
+    height: auto;
 
   }
+
 }
 
 .disable-preset-menu {
