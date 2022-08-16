@@ -1,4 +1,3 @@
-<!-- Basic -->
 <ion-content [fullscreen]="true" class="content">
   <ion-accordion-group class="accordion-grp">
     <ion-accordion value="colors" class="accordion">
@@ -8,7 +7,6 @@
         >
       </ion-item>
       <ion-list slot="content" class="list">
-        <!-- <ion-infinite-scroll> -->
         <div
           *ngIf="preSelectList.length > 0 else emptyList"
           class="search-row search-row-select"
@@ -89,7 +87,6 @@
             </div>
           </div>
         </div>
-        <!-- </ion-infinite-scroll> -->
         <ion-infinite-scroll threshold="100px">
           <ion-grid
             class="form-wrapper"
@@ -235,7 +232,6 @@
                       size-sm=""
                       class="input-wrapper input-range"
                     >
-                      <!-- clearInput -->
                       <ion-input
                         clearOnEdit="true"
                         type="text"
@@ -294,7 +290,6 @@
                           *ngIf="allSearch().controls[i]?.get('param2')?.value !== 'BETWEEN'"
                           (click)="this.datePickerInputOnClickNotBetween(i)"
                         >
-                          <!-- clearInput="true" -->
                         </ion-input>
                         <ion-datetime
                           #datetime
@@ -332,7 +327,6 @@
                       >
                         <span slot="title">Select an end date</span>
                       </ion-datetime>
-                      <!-- clearInput -->
                       <ion-input
                         onkeypress="return false;"
                         placeholder="End Date"

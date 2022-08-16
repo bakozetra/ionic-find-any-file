@@ -340,27 +340,13 @@ export class Tab1Page implements OnInit {
       'yyyy-MM-dd'
     );
     this.datePickersInfo[i].start.open = false;
-    // const startDateFormated = new Date(value);
-    // const endDateFormated = new Date(
-    //   this.allSearch().controls[i].get('param4').value
-    // );
-    // let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-    // console.log('isStartAfterEndDate::::::', isStartAfterEndDate);
-    // if (isStartAfterEndDate) {
-    //   this.datePickersInfo[i].end.formatedValue = '';
-    //   this.allSearch().controls[i].get('param4').setValue('');
-    //   if (value === '') {
-    //     console.log('endDateFormated:::endDateFormated:::', endDateFormated);
-    //   }
-    // }
-    // if()
-    // I need to add if the param3 is empty then clear param4
     const row = this.allSearch().controls[i] as FormGroup;
-    console.log('row::::::', row);
+    console.log('row:::::dateChangedInputPicker:', row);
     console.log(
       'row.value.param2.toLowerCase()::::::',
       row.value.param2.toLowerCase()
     );
+
     if (row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID) {
       console.log('this.datePickersInfo[i]::::::', this.datePickersInfo[i]);
       if (this.datePickersInfo[i]) {
@@ -378,10 +364,6 @@ export class Tab1Page implements OnInit {
     console.log('rowIndex::::::', rowIndex);
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
-    // this.datePickersInfo[rowIndex + 1] = {
-    //   start: { open: false, formatedValue: '' },
-    //   end: { open: false, formatedValue: '' },
-    // };
     const datePickerCopy = [...this.datePickersInfo];
 
     datePickerCopy.splice(
@@ -635,6 +617,19 @@ export class Tab1Page implements OnInit {
       } else {
         return row.value.param3;
       }
+    }
+    // this.datePickersInfo[i].end.formatedValue !== ''
+    // row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID &&
+    if (
+      this.allSearch().controls[i].get('param3')?.value === '' &&
+      this.allSearch().controls[i].get('param4')?.value !== ''
+    ) {
+      this.allSearch().controls[i].get('param4').setValue('');
+      this.datePickersInfo[i].end.formatedValue = '';
+      // console.log(
+      //   'this.datePickersInfo[i].end.formatedValue::: this.datePickersInfo[i].end.formatedValue:::',
+      //   this.datePickersInfo[i].end.formatedValue
+      // );
     }
   }
 
@@ -1224,19 +1219,11 @@ export class Tab1Page implements OnInit {
     if (this.allSearch().controls[i].get('param3')) {
       this.allSearch().controls[i].get('param3').setValue('');
       this.datePickersInfo[i].start.formatedValue = '';
-      // } else if (this.allSearch().controls[i].get('param4')) {
-      //   this.allSearch().controls[i].get('param4').setValue('');
-      //   this.datePickersInfo[i].end.formatedValue = '';
-      // }
       console.log('i::::::', i);
     }
   }
 
   handleClearFourthField(i) {
-    // if (this.allSearch().controls[i].get('param3')) {
-    //   this.allSearch().controls[i].get('param3').setValue('');
-    //   this.datePickersInfo[i].start.formatedValue = '';
-    // } else
     if (this.allSearch().controls[i].get('param4')) {
       this.allSearch().controls[i].get('param4').setValue('');
       this.datePickersInfo[i].end.formatedValue = '';
