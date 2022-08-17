@@ -540,8 +540,10 @@ ul li.active ul {
 .range , .datepicker{
   --placeholder-color:white;
   --placeholder-opacity:none;
+  --padding-start:0.5rem;
   color: white;
 }
+
 
 #presets-select::part(icon) {
   content: url(../../assets/icon/dropdown.svg);
@@ -638,7 +640,6 @@ ion-datetime {
  
    .preset-row {
     display: grid;
-    // padding-bottom: 1rem;
     padding-bottom: 1.5rem;
 
     .icon {
