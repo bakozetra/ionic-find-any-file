@@ -567,9 +567,8 @@ ion-datetime {
   ::ng-deep .clear-param3 {
     position: absolute;
     right: 0.65rem;
-    z-index: 1000;
+    z-index: 999;
     bottom: 0.25rem; 
-    /* width: 0.75rem; */
     height: auto;
   }
 }
@@ -580,7 +579,7 @@ ion-datetime {
       right: 0.65rem;
       /* top: 0rem; */
       bottom: 0.25rem;
-      z-index: 1000;
+      z-index: 999;
     height: auto;
 
   }

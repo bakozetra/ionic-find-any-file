@@ -113,10 +113,6 @@ const INITIALDATEPICKERSINFO = {
   end: { open: false, formatedValue: '' },
 };
 
-// const INITIALDATEPICKEINFO = {
-//   open: false,
-//   value: '',
-// };
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -222,7 +218,6 @@ export class Tab1Page implements OnInit {
   valueInputPicker = '';
   selectMode = 'date';
   datePickersInfo = [JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))];
-  // datePickerInfo = { '0': INITIALDATEPICKEINFO };
   skipOnPreselectDDLChange = false;
 
   constructor(
