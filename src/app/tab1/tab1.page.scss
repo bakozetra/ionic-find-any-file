@@ -568,7 +568,7 @@ ul li.active ul {
 // ion-date time 
 ion-datetime {
   position: absolute;
-  top: 2rem;
+  top: 2.05rem;
   width: 100%;
   z-index: 999;
 }
@@ -649,6 +649,9 @@ ion-datetime {
  
    .preset-row {
     display: grid;
+    // padding-bottom: 1rem;
+    padding-bottom: 1.5rem;
+
     .icon {
       justify-content: space-between;
     }
