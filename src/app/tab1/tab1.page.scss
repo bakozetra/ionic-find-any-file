@@ -106,16 +106,13 @@ form {
       padding: 0;
   }
   select,.datepicker {
-    // max-width: 250px;
     width: 100%;
   }
   .row-add,.row-delete {
-    // --max-width: 40px;
     width: 100%;
     max-width: fit-content;
   }
   .row-add {
-    // padding: 0;
     max-width: fit-content;
     ion-button {
       margin: 0;
@@ -164,16 +161,12 @@ select::-ms-expand {
   display: none;
 }
 select {
-  /* for Firefox */
   -moz-appearance: none;
-  /* for Safari, Chrome, Opera */
   -webkit-appearance: none;
     padding-left: 0.5rem;
 }
 .select-item select {
-  /* for Firefox */
   -moz-appearance: none;
-  /* for Safari, Chrome, Opera */
   -webkit-appearance: none;
 }
 
@@ -183,7 +176,6 @@ select {
   align-items: center;
   .span-presets {
     color: white;
-    // padding-inline-start: 1rem;
     width: inherit;
     max-width: fit-content;
   }
@@ -191,7 +183,6 @@ select {
 }
 
 .search-row-select {
-  // width: 96%;
   margin: auto;
   display: flex;
   flex-direction: row;
@@ -203,9 +194,7 @@ select {
   .select-class {
     width: 100%;
   }
-  // .save-btn1 {
-  //   // margin-left: 1rem;
-  // }
+
   
   .select-item {
     width:250px;
@@ -328,13 +317,13 @@ ion-item:not(.item-label) .sc-ion-input-md-h {
   margin-top: 4vh;
 }
 
-// .item-bottom::part(native) {
-//   display: none !important;
-// }
 
 .form-wrapper {
   display: block !important;
   flex-direction: column !important;
+    overflow: overlay;
+    height: 77vh;
+     padding-top: 0.5rem
 }
 
 .abc {
@@ -664,7 +653,9 @@ ion-datetime {
     position: relative;
     height: 78vh;
    }
-  
+  .form-wrapper {
+    height: 64vh;
+  }
 }
 
 
