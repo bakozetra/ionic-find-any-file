@@ -203,9 +203,9 @@ select {
   .select-class {
     width: 100%;
   }
-  .save-btn1 {
-    // margin-left: 1rem;
-  }
+  // .save-btn1 {
+  //   // margin-left: 1rem;
+  // }
   
   .select-item {
     width:250px;
@@ -328,9 +328,9 @@ ion-item:not(.item-label) .sc-ion-input-md-h {
   margin-top: 4vh;
 }
 
-.item-bottom::part(native) {
-  display: none !important;
-}
+// .item-bottom::part(native) {
+//   display: none !important;
+// }
 
 .form-wrapper {
   display: block !important;
