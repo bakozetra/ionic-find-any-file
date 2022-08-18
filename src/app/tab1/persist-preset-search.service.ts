@@ -7,9 +7,6 @@ interface PresetData {
   filters: FilterModel[];
 }
 
-// @Injectable({
-//   providedIn: 'root',
-// })
 export class PersistPresetSearchService {
   constructor() {}
   public setPersistPresetSearch(data) {

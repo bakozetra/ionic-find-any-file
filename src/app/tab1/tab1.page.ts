@@ -28,6 +28,8 @@ import { areFiltersEqual } from '../utils';
 import { fieldsHasValue } from '../utils';
 import { format, parseISO, isBefore } from 'date-fns';
 import { PersistPresetSearchService } from './persist-preset-search.service';
+import { BackendCommunicationService } from './backend-communication.service';
+import { HttpClient } from '@angular/common/http';
 
 interface PresetData {
   id: string;
@@ -214,6 +216,7 @@ export class Tab1Page implements OnInit {
   dateRangePickerStart = '';
   dateRangePickerEnd = '';
   persistPresetSearchService;
+  backendCommunicationService;
   alertService;
   valueInputPicker = '';
   selectMode = 'date';
@@ -225,9 +228,11 @@ export class Tab1Page implements OnInit {
     private modalService: NgbModal,
     private alertController: AlertController,
     public modalCtrl: ModalController,
-    public platform: Platform
+    public platform: Platform,
+    private http: HttpClient
   ) {
     this.persistPresetSearchService = new PersistPresetSearchService();
+    this.backendCommunicationService = new BackendCommunicationService(http);
   }
 
   ngOnInit() {
@@ -259,8 +264,6 @@ export class Tab1Page implements OnInit {
   }
 
   async datePickerInputOnClick(limitName, i, event) {
-    console.log('event::::::', event);
-    console.log('event::::::', event);
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
     if (limitName == 'end') {
@@ -282,17 +285,13 @@ export class Tab1Page implements OnInit {
   }
 
   dateChanged(limitName, value, i, startDateValue?: any) {
-    console.log('startDateValue::::::', startDateValue);
+    console.log('value:::: bbbb::', value);
     if (limitName === 'start') {
       const startDateFormated = new Date(value);
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
       );
-      // const isParam3Value = new Date(
-      //   this.allSearch().controls[i].get('param3').value
-      // );
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-      // let isStartAndEndWithParam3 = isBefore(endDateFormated, isParam3Value);
       if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.formatedValue = '';
       }
@@ -311,52 +310,41 @@ export class Tab1Page implements OnInit {
 
   // Date picker for exatly before and after.
   datePickerInputOnClickNotBetween(i) {
-    console.log('i::::::', i);
-    // console.log('event:::datePickerInputOnClickNotBetween:::', event);
-    console.log(
-      'this.datePickersInfo[i].start.open::::::',
-      this.datePickersInfo[i]
-    );
-
+    console.log('i::::::datePickerInputOnClickNotBetween', i);
     if (this.datePickersInfo[i]) {
       this.datePickersInfo[i].start.open =
         !this.datePickersInfo[i]?.start?.open;
     }
-    console.log(
-      'this.datePickersInfo:::datePickerInputOnClickNotBetween:::',
-      this.datePickersInfo
-    );
   }
 
-  dateChangedInputPicker(i, value, event?) {
-    console.log('value:::::dateChangedInputPicker:', value);
-    this.datePickersInfo[i].start.formatedValue = format(
-      parseISO(value),
-      'yyyy-MM-dd'
-    );
-    this.datePickersInfo[i].start.open = false;
-    const row = this.allSearch().controls[i] as FormGroup;
-    console.log('row:::::dateChangedInputPicker:', row);
-    console.log(
-      'row.value.param2.toLowerCase()::::::',
-      row.value.param2.toLowerCase()
-    );
-
-    if (row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID) {
-      console.log('this.datePickersInfo[i]::::::', this.datePickersInfo[i]);
-      if (this.datePickersInfo[i]) {
-        this.datePickersInfo[i].end.formatedValue = '';
-        this.allSearch().controls[i].get('param4').setValue('');
-      }
-    }
-  }
+  // dateChangedInputPicker(i, value, event?) {
+  //   console.log('value::::::dateChangedInputPicker', value);
+  //   this.datePickersInfo[i].start.formatedValue = format(
+  //     parseISO(value),
+  //     'yyyy-MM-dd'
+  //   );
+  //   this.datePickersInfo[i].start.open = false;
+  //   const row = this.allSearch().controls[i] as FormGroup;
+  //   if (
+  //     row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID.toLocaleLowerCase()
+  //   ) {
+  //     console.log(
+  //       'row.value.param2.toLowerCase()::::::',
+  //       row.value.param2.toLowerCase(),
+  //       SUB_MENU_BETWEEN_ID
+  //     );
+  //     // if (this.datePickersInfo[i]) {
+  //     this.datePickersInfo[i].end.formatedValue = '';
+  //     this.allSearch().controls[i].get('param4').setValue('');
+  //     // }
+  //   }
+  // }
 
   get f() {
     return this.searchFilterForm.controls;
   }
 
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
-    console.log('rowIndex::::::', rowIndex);
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
     const datePickerCopy = [...this.datePickersInfo];
@@ -367,7 +355,6 @@ export class Tab1Page implements OnInit {
       JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))
     );
     this.datePickersInfo = [...datePickerCopy];
-    console.log('his.datePickersInfo::::::', this.datePickersInfo);
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -503,7 +490,16 @@ export class Tab1Page implements OnInit {
   }
 
   applyFilter() {
-    alert('Apply filter.');
+    this.backendCommunicationService
+      .sendQuery(this.allSearch().value)
+      .subscribe({
+        next: (data) => {
+          console.log('data::::::', data);
+        },
+        error: (error) => {
+          console.error('There was an error!', error);
+        },
+      });
   }
 
   initPriceForm() {
@@ -577,14 +573,7 @@ export class Tab1Page implements OnInit {
     row.get('param2').enable();
     row.get('param3').enable();
     row.get('param4').enable();
-    console.log('this.param2List::::::', this.param2List);
-    console.log('this.param2List.length::::::', this.param2List.length);
-    // if (this.param2List && this.param2List.length > 0) {
     this.param2List[i] = menu?.subMenu;
-    // } else {
-    //   this.param2List.push(menu?.subMenu);
-    // }
-
     row.get('param2').markAllAsTouched();
     row.get('param2').markAsDirty();
     row.get('param2')?.setValue(this?.param2List[i][0]?.id);
@@ -599,12 +588,6 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, isUserInteraction?: any) {
     const row = this.allSearch().controls[i] as FormGroup;
-    console.log('this.datePickersInfo[i]::::::', this.datePickersInfo[i]);
-    // if (this.datePickersInfo[i]) {
-    //   this.datePickersInfo[i].end.formatedValue = '';
-    //   this.allSearch().controls[i].get('param4').setValue('');
-    // }
-
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID) {
       if (isNaN(Date.parse(row.value.param3))) {
         isUserInteraction &&
@@ -613,18 +596,12 @@ export class Tab1Page implements OnInit {
         return row.value.param3;
       }
     }
-    // this.datePickersInfo[i].end.formatedValue !== ''
-    // row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID &&
     if (
       this.allSearch().controls[i].get('param3')?.value === '' &&
       this.allSearch().controls[i].get('param4')?.value !== ''
     ) {
       this.allSearch().controls[i].get('param4').setValue('');
       this.datePickersInfo[i].end.formatedValue = '';
-      // console.log(
-      //   'this.datePickersInfo[i].end.formatedValue::: this.datePickersInfo[i].end.formatedValue:::',
-      //   this.datePickersInfo[i].end.formatedValue
-      // );
     }
   }
 
@@ -710,10 +687,6 @@ export class Tab1Page implements OnInit {
         fieldsHasValue(m.param3)
     );
     let messageSpan = document.getElementById('message');
-    console.log('every::::::', every);
-    if (!every) {
-      console.log('all filled need to be filled');
-    }
     if (every) {
       const localJSON = localjson;
       if (
@@ -749,10 +722,6 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-
-        if (finalData.filters[0]?.param2 !== SUB_MENU_BETWEEN_ID) {
-          console.log('heloo if');
-        }
 
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
           if (finalData.filters[0]?.param4 !== '') {
@@ -792,12 +761,11 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        if (finalData.filters[0]?.param2 !== SUB_MENU_BETWEEN_ID) {
-          console.log('heloo else');
-        }
+        // if (finalData.filters[0]?.param2 !== SUB_MENU_BETWEEN_ID) {
+        //   console.log('heloo else');
+        // }
 
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
-          console.log('heloo else');
           if (finalData.filters[0]?.param4 !== '') {
             allFilters.push(finalData);
             this.setPersistPresetSearch(allFilters);
@@ -863,7 +831,6 @@ export class Tab1Page implements OnInit {
           'Both field for the between range has to be valid.',
           'Please check the form'
         );
-        // return notification;
         this.currentPresetName = '';
       }
     }
@@ -979,7 +946,6 @@ export class Tab1Page implements OnInit {
       this.skipOnPreselectDDLChange = false;
       return;
     }
-    const previousPresetId = this.presetId;
     if (e === 1) {
       this.currentPresetName = INITIALCURRENTPRESETNAME;
     } else {
@@ -995,13 +961,12 @@ export class Tab1Page implements OnInit {
     const compareSearchParam =
       this.currentPresetName &&
       this.currentPresetName !== INITIALCURRENTPRESETNAME;
-    // debugger;
+
     if (!changes) {
       if (compareSearchParam) {
         const confirmed = await this.confirmationAlert(
           `Do you want to discard the current filter changes`
         );
-        console.log('confirmed::::::', confirmed);
         // debugger;
         if (confirmed) {
           this.selectedPresetId = e.target?.value;
@@ -1021,7 +986,6 @@ export class Tab1Page implements OnInit {
     ) {
       this.allSearch().clear();
     }
-    console.log('compareSearchParam::::::', compareSearchParam);
     if (compareSearchParam) {
       this.clearFormArray();
       const localJSON = this.getPersistPresetSearchParsed();
@@ -1032,12 +996,7 @@ export class Tab1Page implements OnInit {
           const menu = this.searchData.find(
             (fn) => fn.id.toLowerCase() === f.param1.toLowerCase()
           );
-          // if (this.param2List && this.param2List.length > 0) {
           this.param2List[index] = menu?.subMenu;
-          // }
-          // else {
-          //   this.param2List.push(menu.subMenu);
-          // }
           tempArray.push({
             param1: f.param1,
             param2: f.param2,
@@ -1057,7 +1016,6 @@ export class Tab1Page implements OnInit {
   }
 
   trackChanges = (param: any) => {
-    console.log('param::::::', param);
     // debugger;
     if (!param) return true;
     const localJSON = this.getPersistPresetSearchParsed();
@@ -1079,14 +1037,8 @@ export class Tab1Page implements OnInit {
           delete temp2[i].param4;
         }
       }
-      console.log('temp1::::::', temp1);
-      console.log('temp2::::::', temp2);
-      console.log(
-        'JSON.stringify(temp1) !== JSON.stringify(temp2)::::::',
-        JSON.stringify(temp1) !== JSON.stringify(temp2)
-      );
+
       if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
-        console.log('param:::temp1:::', param);
         return false;
       } else {
         return true;
@@ -1214,7 +1166,6 @@ export class Tab1Page implements OnInit {
     if (this.allSearch().controls[i].get('param3')) {
       this.allSearch().controls[i].get('param3').setValue('');
       this.datePickersInfo[i].start.formatedValue = '';
-      console.log('i::::::', i);
     }
   }
 
@@ -1223,7 +1174,6 @@ export class Tab1Page implements OnInit {
       this.allSearch().controls[i].get('param4').setValue('');
       this.datePickersInfo[i].end.formatedValue = '';
     }
-    console.log('i::::::', i);
   }
 
   drop(event: CdkDragDrop<any>) {

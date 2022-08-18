@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarModule } from 'ion2-calendar';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
     BrowserAnimationsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    HttpClientModule,
     CalendarModule.forRoot({
       doneLabel: 'Save',
       closeIcon: true,

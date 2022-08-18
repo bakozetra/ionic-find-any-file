@@ -246,15 +246,8 @@ select {
   justify-content: flex-end !important;
 }
 
-.clear-btn::part(native) {
-  background: rgb(47, 214, 225);
-  padding: 1rem !important;
-  color: #dddddd;
-    background-color: #535353;
-}
-
 .apply-btn::part(native)  {
-  // background: rgb(203, 35, 203);
+ 
   padding: 1rem !important;
   color: #dddddd;
   background-color: #535353;

@@ -279,8 +279,8 @@
                           *ngIf="datePickersInfo?.[i]?.start?.open"
                           class="ion-datetime-start"
                           formControlName="param3"
-                          (ionChange)="this.dateChanged( 'start',datetime.value,i, $event)"
                           [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                          (ionChange)="this.dateChanged('start',datetime.value,i, $event)"
                           showDefaultButtons="true"
                           (ionCancel)="this.datePickersInfo[i].start.open = false"
                           min="2000-01-01T00:00:00"
@@ -300,10 +300,10 @@
                           (click)="this.datePickerInputOnClickNotBetween(i)"
                         >
                         </ion-input>
-                        <ion-datetime
+                        <!-- <ion-datetime
                           #datetime
                           [presentation]="selectMode"
-                          *ngIf="this.datePickersInfo[i]?.start?.open"
+                          *ngIf="this.datePickersInfo[i]?.start?.open "
                           showDefaultButtons="true"
                           [value]="this.datePickersInfo[i]?.start?.formatedValue"
                           class="datepicker-input"
@@ -311,7 +311,7 @@
                           (ionChange)="dateChangedInputPicker(i,datetime.value , $event)"
                         >
                           <span slot="title"> Pick date </span>
-                        </ion-datetime>
+                        </ion-datetime> -->
                       </ng-template>
                     </ion-col>
 
@@ -368,6 +368,7 @@
               <ion-row class="btn-group">
                 <ion-col size-xs="12" size-sm="12" class="apply-filter">
                   <ion-button
+                    [disabled]="this.currentPresetName === ''? true : false"
                     (click)="applyFilter()"
                     class="apply-btn"
                     [tooltip]="'search filter'"
