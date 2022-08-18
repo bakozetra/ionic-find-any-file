@@ -285,7 +285,6 @@ export class Tab1Page implements OnInit {
   }
 
   dateChanged(limitName, value, i, startDateValue?: any) {
-    console.log('value:::: bbbb::', value);
     if (limitName === 'start') {
       const startDateFormated = new Date(value);
       const endDateFormated = new Date(
@@ -294,6 +293,15 @@ export class Tab1Page implements OnInit {
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
       if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.formatedValue = '';
+        this.allSearch().controls[i].get('param4').setValue('');
+      }
+
+      const row = this.allSearch().controls[i] as FormGroup;
+      if (row.value.param2 === 'EXACTLY' || 'AFTER' || 'BEFORE') {
+        if (this.allSearch().controls[i].get('param3')) {
+          this.allSearch().controls[i].get('param4').setValue('');
+          this.datePickersInfo[i].end.formatedValue = '';
+        }
       }
     }
 
@@ -310,7 +318,6 @@ export class Tab1Page implements OnInit {
 
   // Date picker for exatly before and after.
   datePickerInputOnClickNotBetween(i) {
-    console.log('i::::::datePickerInputOnClickNotBetween', i);
     if (this.datePickersInfo[i]) {
       this.datePickersInfo[i].start.open =
         !this.datePickersInfo[i]?.start?.open;
