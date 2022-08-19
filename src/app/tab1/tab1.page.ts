@@ -225,6 +225,7 @@ export class Tab1Page implements OnInit {
   selectMode = 'date';
   datePickersInfo = [JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))];
   skipOnPreselectDDLChange = false;
+  closeMenu = '';
 
   constructor(
     private fb: FormBuilder,
@@ -306,6 +307,10 @@ export class Tab1Page implements OnInit {
         SUB_MENU_AFTER_ID
       ) {
         if (this.allSearch().controls[i].get('param3')) {
+          console.log(
+            'this.datePickersInfo[i].end.formatedValue::::::',
+            this.datePickersInfo[i].end.formatedValue
+          );
           this.allSearch().controls[i].get('param4').setValue('');
           this.datePickersInfo[i].end.formatedValue = '';
         }
@@ -323,7 +328,6 @@ export class Tab1Page implements OnInit {
     );
   }
 
-  // Date picker for exatly before and after.
   datePickerInputOnClickNotBetween(i) {
     if (this.datePickersInfo[i]) {
       this.datePickersInfo[i].start.open =
@@ -593,6 +597,17 @@ export class Tab1Page implements OnInit {
         return row.value.param3;
       }
     }
+    if (
+      row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID.toLocaleLowerCase()
+    ) {
+      console.log(
+        'row.value.param2.toLowerCase()::::::',
+        row.value.param2.toLowerCase()
+      );
+      this.allSearch().controls[i].get('param4').setValue('');
+      this.datePickersInfo[i].end.formatedValue = '';
+    }
+
     if (
       this.allSearch().controls[i].get('param3')?.value === '' &&
       this.allSearch().controls[i].get('param4')?.value !== ''
@@ -935,6 +950,7 @@ export class Tab1Page implements OnInit {
     }
     // debugger;
     const changes = this.trackChanges(this.presetId);
+
     // to check if newly created presets after fresh load app should be saved
     const compareSearchParam =
       this.currentPresetName &&
@@ -1006,16 +1022,18 @@ export class Tab1Page implements OnInit {
       const temp2 = data?.filters;
 
       for (var i = 0, len1 = temp1.length; i < len1; i++) {
-        if (temp1?.[i]?.param4 == '') {
+        if (temp1?.[i]?.param4 === '') {
           delete temp1[i].param4;
         }
       }
       for (var i = 0, len2 = temp2.length; i < len2; i++) {
-        if (temp2?.[i]?.param4 == '') {
+        if (temp2?.[i]?.param4 === '') {
           delete temp2[i].param4;
         }
       }
 
+      console.log('temp1::::::', temp1);
+      console.log('temp2::::::', temp2);
       if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
         return false;
       } else {
@@ -1025,19 +1043,17 @@ export class Tab1Page implements OnInit {
     return false;
   };
 
-  closeResult = '';
-
   open(content) {
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
         (result) => {
-          this.closeResult = `Closed with: ${result}`;
+          this.closeMenu = `Closed with: ${result}`;
         },
         (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          this.closeMenu = `Dismissed ${this.getDismissReason(reason)}`;
           if (
-            this.closeResult !== `Dismissed ${this.getDismissReason('button')}`
+            this.closeMenu !== `Dismissed ${this.getDismissReason('button')}`
           ) {
             this.currentPresetName = INITIALCURRENTPRESETNAME;
           }
