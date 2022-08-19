@@ -288,10 +288,6 @@ export class Tab1Page implements OnInit {
         SUB_MENU_AFTER_ID
       ) {
         if (this.allSearch().controls[i].get('param3')) {
-          console.log(
-            'this.datePickersInfo[i].end.formatedValue::::::',
-            this.datePickersInfo[i].end.formatedValue
-          );
           this.allSearch().controls[i].get('param4').setValue('');
           this.datePickersInfo[i].end.formatedValue = '';
         }
@@ -466,6 +462,11 @@ export class Tab1Page implements OnInit {
   }
 
   applyFilter() {
+    // console.log('|| this.allSearch()::::::', this.allSearch().value);
+    // // const test = () => {
+    // const test1 = this.allSearch().value.filter((a) => a.param1 !== '');
+    // console.log('test1::::::', test1);
+    // // }
     this.backendCommunicationService
       .sendQuery(this.allSearch().value)
       .subscribe({
@@ -569,7 +570,6 @@ export class Tab1Page implements OnInit {
   }
 
   onParam2Change(i: any, isUserInteraction?: any) {
-    console.log('i:::::onParam2Change:', i);
     const row = this.allSearch().controls[i] as FormGroup;
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID) {
       if (isNaN(Date.parse(row.value.param3))) {
@@ -582,10 +582,6 @@ export class Tab1Page implements OnInit {
     if (
       row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID.toLocaleLowerCase()
     ) {
-      console.log(
-        'row.value.param2.toLowerCase()::::::',
-        row.value.param2.toLowerCase()
-      );
       this.allSearch().controls[i].get('param4').setValue('');
       this.datePickersInfo[i].end.formatedValue = '';
     }
@@ -677,7 +673,6 @@ export class Tab1Page implements OnInit {
         return notification;
       }
     } else {
-      console.log('allFilters::::::', allFilters);
       allFilters.push(finalData);
       this.setPersistPresetSearch(allFilters);
       this.updatePreselectList();
@@ -1014,8 +1009,6 @@ export class Tab1Page implements OnInit {
         }
       }
 
-      console.log('temp1::::::', temp1);
-      console.log('temp2::::::', temp2);
       if (JSON.stringify(temp1) !== JSON.stringify(temp2)) {
         return false;
       } else {
