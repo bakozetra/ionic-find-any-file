@@ -660,6 +660,38 @@ export class Tab1Page implements OnInit {
     }
   }
 
+  async saveHandleBetweenSelected(finalData, allFilters, messageSpan) {
+    if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
+      if (finalData.filters[0]?.param4 !== '') {
+        allFilters.push(finalData);
+        this.setPersistPresetSearch(allFilters);
+        this.updatePreselectList();
+        messageSpan.style.color = 'green';
+        this.message = 'Your Filter stored successfully.';
+        if (this.message) {
+          this.emptyMessageTimeout();
+        }
+      } else {
+        const notification = await this.notificationAlert(
+          'Both field for the between range has to be valid.',
+          'Please check the form'
+        );
+        this.currentPresetName = '';
+        return notification;
+      }
+    } else {
+      console.log('allFilters::::::', allFilters);
+      allFilters.push(finalData);
+      this.setPersistPresetSearch(allFilters);
+      this.updatePreselectList();
+      messageSpan.style.color = 'green';
+      this.message = 'Your Filter stored successfully.';
+      if (this.message) {
+        this.emptyMessageTimeout();
+      }
+    }
+  }
+
   async savePreselectForm(
     localjson,
     searchFilterForm,
@@ -719,35 +751,11 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-
-        if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
-          if (finalData.filters[0]?.param4 !== '') {
-            allFilters.push(finalData);
-            this.setPersistPresetSearch(allFilters);
-            this.updatePreselectList();
-            messageSpan.style.color = 'green';
-            this.message = 'Your Filter stored successfully.';
-            if (this.message) {
-              this.emptyMessageTimeout();
-            }
-          } else {
-            const notification = await this.notificationAlert(
-              'Both field for the between range has to be valid.',
-              'Please check the form'
-            );
-            this.currentPresetName = '';
-            return notification;
-          }
-        } else {
-          allFilters.push(finalData);
-          this.setPersistPresetSearch(allFilters);
-          this.updatePreselectList();
-          messageSpan.style.color = 'green';
-          this.message = 'Your Filter stored successfully.';
-          if (this.message) {
-            this.emptyMessageTimeout();
-          }
-        }
+        await this.saveHandleBetweenSelected(
+          finalData,
+          allFilters,
+          messageSpan
+        );
       } else {
         const allFilters = preSelectList;
         filterData = filterData.filter(
@@ -758,34 +766,11 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
-          if (finalData.filters[0]?.param4 !== '') {
-            allFilters.push(finalData);
-            this.setPersistPresetSearch(allFilters);
-            this.updatePreselectList();
-            messageSpan.style.color = 'green';
-            this.message = 'Your Filter stored successfully.';
-            if (this.message) {
-              this.emptyMessageTimeout();
-            }
-          } else {
-            const notification = await this.notificationAlert(
-              'Both field for the between range has to be valid.',
-              'Please check the form'
-            );
-            this.currentPresetName = '';
-            return notification;
-          }
-        } else {
-          allFilters.push(finalData);
-          this.setPersistPresetSearch(allFilters);
-          this.updatePreselectList();
-          messageSpan.style.color = 'green';
-          this.message = 'Your Filter stored successfully.';
-          if (this.message) {
-            this.emptyMessageTimeout();
-          }
-        }
+        await this.saveHandleBetweenSelected(
+          finalData,
+          allFilters,
+          messageSpan
+        );
       }
     }
   }
