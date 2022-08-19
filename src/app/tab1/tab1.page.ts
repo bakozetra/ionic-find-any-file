@@ -37,6 +37,9 @@ interface PresetData {
   filters: FilterModel[];
 }
 const SUB_MENU_BETWEEN_ID = 'BETWEEN';
+const SUB_MENU_EXACTLY_ID = 'EXACTLY';
+const SUB_MENU_BEFORE_ID = 'BEFORE';
+const SUB_MENU_AFTER_ID = 'AFTER';
 
 const SUB_MENU_TEXT_TYPE_BASE = [
   {
@@ -71,15 +74,15 @@ const SUB_MENU_TEXT_TYPE_CONTAINS_WORDS = [
 ];
 const SUB_MENU_DATE_TYPE_BASE = [
   {
-    id: 'EXACTLY',
+    id: SUB_MENU_EXACTLY_ID,
     name: 'Exactly',
   },
   {
-    id: 'BEFORE',
+    id: SUB_MENU_BEFORE_ID,
     name: 'Before',
   },
   {
-    id: 'AFTER',
+    id: SUB_MENU_AFTER_ID,
     name: 'After',
   },
   {
@@ -297,7 +300,11 @@ export class Tab1Page implements OnInit {
       }
 
       const row = this.allSearch().controls[i] as FormGroup;
-      if (row.value.param2 === 'EXACTLY' || 'AFTER' || 'BEFORE') {
+      if (
+        row.value.param2 === SUB_MENU_EXACTLY_ID ||
+        SUB_MENU_BEFORE_ID ||
+        SUB_MENU_AFTER_ID
+      ) {
         if (this.allSearch().controls[i].get('param3')) {
           this.allSearch().controls[i].get('param4').setValue('');
           this.datePickersInfo[i].end.formatedValue = '';
@@ -531,7 +538,11 @@ export class Tab1Page implements OnInit {
       this.datePickersInfo[dateIndex].end.formatedValue = item?.param4;
       this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
     }
-    if (item.param2 == 'EXACTLY' || 'AFTER' || 'BEFORE') {
+    if (
+      item.param2 == SUB_MENU_EXACTLY_ID ||
+      SUB_MENU_BEFORE_ID ||
+      SUB_MENU_AFTER_ID
+    ) {
       const dateIndex = this.allSearch().value.length - 1;
       if (!this.datePickersInfo[dateIndex]) {
         this.datePickersInfo[dateIndex] = JSON.parse(
@@ -561,7 +572,9 @@ export class Tab1Page implements OnInit {
     row.get('param2').markAllAsTouched();
     row.get('param2').markAsDirty();
     row.get('param2')?.setValue(this?.param2List[i][0]?.id);
-    if (row.value.param2.toLowerCase() === 'exactly') {
+    if (
+      row.value.param2.toLowerCase() === SUB_MENU_EXACTLY_ID.toLocaleLowerCase()
+    ) {
       if (isNaN(Date.parse(row.value.param3))) {
         this.allSearch().controls[i].get('param3').setValue('');
       } else {
