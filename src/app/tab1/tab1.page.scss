@@ -1,3 +1,8 @@
+$background: #535353;
+$color:#fff;
+
+
+
 ::ng-deep ion-content {
   --background: #535353!important;
   --background-size: 400% 400% !important;
@@ -11,7 +16,7 @@
 
   50% {
     background-position: 100% 50%;
-  }
+  } 
 
   100% {
     background-position: 0% 50%;
@@ -39,7 +44,7 @@
 
 ion-input {
   border: 1px solid lightgray;
-  color: #fff !important;
+  color: $color !important;
   padding-left: 0.5rem;
 }
 
@@ -72,7 +77,7 @@ ion-input {
 }
 
 .accordion-label {
-  color: #fff !important;
+  color: $color !important;
 }
 
 .list {
@@ -86,7 +91,7 @@ ion-input {
 
 .search-box {
   margin-top: 3vh;
-  color: #fff;
+  color: $color;
 }
 
 ion-accordion-group {
@@ -199,11 +204,9 @@ select {
   
   .select-item {
     width:250px;
-    // background-color: #333333;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
-    // display: contents;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -218,14 +221,11 @@ select {
       }
     }
   }
-  // ion-icon {
-  //   // margin-right: 1rem;
-  // }
+
 }
 
 .modi-btn{
   text-align: center;
-  // background-color: green;
   margin:1rem;
   padding :10px;
 } 
@@ -250,7 +250,7 @@ select {
  
   padding: 1rem !important;
   color: #dddddd;
-  background-color: #535353;
+  background-color:$background;
 }
 
 .save::part(native) {
@@ -272,7 +272,7 @@ ion-item::part(native) {
 .search-select {
   text-align: center;
   font-size: 2vh;
-  color: #fff !important;
+  color: $color !important;
 }
 
 .select-options {
@@ -301,7 +301,7 @@ ion-item:not(.item-label) .sc-ion-input-md-h {
   font-size: 24px;
   display: flex;
   justify-content: center;
-  color: #fff;
+  color: $color;
 }
 
 .item-native::part(native) {
@@ -475,7 +475,7 @@ ul li.active ul {
   color: #dddddd;
 }
 .dropdown-item:hover {
-  background-color: #535353;
+  background-color: $background;
 }
 
 ::ng-deep .modal-dialog {
@@ -488,7 +488,7 @@ ul li.active ul {
   color: white;
   button {
   color: #dddddd;
-  background-color: #535353;
+  background-color: $background;
   }
 }
 } 
@@ -508,7 +508,7 @@ ul li.active ul {
     opacity: 0!important; 
   }
   .unfocusFirstelement.ion-focused::part(native):hover {
-    background-color:#535353;
+    background-color:$background;
   }
 }
   
@@ -522,7 +522,7 @@ ul li.active ul {
   }
 
 #presets-select {
-  background-color: #535353;
+  background-color: $background;
   --placeholder-color:white;
   --placeholder-opacity:none;
   color: white;
@@ -589,7 +589,7 @@ ion-datetime {
 }
 
 .disable-preset-menu:hover {
-  background-color: #535353;
+  background-color: $background;
 }
 
 .disable-preset-menu:disabled,

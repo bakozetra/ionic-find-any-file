@@ -324,29 +324,6 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  // dateChangedInputPicker(i, value, event?) {
-  //   console.log('value::::::dateChangedInputPicker', value);
-  //   this.datePickersInfo[i].start.formatedValue = format(
-  //     parseISO(value),
-  //     'yyyy-MM-dd'
-  //   );
-  //   this.datePickersInfo[i].start.open = false;
-  //   const row = this.allSearch().controls[i] as FormGroup;
-  //   if (
-  //     row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID.toLocaleLowerCase()
-  //   ) {
-  //     console.log(
-  //       'row.value.param2.toLowerCase()::::::',
-  //       row.value.param2.toLowerCase(),
-  //       SUB_MENU_BETWEEN_ID
-  //     );
-  //     // if (this.datePickersInfo[i]) {
-  //     this.datePickersInfo[i].end.formatedValue = '';
-  //     this.allSearch().controls[i].get('param4').setValue('');
-  //     // }
-  //   }
-  // }
-
   get f() {
     return this.searchFilterForm.controls;
   }
@@ -768,10 +745,6 @@ export class Tab1Page implements OnInit {
           filterName: prestName,
           filters: searchFilterForm.value.search,
         };
-        // if (finalData.filters[0]?.param2 !== SUB_MENU_BETWEEN_ID) {
-        //   console.log('heloo else');
-        // }
-
         if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
           if (finalData.filters[0]?.param4 !== '') {
             allFilters.push(finalData);
