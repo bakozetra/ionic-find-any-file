@@ -1,21 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ChangeDetectorRef,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FilterModel } from '../interfaces/filterModel';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import {
@@ -31,11 +17,6 @@ import { PersistPresetSearchService } from './persist-preset-search.service';
 import { BackendCommunicationService } from './backend-communication.service';
 import { HttpClient } from '@angular/common/http';
 
-interface PresetData {
-  id: string;
-  filterName: string;
-  filters: FilterModel[];
-}
 const SUB_MENU_BETWEEN_ID = 'BETWEEN';
 const SUB_MENU_EXACTLY_ID = 'EXACTLY';
 const SUB_MENU_BEFORE_ID = 'BEFORE';
@@ -520,7 +501,7 @@ export class Tab1Page implements OnInit {
       param4: [
         {
           value: item?.param4,
-          disabled: item?.param4 ? false : true,
+          disabled: false,
         },
       ],
     });
@@ -588,6 +569,7 @@ export class Tab1Page implements OnInit {
   }
 
   onParam2Change(i: any, isUserInteraction?: any) {
+    console.log('i:::::onParam2Change:', i);
     const row = this.allSearch().controls[i] as FormGroup;
     if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID) {
       if (isNaN(Date.parse(row.value.param3))) {
@@ -1055,7 +1037,12 @@ export class Tab1Page implements OnInit {
           if (
             this.closeMenu !== `Dismissed ${this.getDismissReason('button')}`
           ) {
-            this.currentPresetName = INITIALCURRENTPRESETNAME;
+            const existFiltername = this.preSelectList.filter(
+              (name) => name.filterName === this.currentPresetName
+            );
+            if (!existFiltername) {
+              this.currentPresetName = INITIALCURRENTPRESETNAME;
+            }
           }
         }
       );
