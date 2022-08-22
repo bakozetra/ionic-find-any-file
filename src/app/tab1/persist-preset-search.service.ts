@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { FilterModel } from '../interfaces/filterModel';
 
 interface PresetData {

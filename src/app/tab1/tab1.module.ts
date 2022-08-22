@@ -6,7 +6,6 @@ import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CalendarModule } from 'ion2-calendar';
-import { NgCalendarModule } from 'ionic2-calendar';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { MyCommonModule } from '../tooltip/tooltip.module';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
