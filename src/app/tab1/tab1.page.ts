@@ -462,19 +462,24 @@ export class Tab1Page implements OnInit {
   }
 
   async applyFilter() {
-    // console.log('|| this.allSearch()::::::', this.allSearch().value);
-    // // const test = () => {
-    // const test1 = this.allSearch().value.map((a) => a.param1 !== '');
-    // console.log('test1::::::', test1);
-    // }
     if (!this.allSearch().valid) {
       const notification = await this.notificationAlert(
         'all field need to be filled.',
         'Please check the form.'
       );
-      // this.currentPresetName = '';
       return notification;
     }
+    const isBetweenParamEmpty = this.allSearch().value.some(
+      (value) => value.param2 === SUB_MENU_BETWEEN_ID && value.param4 === ''
+    );
+    if (isBetweenParamEmpty) {
+      const notification = await this.notificationAlert(
+        'Both field for the between range has to be valid.',
+        'Please check the form.'
+      );
+      return notification;
+    }
+
     this.backendCommunicationService
       .sendQuery(this.allSearch().value)
       .subscribe({
