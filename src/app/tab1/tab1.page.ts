@@ -461,12 +461,20 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  applyFilter() {
+  async applyFilter() {
     // console.log('|| this.allSearch()::::::', this.allSearch().value);
     // // const test = () => {
-    // const test1 = this.allSearch().value.filter((a) => a.param1 !== '');
+    // const test1 = this.allSearch().value.map((a) => a.param1 !== '');
     // console.log('test1::::::', test1);
-    // // }
+    // }
+    if (!this.allSearch().valid) {
+      const notification = await this.notificationAlert(
+        'all field need to be filled.',
+        'Please check the form.'
+      );
+      // this.currentPresetName = '';
+      return notification;
+    }
     this.backendCommunicationService
       .sendQuery(this.allSearch().value)
       .subscribe({
