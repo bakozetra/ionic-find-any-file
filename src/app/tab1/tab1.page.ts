@@ -1162,6 +1162,11 @@ export class Tab1Page implements OnInit {
       this.datePickersInfo[i].end.formatedValue = '';
     }
   }
+  ionScrolling() {
+    let existingTooltip = document
+      .querySelectorAll('#tooltip-id')
+      .forEach((el) => el.remove());
+  }
 
   drop(event: CdkDragDrop<any>) {
     const previous = this.allSearch().at(event.previousIndex);
