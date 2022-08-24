@@ -556,7 +556,32 @@ export class Tab1Page implements OnInit {
     (this.searchFilterForm.controls['search'] as FormArray)?.clear();
   }
 
+  selectMouseDown(e) {
+    console.log(' e.target.value::::::', e.target);
+    // console.log(
+    //   ' e.target.value:lastElementChild:::::',
+    //   e.target.lastElementChild.localName
+    // );
+    console.log('e::::::', e);
+    // if (!e.target.lastElementChild.localName) {
+    //   console.log('sss');
+    // }
+    if ((e.target.lastElementChild.localName as string) === 'option') {
+      console.log(
+        'e.target.lastElementChild.localName::::::',
+        e.target.lastElementChild.localName
+      );
+    } else {
+      e.preventDefault();
+      console.log(
+        'e.target.lastElementChild.localName::::::else',
+        e.target.lastElementChild.localName
+      );
+    }
+  }
+
   onParam1Change(i: any) {
+    console.log('i::::::', i);
     if (i == 0) {
       this.isParam2Select = true;
     }

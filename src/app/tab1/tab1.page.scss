@@ -511,6 +511,9 @@ ul li.active ul {
     background-color:$background;
   }
 }
+.select-class {
+  --height:20px
+}
   
 .item-radio-checked.sc-ion-select-popover-md {
     --background:#333333;
@@ -549,6 +552,7 @@ ul li.active ul {
   background-position-x: 98%;
   background-position-y: center;
   background-size: 19px,19px;
+  height: 28px;
 }
 // ion-date time 
 ion-datetime {
