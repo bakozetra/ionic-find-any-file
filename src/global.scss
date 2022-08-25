@@ -56,3 +56,37 @@ body {
       margin: 0; 
     }
   }
+
+  
+  ion-alert {
+    //background color
+    .alert-wrapper.sc-ion-alert-md, .alert-wrapper.sc-ion-alert-ios {
+      background-color: #333333;
+      --background: #333333;
+    }
+    
+   
+    // Header Text
+    .alert-title.sc-ion-alert-md {
+      font-size: 25px;
+      font-weight: 600;
+      font-family: "AustralisProSwash-Italic";
+    }
+   
+    .alert-message.sc-ion-alert-md, .alert-message.sc-ion-alert-ios, .alert-title.sc-ion-alert-md, .alert-title.sc-ion-alert-ios  {
+     color: white;
+    }  
+    [aria-checked="true"].sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
+      border-color: #00000080;
+    }
+    .alert-radio-label.sc-ion-alert-ios, .alert-radio-label.sc-ion-alert-md {
+      color: white;
+     }
+     .alert-message.sc-ion-alert-md b, .alert-message.sc-ion-alert-ios b {
+      color: whitesmoke;
+     }
+     [aria-checked=true].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
+      color: rgb(161, 149, 149);
+
+  }
+  }

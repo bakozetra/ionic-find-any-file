@@ -293,7 +293,7 @@ input::placeholder {
 }
 
 
-ion-item:not(.item-label) .sc-ion-input-md-h {
+ion-item:not(.item-label) .sc-ion-input-md-h,ion-item:not(.item-label) .sc-ion-input-ios-h {
   --padding-start: 1vh;
   --color: white !important;
   caret-color: black !important;
@@ -497,7 +497,8 @@ ul li.active ul {
 
 // Dropdown styles for presets list
 
-::ng-deep .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md {
+::ng-deep .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md,::ng-deep .sc-ion-select-popover-ios-h ion-list.sc-ion-select-popover-ios
+ {
    background-color: #333333;
   ion-item {
     --background:#333333;
@@ -518,9 +519,10 @@ ul li.active ul {
 .select-class {
   --height:20px
  max-width : 211px;
+  
 }
   
-.item-radio-checked.sc-ion-select-popover-md {
+.item-radio-checked.sc-ion-select-popover-md,.item-radio-checked.sc-ion-select-popover-ios {
     --background:#333333;
     --background-focused:#d4c9c9;
     --background-hover: none;
@@ -672,4 +674,5 @@ ion-datetime {
 .datetime-selected-date{
   margin-top: 0;
 }
+
 
