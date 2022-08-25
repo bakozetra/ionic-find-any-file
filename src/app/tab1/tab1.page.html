@@ -5,7 +5,6 @@
   (ionScroll)="ionScrolling()"
 >
   <ion-accordion-group class="accordion-grp">
-    <!-- (mousedown)="selectMouseDown($event)" -->
     <ion-accordion value="colors" class="accordion">
       <ion-item slot="header">
         <ion-label class="accordion-label" [tooltip]="'search presets'"
@@ -195,7 +194,7 @@
                       </div>
                     </div>
                     <ion-col
-                      size-lg="3"
+                      size-lg="2"
                       size-md=""
                       size-sm=""
                       size-xl="2"
@@ -205,8 +204,10 @@
                         class="select-class"
                         formControlName="param1"
                         [ngClass]="(!allSearch().controls[i].get('param1').valid && submitted) ? 'error' : ''"
-                        (ionChange)="onParam1Change(i)"
-                        [interface]="test1()"
+                        (ionChange)="onParam1Change(i , $event)"
+                        [interface]="addInterfaceForDesktop()"
+                        [interfaceOptions]="{'cssClass': 'mycomponent-wider-popover'}"
+                        (click)="getPopoverWidth($event)"
                       >
                         <ion-select-option disabled selected value>
                           select an option
@@ -221,7 +222,7 @@
                       </ion-select>
                     </ion-col>
                     <ion-col
-                      size-lg="3"
+                      size-lg="2"
                       size-md=""
                       size-sm=""
                       size-xl="2"
@@ -232,7 +233,9 @@
                         formControlName="param2"
                         (ionChange)="onParam2Change(i,true)"
                         [ngClass]="!allSearch().controls[i].get('param2')?.valid && submitted ? 'error' : ''"
-                        [interface]="test1()"
+                        [interface]="addInterfaceForDesktop()"
+                        [interfaceOptions]="{'cssClass': 'mycomponent-wider-popover'}"
+                        (click)="getPopoverWidth($event)"
                       >
                         <ion-select-option
                           class="select-options"
@@ -279,7 +282,6 @@
                           *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                           (click)="this.datePickerInputOnClick('start',i, $event)"
                         >
-                          <!-- (mousedown)="selectMouseDown($event)" -->
                         </ion-input>
                         <ion-datetime
                           #datetime
@@ -307,7 +309,6 @@
                           *ngIf="allSearch().controls[i]?.get('param2')?.value !== 'BETWEEN'"
                           (click)="this.datePickerInputOnClickNotBetween(i)"
                         >
-                          <!-- (mousedown)="selectMouseDown($event)" -->
                         </ion-input>
                       </ng-template>
                     </ion-col>
@@ -346,7 +347,6 @@
                         (click)="this.datePickerInputOnClick('end',i, $event)"
                         id="date-range-input"
                       >
-                        <!-- (mousedown)="selectMouseDown($event)" -->
                       </ion-input>
                       <ion-button
                         class="clear-param4"

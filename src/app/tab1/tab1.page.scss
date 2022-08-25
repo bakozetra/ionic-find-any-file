@@ -514,14 +514,10 @@ ul li.active ul {
   }
 }
 
-// ::ng-deep .mycomponent-wider-popover
-// {
-//   --width: 95%;
-//   --max-width: 400px;
-// }
 
 .select-class {
   --height:20px
+ max-width : 211px;
 }
   
 .item-radio-checked.sc-ion-select-popover-md {
@@ -562,19 +558,13 @@ ul li.active ul {
   background-position-y: center;
   background-size: 19px,19px;
   height: 28px;
-
- 
-  // .select-icon-inner {
-  //   --;
-  // }
 }
-// .select-class::part(icon)::first-letter  { 
-//   border-top: 8px solid
-//  }
+
+
 .select-class::part(icon) {
   display: none;
   
-}
+   }
 // ion-date time 
 ion-datetime {
   position: absolute;
@@ -664,19 +654,14 @@ ion-datetime {
       justify-content: space-between;
     }
    }
-
-}
-
-@media only screen and (max-height: 780px) {
-  .list {
-    position: relative;
-    height: 78vh;
-   }
-  .form-wrapper {
-    height: 64vh;
+   
   }
-}
 
+  ::ng-deep .mycomponent-wider-popover
+  {
+    --width: var(--width-of-popover);
+  
+  }
 
 .my-progress {
   li {
@@ -688,9 +673,3 @@ ion-datetime {
   margin-top: 0;
 }
 
-// :root {
-//   .popover-content {
-//       left: 0 !important;
-//       width: 100%;
-//   }
-// }

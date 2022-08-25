@@ -424,7 +424,7 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  test1() {
+  addInterfaceForDesktop() {
     const isDesktop = this.platform.is('desktop');
     if (isDesktop) {
       let select = document.querySelector('.select-class');
@@ -432,6 +432,12 @@ export class Tab1Page implements OnInit {
         return 'popover';
       }
     }
+  }
+
+  getPopoverWidth(event) {
+    let selectwidth = event.srcElement.clientWidth;
+    let popWidth = document.documentElement;
+    popWidth.style.setProperty('--width-of-popover', selectwidth + 'px');
   }
 
   clearObject() {
@@ -590,7 +596,8 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  onParam1Change(i: any) {
+  onParam1Change(i: any, e?: any) {
+    console.log('e::::::onParam1Change', e);
     console.log('i::::::', i);
     if (i == 0) {
       this.isParam2Select = true;
@@ -616,6 +623,10 @@ export class Tab1Page implements OnInit {
       }
     }
   }
+  // onClick(event){
+  //   this.divwidth = event.srcElement.clientWidth;
+  //   let popwidth = document.documentElement; popwidth.style.setProperty('--width', this.divwidth + "px");
+  // }
 
   onParam2Change(i: any, isUserInteraction?: any) {
     const row = this.allSearch().controls[i] as FormGroup;
