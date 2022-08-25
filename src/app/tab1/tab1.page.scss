@@ -49,11 +49,13 @@ ion-input {
 }
 
 .search-row {
-  margin-bottom: 3vh;
-  width: 100%;
+  width: 97%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: auto;
+  margin-bottom: 3vh;
+
 }
 
 .accordion-grp {
@@ -511,6 +513,13 @@ ul li.active ul {
     background-color:$background;
   }
 }
+
+// ::ng-deep .mycomponent-wider-popover
+// {
+//   --width: 95%;
+//   --max-width: 400px;
+// }
+
 .select-class {
   --height:20px
 }
@@ -553,6 +562,18 @@ ul li.active ul {
   background-position-y: center;
   background-size: 19px,19px;
   height: 28px;
+
+ 
+  // .select-icon-inner {
+  //   --;
+  // }
+}
+// .select-class::part(icon)::first-letter  { 
+//   border-top: 8px solid
+//  }
+.select-class::part(icon) {
+  display: none;
+  
 }
 // ion-date time 
 ion-datetime {
@@ -667,3 +688,9 @@ ion-datetime {
   margin-top: 0;
 }
 
+// :root {
+//   .popover-content {
+//       left: 0 !important;
+//       width: 100%;
+//   }
+// }

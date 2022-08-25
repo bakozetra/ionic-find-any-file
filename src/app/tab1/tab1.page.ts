@@ -424,6 +424,16 @@ export class Tab1Page implements OnInit {
     }
   }
 
+  test1() {
+    const isDesktop = this.platform.is('desktop');
+    if (isDesktop) {
+      let select = document.querySelector('.select-class');
+      if (select) {
+        return 'popover';
+      }
+    }
+  }
+
   clearObject() {
     const len = this.allSearch().length;
     for (let index = 0; index <= len + 1; index++) {

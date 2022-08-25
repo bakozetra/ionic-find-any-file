@@ -206,6 +206,7 @@
                         formControlName="param1"
                         [ngClass]="(!allSearch().controls[i].get('param1').valid && submitted) ? 'error' : ''"
                         (ionChange)="onParam1Change(i)"
+                        [interface]="test1()"
                       >
                         <ion-select-option disabled selected value>
                           select an option
@@ -231,6 +232,7 @@
                         formControlName="param2"
                         (ionChange)="onParam2Change(i,true)"
                         [ngClass]="!allSearch().controls[i].get('param2')?.valid && submitted ? 'error' : ''"
+                        [interface]="test1()"
                       >
                         <ion-select-option
                           class="select-options"
