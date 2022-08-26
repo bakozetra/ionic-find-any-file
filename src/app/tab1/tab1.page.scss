@@ -49,14 +49,13 @@ ion-input {
 }
 
 .search-row {
-  padding-left: 1rem;
-  padding-right: 2rem;
+  margin-left: 1rem;
+  margin-right: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: auto;
   margin-bottom: 3vh;
-
 }
 
 .accordion-grp {
@@ -202,7 +201,8 @@ select {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
+  margin-left: 1rem;
+  margin-right: 0.8rem;
   .select-class {
     width: 100%;
   }
@@ -687,6 +687,11 @@ ion-datetime {
      }
     .form-wrapper {
       height: 64vh;
+    }
+  }
+  @media only screen and (max-width: 360px) {
+    .search-row-select {
+      margin-right: 3rem;
     }
   }
 
