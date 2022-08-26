@@ -49,7 +49,8 @@ ion-input {
 }
 
 .search-row {
-  width: 97%;
+  padding-left: 1rem;
+  padding-right: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,7 +104,12 @@ ion-accordion-group {
       color: red;
     }
   }
+ ::ng-deep ion-accordion.accordion-animated > [slot=header] .ion-accordion-toggle-icon  {
+    margin: auto;
+    
+  }
 }
+
 
 form {
   ion-button::part(native) {
@@ -196,8 +202,6 @@ select {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-left: 1rem;
-  padding-right: 1rem;
 
   .select-class {
     width: 100%;
@@ -270,6 +274,11 @@ select {
 ion-item::part(native) {
   background: transparent !important;
   border: none !important;
+  padding-left: 0;
+}
+.item.sc-ion-label-ios-h, .item .sc-ion-label-ios-h ,
+.item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
+   padding-left: 1rem;
 }
 
 .search-select {
@@ -670,7 +679,15 @@ ion-datetime {
   ::ng-deep .mycomponent-wider-popover
   {
     --width: var(--width-of-popover);
-  
+  }
+  @media only screen and (max-height: 780px) {
+    .list {
+      position: relative;
+      height: 78vh;
+     }
+    .form-wrapper {
+      height: 64vh;
+    }
   }
 
 .my-progress {
