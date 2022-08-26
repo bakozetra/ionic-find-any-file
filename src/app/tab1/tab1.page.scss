@@ -222,6 +222,7 @@ select {
         background-color: #333333;
       }
     }
+  
   }
 
 }
@@ -513,6 +514,13 @@ ul li.active ul {
   .unfocusFirstelement.ion-focused::part(native):hover {
     background-color:$background;
   }
+  ion-item::part(native) {
+      padding-left: 0;
+  }
+  .select-options .item.sc-ion-label-ios-h, .item .sc-ion-label-ios-h, 
+  .select-options .item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
+     padding-left: 1rem;
+  } 
 }
 
 

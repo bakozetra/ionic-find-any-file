@@ -426,7 +426,8 @@ export class Tab1Page implements OnInit {
 
   addInterfaceForDesktop() {
     const isDesktop = this.platform.is('desktop');
-    if (isDesktop) {
+    const isTablet = this.platform.is('tablet');
+    if (isDesktop || isTablet) {
       let select = document.querySelector('.select-class');
       if (select) {
         return 'popover';
