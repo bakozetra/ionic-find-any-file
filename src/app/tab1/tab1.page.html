@@ -270,6 +270,7 @@
                         </ion-icon>
                       </ion-button>
                       <ng-template #dates>
+                        <!-- <div id="open-modal"> -->
                         <ion-input
                           onkeypress="return false;"
                           placeholder="Start Date"
@@ -280,23 +281,27 @@
                           [value]="this.datePickersInfo[i]?.start?.formatedValue"
                           [ngClass]="!allSearch().controls[i].get('param3')?.valid && submitted ? 'error' : ''"
                           *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
-                          (click)="this.datePickerInputOnClick('start',i, $event)"
+                          (click)="this.datePickerInputOnClick('start',i, $event);"
                         >
                         </ion-input>
-                        <ion-datetime
-                          #datetime
-                          [presentation]="selectMode"
-                          *ngIf="datePickersInfo?.[i]?.start?.open"
-                          class="ion-datetime-start"
-                          formControlName="param3"
-                          [value]="this.datePickersInfo[i]?.start?.formatedValue"
-                          (ionChange)="this.dateChanged('start',datetime.value,i, $event)"
-                          showDefaultButtons="true"
-                          (ionCancel)="this.datePickersInfo[i].start.open = false"
-                          min="2000-01-01T00:00:00"
-                        >
-                          <span slot="title">Select a start date</span>
-                        </ion-datetime>
+                        <!-- </div> -->
+                        <ion-modal [isOpen]="isModalOpen">
+                          <ion-datetime
+                            #datetime
+                            [presentation]="selectMode"
+                            *ngIf="datePickersInfo?.[i]?.start?.open && this.isModalOpen"
+                            class="ion-datetime-start"
+                            formControlName="param3"
+                            [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                            (ionChange)="this.dateChanged('start',datetime.value,i, $event)"
+                            showDefaultButtons="true"
+                            (ionCancel)="this.datePickersInfo[i].start.open = false"
+                            min="2000-01-01T00:00:00"
+                          >
+                            <span slot="title">Select a start date</span>
+                          </ion-datetime>
+                        </ion-modal>
+
                         <ion-input
                           onkeypress="return false;"
                           onkeydown="return false"
@@ -634,6 +639,8 @@
       <h1>19 of August</h1>
       <p>Refactor the save function to avoid repeated</p>
       <p>Creat variable on scss</p>
+      <h1>29 of August</h1>
+      <p>Try to add modal for mobile but not working yet</p>
     </li>
   </div>
 </ion-content>

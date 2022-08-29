@@ -16,6 +16,7 @@ import { format, parseISO, isBefore } from 'date-fns';
 import { PersistPresetSearchService } from './persist-preset-search.service';
 import { BackendCommunicationService } from './backend-communication.service';
 import { HttpClient } from '@angular/common/http';
+import { flatMap } from 'rxjs/operators';
 
 const SUB_MENU_BETWEEN_ID = 'BETWEEN';
 const SUB_MENU_EXACTLY_ID = 'EXACTLY';
@@ -248,9 +249,27 @@ export class Tab1Page implements OnInit {
     return format(parseISO(date), 'yyyy-MM-dd');
   }
 
+  isModalOpen = false;
   async datePickerInputOnClick(limitName, i, event) {
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
+    if (limitName === 'start') {
+      console.log('i::::::', i);
+      console.log(
+        'this.datePickersInfo::::::datePickerInputOnClick',
+        this.datePickersInfo
+      );
+      const test = this.datePickersInfo?.find((a, is) => is === i);
+      console.log('test::::::', test);
+
+      if (!test) {
+        console.log('jjjj');
+      } else {
+        this.isModalOpen = this.datePickersInfo[i].start.open;
+        this.datePickersInfo[i][limitName].open =
+          !this.datePickersInfo[i][limitName].open && this.isModalOpen;
+      }
+    }
     if (limitName == 'end') {
       if (
         !this.datePickersInfo[i].start.formatedValue &&
@@ -269,13 +288,24 @@ export class Tab1Page implements OnInit {
     return fieldsHasValue(value);
   }
 
-  dateChanged(limitName, value, i, startDateValue?: any) {
+  async dateChanged(limitName, value, i, startDateValue?: any) {
     if (limitName === 'start') {
+      // const test = await this.datePickersInfo?.some((a, is) => {
+      //   console.log('        is === i::::::', is === i);
+      //   console.log('is::::::', is);
+      //   return is === i;
+      // });
+      // if (test) {
+      this.isModalOpen = false;
+      // }
+      console.log('this.isModalOpen::::::', this.isModalOpen);
       const startDateFormated = new Date(value);
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
       );
+
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
+
       if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.formatedValue = '';
         this.allSearch().controls[i].get('param4').setValue('');
@@ -292,6 +322,8 @@ export class Tab1Page implements OnInit {
           this.datePickersInfo[i].end.formatedValue = '';
         }
       }
+      // console.log('this.isModalOpen:::::: change', this.isModalOpen);
+      // this.setOpen(this.isModalOpen, i);
     }
 
     if (limitName === 'end') {
@@ -315,7 +347,7 @@ export class Tab1Page implements OnInit {
   get f() {
     return this.searchFilterForm.controls;
   }
-
+  getIndex;
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
@@ -327,6 +359,7 @@ export class Tab1Page implements OnInit {
       JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))
     );
     this.datePickersInfo = [...datePickerCopy];
+
     if (flag) {
       if (this.allSearch().controls.length > 0) return;
       this.addSearch(initialFilterValue);
@@ -1100,6 +1133,42 @@ export class Tab1Page implements OnInit {
         }
       );
   }
+  // open1(modal) {
+  //   this.modalService
+  //     .open(, { ariaLabelledBy: 'modal-basic-title' })
+  //     .result.then(
+  //       (result) => {
+  //         this.closeMenu = `Closed with: ${result}`;
+  //       },
+  //       (reason) => {
+  //         this.closeMenu = `Dismissed ${this.getDismissReason(reason)}`;
+  //         if (
+  //           this.closeMenu !== `Dismissed ${this.getDismissReason('button')}`
+  //         ) {
+  //           const existFiltername = this.preSelectList.filter(
+  //             (name) => name.filterName === this.currentPresetName
+  //           );
+  //           if (!existFiltername) {
+  //             this.currentPresetName = INITIALCURRENTPRESETNAME;
+  //           }
+  //         }
+  //       }
+  //     );
+  // }
+  // setOpen(isOpen: boolean, i) {
+
+  //   console.log('i::::::', i);
+  //   console.log('isOpen::::::', isOpen);
+  //   console.log('    this.isModalOpen:::::: before', this.isModalOpen);
+  //   console.log('this.datePickersInfo:::::: setOpen', this.datePickersInfo);
+  //   const test = this.datePickersInfo?.every((a, is) => is === i);
+  //   if (!test) {
+  //     isOpen = false;
+  //   }
+  //   // return test;
+  //   // console.log('test::::::', test);
+  //   // console.log('this.isModalOpen::::::', this.isModalOpen);
+  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
