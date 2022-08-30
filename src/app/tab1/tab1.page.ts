@@ -295,15 +295,9 @@ export class Tab1Page implements OnInit {
       }
 
       const row = this.allSearch().controls[i] as FormGroup;
-      if (
-        row.value.param2 === SUB_MENU_EXACTLY_ID ||
-        SUB_MENU_BEFORE_ID ||
-        SUB_MENU_AFTER_ID
-      ) {
-        if (this.allSearch().controls[i].get('param3')) {
-          this.allSearch().controls[i].get('param4').setValue('');
-          this.datePickersInfo[i].end.formatedValue = '';
-        }
+      if (row.value.param2 !== SUB_MENU_BETWEEN_ID) {
+        this.allSearch().controls[i].get('param4').setValue('');
+        this.datePickersInfo[i].end.formatedValue = '';
       }
     }
 
@@ -328,7 +322,6 @@ export class Tab1Page implements OnInit {
   get f() {
     return this.searchFilterForm.controls;
   }
-  getIndex;
   addRow(flag?: boolean, rowIndex?: number, event?: any) {
     this.submitted = false;
     this.allSearch().insert(rowIndex + 1, this.newEvent(initialFilterValue));
