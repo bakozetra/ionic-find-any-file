@@ -208,6 +208,7 @@ export class Tab1Page implements OnInit {
   datePickersInfo = [JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))];
   skipOnPreselectDDLChange = false;
   closeMenu = '';
+  isDesktop = this.platform.is('desktop');
 
   constructor(
     private fb: FormBuilder,
@@ -255,21 +256,10 @@ export class Tab1Page implements OnInit {
       !this.datePickersInfo[i][limitName].open;
     if (limitName === 'start') {
       console.log('i::::::', i);
-      console.log(
-        'this.datePickersInfo::::::datePickerInputOnClick',
-        this.datePickersInfo
-      );
-      const test = this.datePickersInfo?.find((a, is) => is === i);
-      console.log('test::::::', test);
-
-      if (!test) {
-        console.log('jjjj');
-      } else {
-        this.isModalOpen = this.datePickersInfo[i].start.open;
-        this.datePickersInfo[i][limitName].open =
-          !this.datePickersInfo[i][limitName].open && this.isModalOpen;
-      }
+      this.datePickersInfo[i][limitName].open =
+        this.datePickersInfo[i][limitName].open;
     }
+
     if (limitName == 'end') {
       if (
         !this.datePickersInfo[i].start.formatedValue &&
@@ -290,15 +280,8 @@ export class Tab1Page implements OnInit {
 
   async dateChanged(limitName, value, i, startDateValue?: any) {
     if (limitName === 'start') {
-      // const test = await this.datePickersInfo?.some((a, is) => {
-      //   console.log('        is === i::::::', is === i);
-      //   console.log('is::::::', is);
-      //   return is === i;
-      // });
-      // if (test) {
       this.isModalOpen = false;
-      // }
-      console.log('this.isModalOpen::::::', this.isModalOpen);
+
       const startDateFormated = new Date(value);
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
@@ -322,8 +305,6 @@ export class Tab1Page implements OnInit {
           this.datePickersInfo[i].end.formatedValue = '';
         }
       }
-      // console.log('this.isModalOpen:::::: change', this.isModalOpen);
-      // this.setOpen(this.isModalOpen, i);
     }
 
     if (limitName === 'end') {
@@ -607,15 +588,6 @@ export class Tab1Page implements OnInit {
   }
 
   selectMouseDown(e) {
-    console.log(' e.target.value::::::', e.target);
-    // console.log(
-    //   ' e.target.value:lastElementChild:::::',
-    //   e.target.lastElementChild.localName
-    // );
-    console.log('e::::::', e);
-    // if (!e.target.lastElementChild.localName) {
-    //   console.log('sss');
-    // }
     if ((e.target.lastElementChild.localName as string) === 'option') {
       console.log(
         'e.target.lastElementChild.localName::::::',
@@ -822,7 +794,7 @@ export class Tab1Page implements OnInit {
             'Preset already exists.',
             'Please check the name'
           );
-          await this.open(this.mymodal);
+          this.open(this.mymodal);
           return;
         }
       }
@@ -968,7 +940,7 @@ export class Tab1Page implements OnInit {
         this.setPersistPresetSearch(data);
         messageSpan.style.color = 'green';
         this.message = message;
-        await this.emptyMessageTimeout();
+        this.emptyMessageTimeout();
         setTimeout(() => {
           this.message = '';
         }, 3000);

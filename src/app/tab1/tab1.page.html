@@ -270,7 +270,6 @@
                         </ion-icon>
                       </ion-button>
                       <ng-template #dates>
-                        <!-- <div id="open-modal"> -->
                         <ion-input
                           onkeypress="return false;"
                           placeholder="Start Date"
@@ -284,12 +283,32 @@
                           (click)="this.datePickerInputOnClick('start',i, $event);"
                         >
                         </ion-input>
-                        <!-- </div> -->
-                        <ion-modal [isOpen]="isModalOpen">
+                        <div *ngIf="!isDesktop else desktopStartDate">
+                          <ion-modal
+                            [isOpen]="this.datePickersInfo[i]?.start?.open"
+                          >
+                            <ion-datetime
+                              #datetime
+                              [presentation]="selectMode"
+                              *ngIf="datePickersInfo?.[i]?.start?.open"
+                              class="ion-datetime-start"
+                              formControlName="param3"
+                              [value]="this.datePickersInfo[i]?.start?.formatedValue"
+                              (ionChange)="this.dateChanged('start',datetime.value,i, $event)"
+                              showDefaultButtons="true"
+                              (ionCancel)="this.datePickersInfo[i].start.open = false"
+                              min="2000-01-01T00:00:00"
+                              size="cover"
+                            >
+                              <span slot="title">Select a start date</span>
+                            </ion-datetime>
+                          </ion-modal>
+                        </div>
+                        <ng-template #desktopStartDate>
                           <ion-datetime
                             #datetime
                             [presentation]="selectMode"
-                            *ngIf="datePickersInfo?.[i]?.start?.open && this.isModalOpen"
+                            *ngIf="datePickersInfo?.[i]?.start?.open"
                             class="ion-datetime-start"
                             formControlName="param3"
                             [value]="this.datePickersInfo[i]?.start?.formatedValue"
@@ -300,7 +319,7 @@
                           >
                             <span slot="title">Select a start date</span>
                           </ion-datetime>
-                        </ion-modal>
+                        </ng-template>
 
                         <ion-input
                           onkeypress="return false;"
@@ -324,21 +343,47 @@
                       class="input input-range-end"
                       *ngIf="allSearch().controls[i].get('param2')?.value === 'BETWEEN'"
                     >
-                      <ion-datetime
-                        #datetime
-                        [presentation]="selectMode"
-                        *ngIf="datePickersInfo?.[i]?.end?.open"
-                        formControlName="param4"
-                        [value]="this.datePickersInfo[i]?.end?.formatedValue"
-                        class="ion-datetime-end"
-                        (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
-                        showDefaultButtons="true"
-                        (ionCancel)="this.datePickersInfo[i]?.end.open = false"
-                        [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
-                        max="2500-01-01T00:00:00"
-                      >
-                        <span slot="title">Select an end date</span>
-                      </ion-datetime>
+                      <div *ngIf="!isDesktop else desktopEndDate">
+                        <ion-modal
+                          [isOpen]="datePickersInfo?.[i]?.end?.open"
+                          id="col-end-date"
+                        >
+                          <ion-datetime
+                            #datetime
+                            [presentation]="selectMode"
+                            *ngIf="datePickersInfo?.[i]?.end?.open"
+                            formControlName="param4"
+                            [value]="this.datePickersInfo[i]?.end?.formatedValue"
+                            class="ion-datetime-end"
+                            (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
+                            showDefaultButtons="true"
+                            (ionCancel)="this.datePickersInfo[i]?.end.open = false"
+                            [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
+                            max="2500-01-01T00:00:00"
+                            size="cover"
+                          >
+                            <span slot="title">Select an end date</span>
+                          </ion-datetime>
+                        </ion-modal>
+                      </div>
+                      <ng-template #desktopEndDate>
+                        <ion-datetime
+                          #datetime
+                          [presentation]="selectMode"
+                          *ngIf="datePickersInfo?.[i]?.end?.open"
+                          formControlName="param4"
+                          [value]="this.datePickersInfo[i]?.end?.formatedValue"
+                          class="ion-datetime-end"
+                          (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
+                          showDefaultButtons="true"
+                          (ionCancel)="this.datePickersInfo[i]?.end.open = false"
+                          [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
+                          max="2500-01-01T00:00:00"
+                          size="cover"
+                        >
+                          <span slot="title">Select an end date</span>
+                        </ion-datetime>
+                      </ng-template>
                       <ion-input
                         onkeypress="return false;"
                         placeholder="End Date"
