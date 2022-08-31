@@ -16,7 +16,6 @@ import { format, parseISO, isBefore } from 'date-fns';
 import { PersistPresetSearchService } from './persist-preset-search.service';
 import { BackendCommunicationService } from './backend-communication.service';
 import { HttpClient } from '@angular/common/http';
-import { flatMap } from 'rxjs/operators';
 
 const SUB_MENU_BETWEEN_ID = 'BETWEEN';
 const SUB_MENU_EXACTLY_ID = 'EXACTLY';
@@ -254,7 +253,6 @@ export class Tab1Page implements OnInit {
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
     if (limitName === 'start') {
-      console.log('i::::::', i);
       this.datePickersInfo[i][limitName].open =
         this.datePickersInfo[i][limitName].open;
     }
@@ -593,8 +591,6 @@ export class Tab1Page implements OnInit {
   }
 
   onParam1Change(i: any, e?: any) {
-    console.log('e::::::onParam1Change', e);
-    console.log('i::::::', i);
     if (i == 0) {
       this.isParam2Select = true;
     }
@@ -836,10 +832,13 @@ export class Tab1Page implements OnInit {
     this.submitted = true;
     let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
     if (!allsearch.valid) {
-      return;
+      const notification = await this.notificationAlert(
+        'all field need to be filled.',
+        'Please check the form.'
+      );
+      return notification;
     }
     // to check if the forth is empty
-
     for (var i = 0, len1 = filterData.length; i < len1; i++) {
       if (!fieldsHasValue(filterData?.[i]?.param3) && filterData?.[i]?.param3) {
         filterData[i].param3 = '';
@@ -853,7 +852,6 @@ export class Tab1Page implements OnInit {
           'Both field for the between range has to be valid.',
           'Please check the form'
         );
-        // this.currentPresetName = '';
         return;
       }
     }
