@@ -853,7 +853,8 @@ export class Tab1Page implements OnInit {
           'Both field for the between range has to be valid.',
           'Please check the form'
         );
-        this.currentPresetName = '';
+        // this.currentPresetName = '';
+        return;
       }
     }
 
@@ -910,7 +911,7 @@ export class Tab1Page implements OnInit {
       if (preselectList.some((s) => s.filterName === presetsName)) {
         const message = isModified
           ? 'Your filter updated successfully.'
-          : 'Your Filter stored successfully update111.';
+          : 'Your Filter stored successfully.';
 
         const finalData = [
           {
@@ -947,7 +948,7 @@ export class Tab1Page implements OnInit {
   }
 
   findInPersistanDataByFilterName(searchParamName) {
-    return this.persistPresetSearchService.findInPersistanDataByFilterName(
+    return this.persistPresetSearchService?.findInPersistanDataByFilterName(
       searchParamName
     );
   }

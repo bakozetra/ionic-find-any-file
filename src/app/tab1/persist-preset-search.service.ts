@@ -25,7 +25,7 @@ export class PersistPresetSearchService {
 
   public findInPersistanDataByFilterName(searchParamName) {
     return this.getPersistPresetSearchParsed().find(
-      (f) => f?.filterName?.toLowerCase() === searchParamName
+      (f) => f?.filterName?.toLowerCase() === searchParamName.toLowerCase()
     );
   }
 }
