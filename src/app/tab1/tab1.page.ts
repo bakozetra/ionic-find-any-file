@@ -250,7 +250,6 @@ export class Tab1Page implements OnInit {
     return format(parseISO(date), 'yyyy-MM-dd');
   }
 
-  isModalOpen = false;
   async datePickerInputOnClick(limitName, i, event) {
     this.datePickersInfo[i][limitName].open =
       !this.datePickersInfo[i][limitName].open;
@@ -280,8 +279,6 @@ export class Tab1Page implements OnInit {
 
   async dateChanged(limitName, value, i, startDateValue?: any) {
     if (limitName === 'start') {
-      this.isModalOpen = false;
-
       const startDateFormated = new Date(value);
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
@@ -622,10 +619,6 @@ export class Tab1Page implements OnInit {
       }
     }
   }
-  // onClick(event){
-  //   this.divwidth = event.srcElement.clientWidth;
-  //   let popwidth = document.documentElement; popwidth.style.setProperty('--width', this.divwidth + "px");
-  // }
 
   onParam2Change(i: any, isUserInteraction?: any) {
     const row = this.allSearch().controls[i] as FormGroup;
@@ -772,12 +765,13 @@ export class Tab1Page implements OnInit {
         localJSON?.length > 0 &&
         localJSON.filter((s) => s.filterName == prestName)?.length > 0
       ) {
-        const temp1 = localJSON.map((data) =>
+        const temp1 = localJSON.find((data) =>
           data?.id === this.id ? data?.filters : ''
-        )[0];
+        );
         const temp2 = searchFilterForm.value.search;
-        if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
-          this.message = 'Your Filter stored successfully';
+        if (JSON.stringify(temp1?.filters) === JSON.stringify(temp2)) {
+          messageSpan.style.color = 'green';
+          this.message = 'This filter is already saved already';
           if (this.message) {
             this.emptyMessageTimeout();
           }
@@ -916,7 +910,7 @@ export class Tab1Page implements OnInit {
       if (preselectList.some((s) => s.filterName === presetsName)) {
         const message = isModified
           ? 'Your filter updated successfully.'
-          : 'Your Filter stored successfully.';
+          : 'Your Filter stored successfully update111.';
 
         const finalData = [
           {
@@ -1098,42 +1092,6 @@ export class Tab1Page implements OnInit {
         }
       );
   }
-  // open1(modal) {
-  //   this.modalService
-  //     .open(, { ariaLabelledBy: 'modal-basic-title' })
-  //     .result.then(
-  //       (result) => {
-  //         this.closeMenu = `Closed with: ${result}`;
-  //       },
-  //       (reason) => {
-  //         this.closeMenu = `Dismissed ${this.getDismissReason(reason)}`;
-  //         if (
-  //           this.closeMenu !== `Dismissed ${this.getDismissReason('button')}`
-  //         ) {
-  //           const existFiltername = this.preSelectList.filter(
-  //             (name) => name.filterName === this.currentPresetName
-  //           );
-  //           if (!existFiltername) {
-  //             this.currentPresetName = INITIALCURRENTPRESETNAME;
-  //           }
-  //         }
-  //       }
-  //     );
-  // }
-  // setOpen(isOpen: boolean, i) {
-
-  //   console.log('i::::::', i);
-  //   console.log('isOpen::::::', isOpen);
-  //   console.log('    this.isModalOpen:::::: before', this.isModalOpen);
-  //   console.log('this.datePickersInfo:::::: setOpen', this.datePickersInfo);
-  //   const test = this.datePickersInfo?.every((a, is) => is === i);
-  //   if (!test) {
-  //     isOpen = false;
-  //   }
-  //   // return test;
-  //   // console.log('test::::::', test);
-  //   // console.log('this.isModalOpen::::::', this.isModalOpen);
-  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
