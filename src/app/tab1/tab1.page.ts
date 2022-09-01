@@ -98,6 +98,26 @@ const INITIALDATEPICKERSINFO = {
   start: { open: false, formatedValue: '' },
   end: { open: false, formatedValue: '' },
 };
+const MESSAGETEXT = {
+  presetnotExist: 'Preset does not exist',
+  fillAll: 'All field need to be filled.',
+  stored: 'Your Filter stored successfully.',
+  fillBothField: 'Both field for the between range has to be valid.',
+  savedFilter: 'This filter is already saved already',
+  updateCurrentFilter: 'Your are updating the current filter',
+  filterUpdated: 'Your filter updated successfully.',
+  confirmeToDeletePreset: 'Are you sure to delete :',
+  presetSuccefullDeleted: 'is deleted successfully.',
+  confimeToClearUnsavedPreset:
+    'Do you want to clear preset including your unsaved changes :',
+  confireToclearSavedPreset: 'Do you want to clear the current preset',
+  discardChanges: 'Do you want to discard the current filter changes',
+  removingRow: 'Are you sure to remove this row',
+  durationNotification: 'The Duration should be HH MM SS and 24h clock.',
+  headerNotification: 'Please check the form.',
+  existPreset: 'Preset already exists.',
+  chekNamePreset: 'Please check the preset name',
+};
 
 @Component({
   selector: 'app-tab1',
@@ -346,7 +366,7 @@ export class Tab1Page implements OnInit {
       return;
     }
     const confirmed = await this.confirmationAlert(
-      `Are you sure to remove this row`
+      `${MESSAGETEXT.removingRow}`
     );
     if (confirmed) {
       if (this.allSearch().length == 1) {
@@ -376,13 +396,13 @@ export class Tab1Page implements OnInit {
         });
         if (checkIfExist && checkIfExist?.length > 0) {
           const confirmed = await this.confirmationAlert(
-            `Are you sure to delete : <b>${presetName}</b> preset.`
+            `${MESSAGETEXT.confirmeToDeletePreset} <b>${presetName}</b> preset.`
           );
           if (confirmed) {
             let data = localJSON.filter((ele) => ele?.id != this?.id);
             this.setPersistPresetSearch(data);
             messageSpan.style.color = 'red';
-            this.message = `'${presetName}' is deleted successfully.`;
+            this.message = `${presetName} ${MESSAGETEXT.presetSuccefullDeleted}`;
             if (this.message) {
               this.emptyMessageTimeout();
             }
@@ -395,7 +415,7 @@ export class Tab1Page implements OnInit {
         }
       } else {
         messageSpan.style.color = 'red';
-        this.message = 'Preset does not exist.';
+        this.message = MESSAGETEXT.presetnotExist;
         if (this.message) {
           setTimeout(() => {
             this.message = '';
@@ -404,7 +424,7 @@ export class Tab1Page implements OnInit {
       }
     } else {
       messageSpan.style.color = 'red';
-      this.message = `Preset does not exist.`;
+      this.message = MESSAGETEXT.presetnotExist;
     }
   }
 
@@ -462,7 +482,7 @@ export class Tab1Page implements OnInit {
 
     if (areEqual) {
       const confirmed = await this.confirmationAlert(
-        `Do you want to clear the current preset: <b>${this.currentPresetName}</b>`
+        `${MESSAGETEXT.confireToclearSavedPreset}: <b>${this.currentPresetName}</b>`
       );
       if (confirmed) {
         this.clearObject();
@@ -471,7 +491,7 @@ export class Tab1Page implements OnInit {
     }
     if (!areEqual) {
       const confirmed = await this.confirmationAlert(
-        `Do you want to clear preset including your unsaved changes : <b>${this.currentPresetName}</b>`
+        `${MESSAGETEXT.confimeToClearUnsavedPreset} <b>${this.currentPresetName}</b>`
       );
       if (confirmed) {
         this.clearObject();
@@ -483,8 +503,8 @@ export class Tab1Page implements OnInit {
   async applyFilter() {
     if (!this.allSearch().valid) {
       const notification = await this.notificationAlert(
-        'all field need to be filled.',
-        'Please check the form.'
+        `${MESSAGETEXT.fillAll}`,
+        `${MESSAGETEXT.headerNotification}`
       );
       return notification;
     }
@@ -493,8 +513,8 @@ export class Tab1Page implements OnInit {
     );
     if (isBetweenParamEmpty) {
       const notification = await this.notificationAlert(
-        'Both field for the between range has to be valid.',
-        'Please check the form.'
+        `${MESSAGETEXT.fillBothField}`,
+        `${MESSAGETEXT.headerNotification}`
       );
       return notification;
     }
@@ -692,7 +712,7 @@ export class Tab1Page implements OnInit {
           .setValue(value + 's');
       } else {
         const notification = await this.notificationAlert(
-          'The Duration should be HH MM SS and 24h clock.',
+          `${MESSAGETEXT.durationNotification}`,
           ''
         );
         return notification;
@@ -707,13 +727,13 @@ export class Tab1Page implements OnInit {
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
         messageSpan.style.color = 'green';
-        this.message = 'Your Filter stored successfully.';
+        this.message = MESSAGETEXT.stored;
         if (this.message) {
           this.emptyMessageTimeout();
         }
       } else {
         const notification = await this.notificationAlert(
-          'Both field for the between range has to be valid.',
+          `${MESSAGETEXT.fillBothField}`,
           'Please check the form'
         );
         this.currentPresetName = '';
@@ -724,7 +744,7 @@ export class Tab1Page implements OnInit {
       this.setPersistPresetSearch(allFilters);
       this.updatePreselectList();
       messageSpan.style.color = 'green';
-      this.message = 'Your Filter stored successfully.';
+      this.message = MESSAGETEXT.stored;
       if (this.message) {
         this.emptyMessageTimeout();
       }
@@ -740,8 +760,8 @@ export class Tab1Page implements OnInit {
     this.submitted = true;
     if (!this.allSearch().valid) {
       const notification = await this.notificationAlert(
-        'all field need to be filled.',
-        'Please check the form.'
+        `${MESSAGETEXT.fillAll}`,
+        `${MESSAGETEXT.headerNotification}`
       );
       this.currentPresetName = '';
       return notification;
@@ -767,15 +787,15 @@ export class Tab1Page implements OnInit {
         const temp2 = searchFilterForm.value.search;
         if (JSON.stringify(temp1?.filters) === JSON.stringify(temp2)) {
           messageSpan.style.color = 'green';
-          this.message = 'This filter is already saved already';
+          this.message = MESSAGETEXT.savedFilter;
           if (this.message) {
             this.emptyMessageTimeout();
           }
           return;
         } else {
           const notification = await this.notificationAlert(
-            'Preset already exists.',
-            'Please check the name'
+            `${MESSAGETEXT.existPreset}`,
+            `${MESSAGETEXT.chekNamePreset}`
           );
           this.open(this.mymodal);
           return;
@@ -833,8 +853,8 @@ export class Tab1Page implements OnInit {
     let filterData: FilterModel[] = filterModel.value.search as FilterModel[];
     if (!allsearch.valid) {
       const notification = await this.notificationAlert(
-        'all field need to be filled.',
-        'Please check the form.'
+        `${MESSAGETEXT.fillAll}`,
+        `${MESSAGETEXT.headerNotification}`
       );
       return notification;
     }
@@ -849,7 +869,7 @@ export class Tab1Page implements OnInit {
         filterData?.[i]?.param2 === SUB_MENU_BETWEEN_ID
       ) {
         const notification = await this.notificationAlert(
-          'Both field for the between range has to be valid.',
+          `${MESSAGETEXT.fillBothField}`,
           'Please check the form'
         );
         return;
@@ -896,7 +916,7 @@ export class Tab1Page implements OnInit {
           return;
         } else {
           const confirmed = await this.confirmationAlert(
-            `Your are updating the current filter: <b>${presetsName}</b>  
+            `${MESSAGETEXT.updateCurrentFilter}: <b>${presetsName}</b>  
               <p>Please confirm.</p>`
           );
           if (!confirmed) {
@@ -908,8 +928,8 @@ export class Tab1Page implements OnInit {
 
       if (preselectList.some((s) => s.filterName === presetsName)) {
         const message = isModified
-          ? 'Your filter updated successfully.'
-          : 'Your Filter stored successfully.';
+          ? MESSAGETEXT.filterUpdated
+          : MESSAGETEXT.stored;
 
         const finalData = [
           {
@@ -987,7 +1007,7 @@ export class Tab1Page implements OnInit {
     if (!changes) {
       if (compareSearchParam) {
         const confirmed = await this.confirmationAlert(
-          `Do you want to discard the current filter changes`
+          `${MESSAGETEXT.discardChanges}`
         );
         // debugger;
         if (confirmed) {
