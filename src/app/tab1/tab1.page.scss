@@ -1,8 +1,6 @@
 $background: #535353;
 $color:#fff;
 
-
-
 ::ng-deep ion-content {
   --background: #535353!important;
   --background-size: 400% 400% !important;
@@ -117,6 +115,9 @@ form {
     box-shadow: none;
       --background-hover:none;
       padding: 0;
+  }
+  ion-button {
+    --background-activated:none;
   }
   select,.datepicker {
     width: 100%;
