@@ -85,8 +85,16 @@
                     Delete Preset
                   </button>
                 </li>
-                <li class="dropdown-item" (click)="clearFilter()">
+                <!-- <li class="dropdown-item" (click)="clearFilter()">
                   Clear Preset
+                </li> -->
+                <li class="dropdown-item" (click)="clearFilter()">
+                  <button
+                    class="disable-preset-menu"
+                    [disabled]="this.allSearch().value[0].param1 === '' ? true : false"
+                  >
+                    Clear Preset
+                  </button>
                 </li>
               </ul>
             </div>
@@ -416,7 +424,7 @@
               <ion-row class="btn-group">
                 <ion-col size-xs="12" size-sm="12" class="apply-filter">
                   <ion-button
-                    [disabled]="this.currentPresetName === ''|| this.allSearch().value[0].param1 === '' ? true : false"
+                    [disabled]="this.allSearch().value[0].param1 === '' ? true : false"
                     (click)="applyFilter()"
                     class="apply-btn"
                     [tooltip]="'search filter'"
@@ -488,7 +496,12 @@
                   </button>
                 </li>
                 <li class="dropdown-item" (click)="clearFilter()">
-                  Clear Preset
+                  <button
+                    class="disable-preset-menu"
+                    [disabled]=" this.allSearch().value[0].param1 === '' ? true : false"
+                  >
+                    Clear Preset
+                  </button>
                 </li>
               </ul>
             </div>
