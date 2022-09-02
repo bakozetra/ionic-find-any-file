@@ -91,7 +91,7 @@
                 <li class="dropdown-item" (click)="clearFilter()">
                   <button
                     class="disable-preset-menu"
-                    [disabled]="this.allSearch().value[0].param1 === '' ? true : false"
+                    [disabled]="!this.ggg === false ? true : false"
                   >
                     Clear Preset
                   </button>
@@ -498,7 +498,7 @@
                 <li class="dropdown-item" (click)="clearFilter()">
                   <button
                     class="disable-preset-menu"
-                    [disabled]=" this.allSearch().value[0].param1 === '' ? true : false"
+                    [disabled]="!this.ggg === false ? true : false"
                   >
                     Clear Preset
                   </button>

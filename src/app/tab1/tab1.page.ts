@@ -471,6 +471,17 @@ export class Tab1Page implements OnInit {
     this.allSearch().clear();
     this.addSearch(initialFilterValue);
   }
+  ggg(): any {
+    let isNotEmpty;
+    this.allSearch().value.find((a) => {
+      if (a.param1 == '') {
+        isNotEmpty = true;
+      } else {
+        isNotEmpty = false;
+      }
+    });
+    return isNotEmpty;
+  }
 
   async clearFilter() {
     let selectedData = this.getPersistPresetSearchParsed().filter((s) => {
