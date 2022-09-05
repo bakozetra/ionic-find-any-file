@@ -295,7 +295,7 @@ export class Tab1Page implements OnInit {
     return fieldsHasValue(value);
   }
 
-  async dateChanged(limitName, value, i, startDateValue?: any) {
+  async dateChanged(limitName, value, i) {
     if (limitName === 'start') {
       const startDateFormated = new Date(value);
       const endDateFormated = new Date(
@@ -471,7 +471,8 @@ export class Tab1Page implements OnInit {
     this.allSearch().clear();
     this.addSearch(initialFilterValue);
   }
-  ggg(): any {
+
+  checkIfFormEmpty(): any {
     let isNotEmpty;
     this.allSearch().value.find((a) => {
       if (a.param1 == '') {

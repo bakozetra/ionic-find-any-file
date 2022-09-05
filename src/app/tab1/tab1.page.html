@@ -85,13 +85,10 @@
                     Delete Preset
                   </button>
                 </li>
-                <!-- <li class="dropdown-item" (click)="clearFilter()">
-                  Clear Preset
-                </li> -->
                 <li class="dropdown-item" (click)="clearFilter()">
                   <button
                     class="disable-preset-menu"
-                    [disabled]="!this.ggg === false ? true : false"
+                    [disabled]="!this.checkIfFormEmpty === false ? true : false"
                   >
                     Clear Preset
                   </button>
@@ -302,7 +299,7 @@
                               class="ion-datetime-start"
                               formControlName="param3"
                               [value]="this.datePickersInfo[i]?.start?.formatedValue"
-                              (ionChange)="this.dateChanged('start',datetime.value,i, $event)"
+                              (ionChange)="this.dateChanged('start',datetime.value,i)"
                               showDefaultButtons="true"
                               (ionCancel)="this.datePickersInfo[i].start.open = false"
                               min="2000-01-01T00:00:00"
@@ -320,7 +317,7 @@
                             class="ion-datetime-start"
                             formControlName="param3"
                             [value]="this.datePickersInfo[i]?.start?.formatedValue"
-                            (ionChange)="this.dateChanged('start',datetime.value,i, $event)"
+                            (ionChange)="this.dateChanged('start',datetime.value,i)"
                             showDefaultButtons="true"
                             (ionCancel)="this.datePickersInfo[i].start.open = false"
                             min="2000-01-01T00:00:00"
@@ -363,7 +360,7 @@
                             formControlName="param4"
                             [value]="this.datePickersInfo[i]?.end?.formatedValue"
                             class="ion-datetime-end"
-                            (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
+                            (ionChange)="this.dateChanged('end',datetime.value , i)"
                             showDefaultButtons="true"
                             (ionCancel)="this.datePickersInfo[i]?.end.open = false"
                             [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
@@ -382,7 +379,7 @@
                           formControlName="param4"
                           [value]="this.datePickersInfo[i]?.end?.formatedValue"
                           class="ion-datetime-end"
-                          (ionChange)="this.dateChanged('end',datetime.value , i, $event)"
+                          (ionChange)="this.dateChanged('end',datetime.value , i)"
                           showDefaultButtons="true"
                           (ionCancel)="this.datePickersInfo[i]?.end.open = false"
                           [min]="datePickersInfo?.[i]?.start?.formatedValue || this.allSearch().controls[i].get('param3').value  || '2000-01-01T00:00:00'"
@@ -498,7 +495,7 @@
                 <li class="dropdown-item" (click)="clearFilter()">
                   <button
                     class="disable-preset-menu"
-                    [disabled]="!this.ggg === false ? true : false"
+                    [disabled]="!this.checkIfFormEmpty === false ? true : false"
                   >
                     Clear Preset
                   </button>
