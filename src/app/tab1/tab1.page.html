@@ -270,6 +270,7 @@
                         class="clear-param3"
                         *ngIf="this.allSearch().controls[i].get('param3')?.value !== ''"
                         (click)="handleClear(i)"
+                        [tooltip]="'clear'"
                       >
                         <ion-icon src="../../assets/icon/close-outline.svg">
                         </ion-icon>

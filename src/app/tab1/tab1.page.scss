@@ -171,14 +171,6 @@ form {
     padding: 0;
   }
 }
-// select::-ms-expand {
-//   display: none;
-// }
-// select {
-//   -moz-appearance: none;
-//   -webkit-appearance: none;
-//     padding-left: 0.5rem;
-// }
 .select-item select {
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -460,6 +452,9 @@ ul li.active ul {
 ::ng-deep .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md,::ng-deep .sc-ion-select-popover-ios-h ion-list.sc-ion-select-popover-ios
  {
    background-color: #333333;
+  //  :host {
+  //   --background:none; 
+  // }
   ion-item {
     --background:#333333;
     --background-hover:white;
@@ -479,9 +474,19 @@ ul li.active ul {
   .select-options .item.sc-ion-label-ios-h, .item .sc-ion-label-ios-h, 
   .select-options .item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
      padding-left: 1rem;
-  } 
-}
+  }
 
+ 
+ 
+}
+// ::ng-deep div::part(content) { 
+// background-color: none
+//   ;
+// }
+
+// #ion-overlay-1::part(content) {
+//   --background: none;
+// }
 
 .select-class {
   --height:20px
