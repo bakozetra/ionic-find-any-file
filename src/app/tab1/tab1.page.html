@@ -88,7 +88,7 @@
                 <li class="dropdown-item" (click)="clearFilter()">
                   <button
                     class="disable-preset-menu"
-                    [disabled]="!this.checkIfFormEmpty === false ? true : false"
+                    [disabled]="!this.checkIfFormEmpty() === false ? true : false"
                   >
                     Clear Preset
                   </button>
@@ -496,7 +496,7 @@
                 <li class="dropdown-item" (click)="clearFilter()">
                   <button
                     class="disable-preset-menu"
-                    [disabled]="!this.checkIfFormEmpty === false ? true : false"
+                    [disabled]="!this.checkIfFormEmpty() === false ? true : false"
                   >
                     Clear Preset
                   </button>
@@ -714,6 +714,8 @@
       <h1>5 th of Sept</h1>
       <p>Adding tooltip to the clear third and fourth fields</p>
       <p>Cleaning the code</p>
+      <h1>6 th of Sept</h1>
+      <p>Fixing the removing the white border on ion-popover</p>
     </li>
 
     <li>

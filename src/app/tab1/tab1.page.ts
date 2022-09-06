@@ -474,13 +474,26 @@ export class Tab1Page implements OnInit {
 
   checkIfFormEmpty(): any {
     let isNotEmpty;
-    this.allSearch().value.find((a) => {
+    // console.log('isNotEmpty::::::', isNotEmpty);
+
+    this.allSearch().value.map((a) => {
+      // console.log('a::::::', a.param1);
+      // let ttt = [];
+      // if (a.param1 !== '') {
+      //   const bb = ttt.push(a.param1);
+      //   console.log('bb::::::', bb);
+      //   console.log('a.param1::::::', a.param1);
+      // }
+      // console.log('ttt::::::', ttt.length);
+
       if (a.param1 == '') {
         isNotEmpty = true;
       } else {
+        // console.log('llll');
         isNotEmpty = false;
       }
     });
+    // console.log('isNotEmpty::::::', isNotEmpty);
     return isNotEmpty;
   }
 

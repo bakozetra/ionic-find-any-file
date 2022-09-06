@@ -325,9 +325,6 @@ ion-item:not(.item-label) .sc-ion-input-md-h,ion-item:not(.item-label) .sc-ion-i
      padding-top: 0.5rem
 }
 
-// .abc {
-//   width: 100%;
-// }
 .example-box {
   display: flex;
   align-items: center;
@@ -427,6 +424,10 @@ ul li.active ul {
 }
 .dropdown-item {
   color: #dddddd;
+  button {
+    width: 160px;
+    text-align: start;
+  }
 }
 .dropdown-item:hover {
   background-color: $background;
@@ -473,9 +474,6 @@ ul li.active ul {
   .select-options .item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
      padding-left: 1rem;
   }
-
- 
- 
 }
 ::ng-deep .mycomponent-wider-popover::part(content) {
 --background:#333333 !important;
