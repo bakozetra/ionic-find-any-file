@@ -434,7 +434,6 @@ ul li.active ul {
 
 ::ng-deep .modal-dialog {
   top: 40%;
- 
 .modal-content  {
   width: fit-content;
   margin: auto;
@@ -452,9 +451,8 @@ ul li.active ul {
 ::ng-deep .sc-ion-select-popover-md-h ion-list.sc-ion-select-popover-md,::ng-deep .sc-ion-select-popover-ios-h ion-list.sc-ion-select-popover-ios
  {
    background-color: #333333;
-  //  :host {
-  //   --background:none; 
-  // }
+   --background:#333333;
+   
   ion-item {
     --background:#333333;
     --background-hover:white;
@@ -479,14 +477,14 @@ ul li.active ul {
  
  
 }
-// ::ng-deep div::part(content) { 
-// background-color: none
-//   ;
-// }
+::ng-deep .mycomponent-wider-popover::part(content) {
+--background:#333333 !important;
+}
+::ng-deep .select-popover::part(content) {
+--background:#333333 !important;
 
-// #ion-overlay-1::part(content) {
-//   --background: none;
-// }
+}
+
 
 .select-class {
   --height:20px
