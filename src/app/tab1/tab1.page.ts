@@ -117,6 +117,7 @@ const MESSAGETEXT = {
   headerNotification: 'Please check the form.',
   existPreset: 'Preset already exists.',
   chekNamePreset: 'Please check the preset name',
+  FillThirdField: 'Please fill out the third field!',
 };
 
 @Component({
@@ -285,7 +286,7 @@ export class Tab1Page implements OnInit {
         this.datePickersInfo[i][limitName].open =
           !this.datePickersInfo[i][limitName].open;
         const notification = await this.notificationAlert(
-          'Please fill out the third field!',
+          `${MESSAGETEXT.FillThirdField}`,
           ''
         );
       }
@@ -734,7 +735,7 @@ export class Tab1Page implements OnInit {
       } else {
         const notification = await this.notificationAlert(
           `${MESSAGETEXT.fillBothField}`,
-          'Please check the form'
+          `${MESSAGETEXT.headerNotification}`
         );
         this.currentPresetName = '';
         return notification;
@@ -870,7 +871,7 @@ export class Tab1Page implements OnInit {
       ) {
         const notification = await this.notificationAlert(
           `${MESSAGETEXT.fillBothField}`,
-          'Please check the form'
+          `${MESSAGETEXT.headerNotification}`
         );
         return;
       }
