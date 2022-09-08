@@ -138,11 +138,7 @@ form {
   }
   ion-input {
     height: 28px;
-  } 
-  .range1 {
-    --border-radius: 0;
   }
-
 }
 
 .save-btn {
@@ -164,7 +160,6 @@ form {
   ion-button {
     font-size: large;
     --background:#535353;
-   
     }
   .plus-button::part(native) {
     box-shadow: none;
@@ -404,10 +399,10 @@ label {
 }
 
 ul li ul {
-  display: none; /* Hide the nested list first */
+  display: none;
 }
 ul li.active ul {
-  display: block; /* Show the list when class 'active' is added to the li */ 
+  display: block;
   color: red;
 }
 .dropdown-toggle::after {
