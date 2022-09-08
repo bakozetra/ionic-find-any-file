@@ -1,5 +1,6 @@
 $background: #535353;
 $color:#fff;
+$backgroundColor:#fff;
 
 ::ng-deep ion-content {
   --background: #535353!important;
@@ -36,7 +37,7 @@ $color:#fff;
 .select-class {
   border-radius: 6px;
   outline: none;
-  background-color: white;
+  background-color: $backgroundColor;
   color: #000;
 }
 
@@ -181,7 +182,7 @@ form {
   width: 100%;
   align-items: center;
   .span-presets {
-    color: white;
+    color: $color;
     width: inherit;
     max-width: fit-content;
   }
@@ -214,7 +215,7 @@ form {
       border:none;
       background-color:#535353;
       padding-left: 1rem;
-      color: white;
+      color: $color;
       option {
         background-color: #333333;
       }
@@ -251,10 +252,6 @@ form {
   padding: 1rem !important;
   color: #dddddd;
   background-color:$background;
-}
-
-.save::part(native) {
-  background: green;
 }
 
 .item-interactive::part(native) {
@@ -325,7 +322,7 @@ ion-item:not(.item-label) .sc-ion-input-md-h,ion-item:not(.item-label) .sc-ion-i
      padding-top: 0.5rem
 }
 
-.example-box {
+.form-row {
   display: flex;
   align-items: center;
   ion-item {
@@ -344,7 +341,7 @@ ion-item:not(.item-label) .sc-ion-input-md-h,ion-item:not(.item-label) .sc-ion-i
   width: 100%;
   border: none !important;
 }
-.example-box {
+.form-row {
   cursor: grab;
 }
 
@@ -363,7 +360,7 @@ ion-item:not(.item-label) .sc-ion-input-md-h,ion-item:not(.item-label) .sc-ion-i
 
 .delete-preset::part(native) {
   background-color: red;
-  color: white;
+  color: $color;
 }
 
 
@@ -384,7 +381,7 @@ label {
   border-radius: 4px;
   margin-bottom: 2rem;
   margin-top: 0px !important;
-  color: white !important;
+  color: $color !important;
   height: 5vh;
 }
 
@@ -395,7 +392,7 @@ label {
   border-radius: 4px;
   margin-bottom: 2rem;
   margin-top: 0px !important;
-  color: white !important;
+  color: $color !important;
   background: transparent !important;
   height: 5vh;
 }
@@ -439,7 +436,7 @@ ul li.active ul {
   width: fit-content;
   margin: auto;
   background-color: #393737;
-  color: white;
+  color: $color;
   button {
   color: #dddddd;
   background-color: $background;
@@ -503,7 +500,7 @@ ul li.active ul {
   background-color: $background;
   --placeholder-color:white;
   --placeholder-opacity:none;
-  color: white;
+  color: $color;
   max-width: min-content;
   width: 250px;
   
@@ -512,7 +509,7 @@ ul li.active ul {
   --placeholder-color:white;
   --placeholder-opacity:none;
   --padding-start:0.5rem;
-  color: white;
+  color: $color;
 }
 
 

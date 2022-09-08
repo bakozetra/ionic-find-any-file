@@ -81,8 +81,8 @@ const SUB_MENU_DURATION_TYPE_BASE = [
     name: 'Shorter Than',
   },
   {
-    id: 'SHOW_TOTAL_DURATION_FOR_SELECTION',
-    name: 'Show Total Duration For Selection',
+    id: 'SHOW_TOTAL_DURATION',
+    name: 'Show Total Duration',
   },
 ];
 
@@ -206,15 +206,11 @@ export class Tab1Page implements OnInit {
   currentPresetName = '';
   preSelectList = [];
   message: string = '';
-  updated: boolean = false;
   submitted: boolean = false;
-  submittedForm: boolean;
   selectedPresetId: string = '';
   presetId: string = '';
   id: string;
   isDate: boolean = false;
-  modBetween: boolean = false;
-  mod: boolean = false;
   isParam2Select: boolean = false;
   messageSpan = document.getElementById('message');
   dates = ['Shooting Date', 'Creation Date', 'Modification Date'];
@@ -222,8 +218,6 @@ export class Tab1Page implements OnInit {
   dateRangePickerEnd = '';
   persistPresetSearchService;
   backendCommunicationService;
-  alertService;
-  valueInputPicker = '';
   selectMode = 'date';
   datePickersInfo = [JSON.parse(JSON.stringify(INITIALDATEPICKERSINFO))];
   skipOnPreselectDDLChange = false;
@@ -302,14 +296,11 @@ export class Tab1Page implements OnInit {
       const endDateFormated = new Date(
         this.datePickersInfo[i].end.formatedValue
       );
-
       let isStartAfterEndDate = isBefore(endDateFormated, startDateFormated);
-
       if (isStartAfterEndDate) {
         this.datePickersInfo[i].end.formatedValue = '';
         this.allSearch().controls[i].get('param4').setValue('');
       }
-
       const row = this.allSearch().controls[i] as FormGroup;
       if (row.value.param2 !== SUB_MENU_BETWEEN_ID) {
         this.allSearch().controls[i].get('param4').setValue('');
@@ -604,10 +595,6 @@ export class Tab1Page implements OnInit {
       );
     } else {
       e.preventDefault();
-      console.log(
-        'e.target.lastElementChild.localName::::::else',
-        e.target.lastElementChild.localName
-      );
     }
   }
 
@@ -997,7 +984,6 @@ export class Tab1Page implements OnInit {
       this.currentPresetName =
         currentPreset?.filterName || INITIALCURRENTPRESETNAME;
     }
-    // debugger;
     const changes = this.trackChanges(this.presetId);
 
     // to check if newly created presets after fresh load app should be saved
@@ -1010,7 +996,6 @@ export class Tab1Page implements OnInit {
         const confirmed = await this.confirmationAlert(
           `${MESSAGETEXT.discardChanges}`
         );
-        // debugger;
         if (confirmed) {
           this.selectedPresetId = e.target?.value;
         } else {
@@ -1059,7 +1044,6 @@ export class Tab1Page implements OnInit {
   }
 
   trackChanges = (param: any) => {
-    // debugger;
     if (!param) return true;
     const localJSON = this.getPersistPresetSearchParsed();
     let data = localJSON.find((f) => f.id == param);

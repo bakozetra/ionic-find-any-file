@@ -32,7 +32,6 @@ export class TooltipDirective implements OnDestroy {
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    console.log('hhhh');
     if (this.timer) clearTimeout(this.timer);
     if (this.myPopup) {
       this.myPopup.remove();
