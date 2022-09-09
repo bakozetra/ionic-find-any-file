@@ -101,11 +101,11 @@ const INITIALDATEPICKERSINFO = {
 const MESSAGETEXT = {
   presetnotExist: 'Preset does not exist',
   fillAll: 'All field need to be filled.',
-  stored: 'Your Filter stored successfully.',
+  stored: 'Your preset stored successfully.',
   fillBothField: 'Both field for the between range has to be valid.',
-  savedFilter: 'This filter is already saved already',
+  savedFilter: 'This preset is already saved already',
   updateCurrentFilter: 'Your are updating the current filter',
-  filterUpdated: 'Your filter updated successfully.',
+  filterUpdated: 'Your preset updated successfully.',
   confirmeToDeletePreset: 'Are you sure to delete :',
   presetSuccefullDeleted: 'is deleted successfully.',
   confimeToClearUnsavedPreset:
@@ -393,7 +393,7 @@ export class Tab1Page implements OnInit {
           if (confirmed) {
             let data = localJSON.filter((ele) => ele?.id != this?.id);
             this.setPersistPresetSearch(data);
-            messageSpan.style.color = 'red';
+            messageSpan.style.color = '#f97979';
             this.message = `${presetName} ${MESSAGETEXT.presetSuccefullDeleted}`;
             if (this.message) {
               this.emptyMessageTimeout();
@@ -406,7 +406,7 @@ export class Tab1Page implements OnInit {
           }
         }
       } else {
-        messageSpan.style.color = 'red';
+        messageSpan.style.color = '#f97979';
         this.message = MESSAGETEXT.presetnotExist;
         if (this.message) {
           setTimeout(() => {
@@ -415,7 +415,7 @@ export class Tab1Page implements OnInit {
         }
       }
     } else {
-      messageSpan.style.color = 'red';
+      messageSpan.style.color = '#f97979';
       this.message = MESSAGETEXT.presetnotExist;
     }
   }
