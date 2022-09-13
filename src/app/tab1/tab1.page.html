@@ -417,19 +417,17 @@
               <ion-row class="btn-group">
                 <ion-col size-xs="12" size-sm="12" class="apply-filter">
                   <ion-button
+                    (click)="getDateTest()"
+                    class="apply-btn"
+                    [tooltip]="'search filter'"
+                    >Search test button</ion-button
+                  >
+                  <ion-button
                     [disabled]="this.allSearch().value[0].param1 === '' ? true : false"
                     (click)="applyFilter()"
                     class="apply-btn"
                     [tooltip]="'search filter'"
                     >Search</ion-button
-                  >
-                </ion-col>
-                <ion-col>
-                  <ion-button
-                    (click)="getDateTest()"
-                    class="apply-btn"
-                    [tooltip]="'search filter'"
-                    >Search test button</ion-button
                   >
                 </ion-col>
               </ion-row>
