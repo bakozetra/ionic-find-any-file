@@ -522,6 +522,28 @@ export class Tab1Page implements OnInit {
         },
       });
   }
+  dataValue;
+  getDateTest() {
+    this.backendCommunicationService.getPresetData().subscribe((v) => {
+      this.dataValue = v;
+    });
+    this.allSearch().clear();
+    const tempArray = [] as any[];
+    this.dataValue?.filter((f, index) => {
+      const menu = this.searchData.find(
+        (fn) => fn.id.toLowerCase() === f.param1.toLowerCase()
+      );
+      this.param2List[index] = menu?.subMenu;
+      tempArray.push({
+        param1: f.param1,
+        param2: f.param2,
+        param3: f.param3,
+      });
+    });
+    tempArray.map((m, i) => {
+      this.addSearch(m);
+    });
+  }
 
   initPriceForm() {
     this.searchFilterForm = this.fb.group({

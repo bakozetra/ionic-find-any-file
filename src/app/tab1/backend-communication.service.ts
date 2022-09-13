@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FilterModel } from '../interfaces/filterModel';
 import { catchError, tap } from 'rxjs/operators';
 interface PresetData {
@@ -25,5 +25,14 @@ export class BackendCommunicationService {
     return this.http
       .post<PresetData>('api-goes-here', filterPreset, this.httpHeader)
       .pipe(catchError(this.handleError<PresetData>('Add persist')));
+  }
+
+  public getPresetData(): Observable<any> {
+    const subject = new BehaviorSubject([
+      { param1: 'FILE_NAME', param2: 'CONTAINS', param3: 'hhhh' },
+      { param1: 'FILE_NAME', param2: 'CONTAINS', param3: 'aaaaaa' },
+      { param1: 'TRANSCRIPTS', param2: 'IS', param3: 'aaaaaa' },
+    ]);
+    return subject;
   }
 }
