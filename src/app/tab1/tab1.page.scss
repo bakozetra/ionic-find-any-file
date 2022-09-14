@@ -261,6 +261,9 @@ ion-item::part(native) {
   border: none !important;
   padding-left: 0;
 }
+.filter-search {
+  --inner-padding-end: 0.5rem;
+}
 .item.sc-ion-label-ios-h, .item .sc-ion-label-ios-h ,
 .item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
    padding-left: 1rem;
@@ -525,9 +528,8 @@ ul li.active ul {
 
 .select-class::part(icon) {
   display: none;
-  
    }
-// ion-date time 
+
 ion-datetime {
   position: absolute;
   top: 2.05rem;
@@ -549,10 +551,9 @@ ion-datetime {
   position: relative;
   ::ng-deep .clear-param4 {
     position: absolute;
-      right: 0.65rem;
-      /* top: 0rem; */
-      bottom: 0.25rem;
-      z-index: 999;
+    right: 0.65rem;
+    bottom: 0.25rem;
+    z-index: 999;
     height: auto;
 
   }
@@ -610,11 +611,9 @@ ion-datetime {
     position: absolute;
     top:  2.05rem;
    }
- 
    .preset-row {
     display: grid;
     padding-bottom: 1.5rem;
-
     .icon {
       justify-content: space-between;
     }
