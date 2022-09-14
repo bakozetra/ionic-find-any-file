@@ -524,8 +524,8 @@ export class Tab1Page implements OnInit {
   }
   dataValue;
   getDateTest() {
-    this.backendCommunicationService.getPresetData().subscribe((v) => {
-      this.dataValue = v;
+    this.backendCommunicationService.getPresetData().subscribe((data) => {
+      this.dataValue = data;
     });
     this.allSearch().clear();
     const tempArray = [] as any[];
@@ -916,7 +916,6 @@ export class Tab1Page implements OnInit {
             delete temp2[i].param4;
           }
         }
-        // debugger;
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
           messageSpan.style.color = 'green';
           this.message = 'Your Filter stored successfully';
