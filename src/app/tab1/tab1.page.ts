@@ -4,6 +4,7 @@ import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
+import { MESSAGETEXT, SEARCHDATA, SUB_MENU_DATE_ID } from './tab1';
 import {
   AlertController,
   IonDatetime,
@@ -17,75 +18,6 @@ import { PersistPresetSearchService } from './persist-preset-search.service';
 import { BackendCommunicationService } from './backend-communication.service';
 import { HttpClient } from '@angular/common/http';
 
-const SUB_MENU_BETWEEN_ID = 'BETWEEN';
-const SUB_MENU_EXACTLY_ID = 'EXACTLY';
-const SUB_MENU_BEFORE_ID = 'BEFORE';
-const SUB_MENU_AFTER_ID = 'AFTER';
-
-const SUB_MENU_TEXT_TYPE_BASE = [
-  {
-    id: 'CONTAINS',
-    name: 'Contains',
-  },
-  {
-    id: 'IS',
-    name: 'Is',
-  },
-  {
-    id: 'IS_NOT',
-    name: 'Is Not',
-  },
-];
-
-const SUB_MENU_TEXT_TYPE_BEGIN_END = [
-  {
-    id: 'BEGIN_WITH',
-    name: 'Begin With',
-  },
-  {
-    id: 'ENDS_WITH',
-    name: 'Ends With',
-  },
-];
-const SUB_MENU_TEXT_TYPE_CONTAINS_WORDS = [
-  {
-    id: 'CONTAINS_WORDS',
-    name: 'Contains Words',
-  },
-];
-const SUB_MENU_DATE_TYPE_BASE = [
-  {
-    id: SUB_MENU_EXACTLY_ID,
-    name: 'Exactly',
-  },
-  {
-    id: SUB_MENU_BEFORE_ID,
-    name: 'Before',
-  },
-  {
-    id: SUB_MENU_AFTER_ID,
-    name: 'After',
-  },
-  {
-    id: SUB_MENU_BETWEEN_ID,
-    name: 'Between',
-  },
-];
-const SUB_MENU_DURATION_TYPE_BASE = [
-  {
-    id: 'LONGER_THAN',
-    name: 'Longer Than',
-  },
-  {
-    id: 'SHORTER_THAN',
-    name: 'Shorter Than',
-  },
-  {
-    id: 'SHOW_TOTAL_DURATION',
-    name: 'Show Total Duration',
-  },
-];
-
 const initialFilterValue = {
   param1: '',
   param2: '',
@@ -98,27 +30,6 @@ const INITIALDATEPICKERSINFO = {
   start: { open: false, formatedValue: '' },
   end: { open: false, formatedValue: '' },
 };
-const MESSAGETEXT = {
-  presetnotExist: 'Preset does not exist',
-  fillAll: 'All field need to be filled.',
-  stored: 'Your preset stored successfully.',
-  fillBothField: 'Both field for the between range has to be valid.',
-  savedFilter: 'This preset is already saved already',
-  updateCurrentFilter: 'Your are updating the current filter',
-  filterUpdated: 'Your preset updated successfully.',
-  confirmeToDeletePreset: 'Are you sure to delete :',
-  presetSuccefullDeleted: 'is deleted successfully.',
-  confimeToClearUnsavedPreset:
-    'Do you want to clear preset including your unsaved changes :',
-  confireToclearSavedPreset: 'Do you want to clear the current preset',
-  discardChanges: 'Do you want to discard the current filter changes',
-  removingRow: 'Are you sure to remove this row',
-  durationNotification: 'The Duration should be HH MM SS and 24h clock.',
-  headerNotification: 'Please check the form.',
-  existPreset: 'Preset already exists.',
-  chekNamePreset: 'Please check the preset name',
-  FillThirdField: 'Please fill out the third field!',
-};
 
 @Component({
   selector: 'app-tab1',
@@ -126,81 +37,7 @@ const MESSAGETEXT = {
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
-  searchData = [
-    {
-      id: 'CLIP_NOTES',
-      name: 'Clip Notes',
-      type: 'text',
-      subMenu: [
-        ...SUB_MENU_TEXT_TYPE_BASE,
-        ...SUB_MENU_TEXT_TYPE_BEGIN_END,
-        ...SUB_MENU_TEXT_TYPE_CONTAINS_WORDS,
-      ],
-    },
-    {
-      id: 'FRAME_NOTES',
-      name: 'Frame Notes',
-      type: 'text',
-      subMenu: [
-        ...SUB_MENU_TEXT_TYPE_BASE,
-        ...SUB_MENU_TEXT_TYPE_BEGIN_END,
-        ...SUB_MENU_TEXT_TYPE_CONTAINS_WORDS,
-      ],
-    },
-    {
-      id: 'TRANSCRIPTS',
-      name: 'Transcripts',
-      type: 'text',
-      subMenu: [
-        ...SUB_MENU_TEXT_TYPE_BASE,
-        ...SUB_MENU_TEXT_TYPE_BEGIN_END,
-        ...SUB_MENU_TEXT_TYPE_CONTAINS_WORDS,
-      ],
-    },
-    {
-      id: 'FILE_NAME',
-      name: 'File Name',
-      type: 'text',
-      subMenu: [...SUB_MENU_TEXT_TYPE_BASE, ...SUB_MENU_TEXT_TYPE_BEGIN_END],
-    },
-    {
-      id: 'DURATION',
-      name: 'Duration',
-      type: 'time',
-      subMenu: SUB_MENU_DURATION_TYPE_BASE,
-    },
-    {
-      id: 'CARD_SERIAL',
-      name: 'Card Serial',
-      type: 'text',
-      subMenu: SUB_MENU_TEXT_TYPE_BASE,
-    },
-    {
-      id: 'RECORDER_SERIAL',
-      name: 'Recorder Serial',
-      type: 'text',
-      subMenu: SUB_MENU_TEXT_TYPE_BASE,
-    },
-    {
-      id: 'SHOOTING_DATE',
-      name: 'Shooting Date',
-      type: 'date',
-      subMenu: SUB_MENU_DATE_TYPE_BASE,
-    },
-    {
-      id: 'CREATION_DATE',
-      name: 'Creation Date',
-      type: 'date',
-      subMenu: SUB_MENU_DATE_TYPE_BASE,
-    },
-    {
-      id: 'MODIFICATION_DATE',
-      name: 'Modification Date',
-      type: 'date',
-      subMenu: SUB_MENU_DATE_TYPE_BASE,
-    },
-  ];
-
+  searchData = SEARCHDATA;
   param2List = [];
   searchFilterForm: FormGroup;
   currentPresetName = '';
@@ -223,6 +60,7 @@ export class Tab1Page implements OnInit {
   skipOnPreselectDDLChange = false;
   closeMenu = '';
   isDesktop = this.platform.is('desktop');
+  dataValue;
 
   constructor(
     private fb: FormBuilder,
@@ -302,7 +140,7 @@ export class Tab1Page implements OnInit {
         this.allSearch().controls[i].get('param4').setValue('');
       }
       const row = this.allSearch().controls[i] as FormGroup;
-      if (row.value.param2 !== SUB_MENU_BETWEEN_ID) {
+      if (row.value.param2 !== SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID) {
         this.allSearch().controls[i].get('param4').setValue('');
         this.datePickersInfo[i].end.formatedValue = '';
       }
@@ -501,7 +339,9 @@ export class Tab1Page implements OnInit {
       return notification;
     }
     const isBetweenParamEmpty = this.allSearch().value.some(
-      (value) => value.param2 === SUB_MENU_BETWEEN_ID && value.param4 === ''
+      (value) =>
+        value.param2 === SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID &&
+        value.param4 === ''
     );
     if (isBetweenParamEmpty) {
       const notification = await this.notificationAlert(
@@ -522,7 +362,6 @@ export class Tab1Page implements OnInit {
         },
       });
   }
-  dataValue;
   getDateTest() {
     this.backendCommunicationService.getPresetData().subscribe((data) => {
       this.dataValue = data;
@@ -591,9 +430,9 @@ export class Tab1Page implements OnInit {
       this.datePickersInfo[dateIndex].start.formatedValue = item?.param3;
     }
     if (
-      item.param2 == SUB_MENU_EXACTLY_ID ||
-      SUB_MENU_BEFORE_ID ||
-      SUB_MENU_AFTER_ID
+      item.param2 == SUB_MENU_DATE_ID.SUB_MENU_EXACTLY_ID ||
+      SUB_MENU_DATE_ID.SUB_MENU_BEFORE_ID ||
+      SUB_MENU_DATE_ID.SUB_MENU_AFTER_ID
     ) {
       const dateIndex = this.allSearch().value.length - 1;
       if (!this.datePickersInfo[dateIndex]) {
@@ -636,7 +475,8 @@ export class Tab1Page implements OnInit {
     row.get('param2').markAsDirty();
     row.get('param2')?.setValue(this?.param2List[i][0]?.id);
     if (
-      row.value.param2.toLowerCase() === SUB_MENU_EXACTLY_ID.toLocaleLowerCase()
+      row.value.param2.toLowerCase() ===
+      SUB_MENU_DATE_ID.SUB_MENU_EXACTLY_ID.toLocaleLowerCase()
     ) {
       if (isNaN(Date.parse(row.value.param3))) {
         this.allSearch().controls[i].get('param3').setValue('');
@@ -648,7 +488,9 @@ export class Tab1Page implements OnInit {
 
   onParam2Change(i: any, isUserInteraction?: any) {
     const row = this.allSearch().controls[i] as FormGroup;
-    if (row.value.param2.toLowerCase() === SUB_MENU_BETWEEN_ID) {
+    if (
+      row.value.param2.toLowerCase() === SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID
+    ) {
       if (isNaN(Date.parse(row.value.param3))) {
         isUserInteraction &&
           this.allSearch().controls[i].get('param3').setValue('');
@@ -657,7 +499,8 @@ export class Tab1Page implements OnInit {
       }
     }
     if (
-      row.value.param2.toLowerCase() !== SUB_MENU_BETWEEN_ID.toLocaleLowerCase()
+      row.value.param2.toLowerCase() !==
+      SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID.toLocaleLowerCase()
     ) {
       this.allSearch().controls[i].get('param4').setValue('');
       this.datePickersInfo[i].end.formatedValue = '';
@@ -731,7 +574,7 @@ export class Tab1Page implements OnInit {
   }
 
   async saveHandleBetweenSelected(finalData, allFilters, messageSpan) {
-    if (finalData.filters[0]?.param2 === SUB_MENU_BETWEEN_ID) {
+    if (finalData.filters[0]?.param2 === SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID) {
       if (finalData.filters[0]?.param4 !== '') {
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
@@ -876,7 +719,7 @@ export class Tab1Page implements OnInit {
 
       if (
         filterData?.[i]?.param4 == '' &&
-        filterData?.[i]?.param2 === SUB_MENU_BETWEEN_ID
+        filterData?.[i]?.param2 === SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID
       ) {
         const notification = await this.notificationAlert(
           `${MESSAGETEXT.fillBothField}`,
@@ -903,7 +746,7 @@ export class Tab1Page implements OnInit {
         for (var i = 0, len1 = temp1.length as number; i < len1; i++) {
           if (
             temp1?.[i]?.param4 == '' &&
-            temp1?.[i]?.param2 !== SUB_MENU_BETWEEN_ID
+            temp1?.[i]?.param2 !== SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID
           ) {
             delete temp1[i].param4;
           }
@@ -911,7 +754,7 @@ export class Tab1Page implements OnInit {
         for (var i = 0, len2 = temp2.length; i < len2; i++) {
           if (
             temp2?.[i]?.param4 == '' &&
-            temp1?.[i]?.param2 !== SUB_MENU_BETWEEN_ID
+            temp1?.[i]?.param2 !== SUB_MENU_DATE_ID.SUB_MENU_BETWEEN_ID
           ) {
             delete temp2[i].param4;
           }
