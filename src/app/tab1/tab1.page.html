@@ -403,6 +403,7 @@
                         class="clear-param4"
                         *ngIf="this.allSearch().controls[i].get('param4')?.value !== ''"
                         (click)="handleClearFourthField(i)"
+                        [tooltip]="'clear'"
                       >
                         <ion-icon src="../../assets/icon/close-outline.svg">
                         </ion-icon>
