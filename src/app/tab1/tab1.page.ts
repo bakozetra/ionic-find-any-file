@@ -4,7 +4,15 @@ import { FilterModel } from '../interfaces/filterModel';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
-import { MESSAGETEXT, SEARCHDATA, SUB_MENU_DATE_ID } from './tab1';
+import {
+  MESSAGETEXT,
+  SEARCHDATA,
+  SUB_MENU_DATE_ID,
+  testColor,
+  INITIALCURRENTPRESETNAME,
+  INITIALDATEPICKERSINFO,
+  initialFilterValue,
+} from './tab1';
 import {
   AlertController,
   IonDatetime,
@@ -17,19 +25,6 @@ import { format, parseISO, isBefore } from 'date-fns';
 import { PersistPresetSearchService } from './persist-preset-search.service';
 import { BackendCommunicationService } from './backend-communication.service';
 import { HttpClient } from '@angular/common/http';
-
-const initialFilterValue = {
-  param1: '',
-  param2: '',
-  param3: '',
-  param4: '',
-};
-
-const INITIALCURRENTPRESETNAME = '';
-const INITIALDATEPICKERSINFO = {
-  start: { open: false, formatedValue: '' },
-  end: { open: false, formatedValue: '' },
-};
 
 @Component({
   selector: 'app-tab1',
@@ -231,7 +226,7 @@ export class Tab1Page implements OnInit {
           if (confirmed) {
             let data = localJSON.filter((ele) => ele?.id != this?.id);
             this.setPersistPresetSearch(data);
-            messageSpan.style.color = '#f97979';
+            messageSpan.style.color = testColor.errorColor;
             this.message = `${presetName} ${MESSAGETEXT.presetSuccefullDeleted}`;
             if (this.message) {
               this.emptyMessageTimeout();
@@ -244,7 +239,7 @@ export class Tab1Page implements OnInit {
           }
         }
       } else {
-        messageSpan.style.color = '#f97979';
+        messageSpan.style.color = testColor.errorColor;
         this.message = MESSAGETEXT.presetnotExist;
         if (this.message) {
           setTimeout(() => {
@@ -253,7 +248,7 @@ export class Tab1Page implements OnInit {
         }
       }
     } else {
-      messageSpan.style.color = '#f97979';
+      messageSpan.style.color = testColor.errorColor;
       this.message = MESSAGETEXT.presetnotExist;
     }
   }
@@ -579,7 +574,7 @@ export class Tab1Page implements OnInit {
         allFilters.push(finalData);
         this.setPersistPresetSearch(allFilters);
         this.updatePreselectList();
-        messageSpan.style.color = 'green';
+        messageSpan.style.color = testColor.successcolor;
         this.message = MESSAGETEXT.stored;
         if (this.message) {
           this.emptyMessageTimeout();
@@ -596,7 +591,7 @@ export class Tab1Page implements OnInit {
       allFilters.push(finalData);
       this.setPersistPresetSearch(allFilters);
       this.updatePreselectList();
-      messageSpan.style.color = 'green';
+      messageSpan.style.color = testColor.successcolor;
       this.message = MESSAGETEXT.stored;
       if (this.message) {
         this.emptyMessageTimeout();
@@ -639,7 +634,7 @@ export class Tab1Page implements OnInit {
         );
         const temp2 = searchFilterForm.value.search;
         if (JSON.stringify(temp1?.filters) === JSON.stringify(temp2)) {
-          messageSpan.style.color = 'green';
+          messageSpan.style.color = testColor.successcolor;
           this.message = MESSAGETEXT.savedFilter;
           if (this.message) {
             this.emptyMessageTimeout();
@@ -760,7 +755,7 @@ export class Tab1Page implements OnInit {
           }
         }
         if (JSON.stringify(temp1) === JSON.stringify(temp2)) {
-          messageSpan.style.color = 'green';
+          messageSpan.style.color = testColor.successcolor;
           this.message = 'Your Filter stored successfully';
           if (this.message) {
             this.emptyMessageTimeout();
@@ -796,7 +791,7 @@ export class Tab1Page implements OnInit {
 
         data = [...data, ...finalData];
         this.setPersistPresetSearch(data);
-        messageSpan.style.color = 'green';
+        messageSpan.style.color = testColor.successcolor;
         this.message = message;
         this.emptyMessageTimeout();
         setTimeout(() => {

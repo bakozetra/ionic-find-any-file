@@ -1,3 +1,20 @@
+export const initialFilterValue = {
+  param1: '',
+  param2: '',
+  param3: '',
+  param4: '',
+};
+
+export const INITIALCURRENTPRESETNAME = '';
+export const INITIALDATEPICKERSINFO = {
+  start: { open: false, formatedValue: '' },
+  end: { open: false, formatedValue: '' },
+};
+export const testColor = {
+  successcolor: 'green',
+  errorColor: '#f97979',
+};
+
 export const MESSAGETEXT = {
   presetnotExist: 'Preset does not exist',
   fillAll: 'All field need to be filled.',
