@@ -26,7 +26,7 @@ export class Tab2Page {
       this.rows = res.movies;
     });
   }
-  isToggle = true;
+  isToggle = false;
 
   toggleme(e) {
     if (e) {
