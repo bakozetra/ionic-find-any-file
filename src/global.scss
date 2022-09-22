@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -25,68 +25,73 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 @import "../src/app/tooltip/tooltip.component.scss";
-
+@import "~@swimlane/ngx-datatable/index.css";
+@import "~@swimlane/ngx-datatable/themes/material.scss";
+@import "~@swimlane/ngx-datatable/assets/icons.css";
 
 body {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .myClass {
-    z-index: 99;
-    top: 50%;
-    left: 50%;
-    position: fixed;
-    /* left: calc(50% - 49px); */
-    transform: translate(-50%, -50%);
+  z-index: 99;
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  /* left: calc(50% - 49px); */
+  transform: translate(-50%, -50%);
 }
 
 ::ng-deep.range-plugin {
-    z-index: 99;
-    top: 50%;
-    left: 50%;
-    position: fixed;
-    /* left: calc(50% - 49px); */
-    transform: translate(-50%, -50%);
-  }
+  z-index: 99;
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  /* left: calc(50% - 49px); */
+  transform: translate(-50%, -50%);
+}
 
 .alert-confirmation {
-    b {
-      color: rgb(66, 63, 63);
-      margin: 0; 
-    }
+  b {
+    color: rgb(66, 63, 63);
+    margin: 0;
+  }
+}
+
+ion-alert {
+  //background color
+  .alert-wrapper.sc-ion-alert-md,
+  .alert-wrapper.sc-ion-alert-ios {
+    background-color: #333333;
+    --background: #333333;
   }
 
-  
-  ion-alert {
-    //background color
-    .alert-wrapper.sc-ion-alert-md, .alert-wrapper.sc-ion-alert-ios {
-      background-color: #333333;
-      --background: #333333;
-    }
-    
-   
-    // Header Text
-    .alert-title.sc-ion-alert-md {
-      font-size: 25px;
-      font-weight: 600;
-      font-family: "AustralisProSwash-Italic";
-    }
-   
-    .alert-message.sc-ion-alert-md, .alert-message.sc-ion-alert-ios, .alert-title.sc-ion-alert-md, .alert-title.sc-ion-alert-ios  {
-     color: white;
-    }  
-    [aria-checked="true"].sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
-      border-color: #00000080;
-    }
-    .alert-radio-label.sc-ion-alert-ios, .alert-radio-label.sc-ion-alert-md {
-      color: white;
-     }
-     .alert-message.sc-ion-alert-md b, .alert-message.sc-ion-alert-ios b {
-      color: whitesmoke;
-     }
-     [aria-checked=true].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
-      color: rgb(161, 149, 149);
+  // Header Text
+  .alert-title.sc-ion-alert-md {
+    font-size: 25px;
+    font-weight: 600;
+    font-family: "AustralisProSwash-Italic";
+  }
 
+  .alert-message.sc-ion-alert-md,
+  .alert-message.sc-ion-alert-ios,
+  .alert-title.sc-ion-alert-md,
+  .alert-title.sc-ion-alert-ios {
+    color: white;
   }
+  [aria-checked="true"].sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
+    border-color: #00000080;
   }
+  .alert-radio-label.sc-ion-alert-ios,
+  .alert-radio-label.sc-ion-alert-md {
+    color: white;
+  }
+  .alert-message.sc-ion-alert-md b,
+  .alert-message.sc-ion-alert-ios b {
+    color: whitesmoke;
+  }
+  [aria-checked="true"].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
+    color: rgb(161, 149, 149);
+  }
+}
