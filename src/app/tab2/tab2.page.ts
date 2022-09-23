@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 export interface Data {
   movies: string;
 }
@@ -15,7 +15,7 @@ const INITIALCOLUMNS = [
   styleUrls: ['tab2.page.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit {
   public data: Data;
   public columns: any;
   public tempColumns: any;
@@ -33,22 +33,37 @@ export class Tab2Page {
       this.rows = res.movies;
     });
   }
-  isToggle = false;
-  toggleme(e) {
-    console.log('columns[0]::::::', this.columns[0]);
+  ngOnInit(): void {
+    // this.setPersistPresetSearch(INITIALCOLUMNS);
+  }
 
-    console.log('this.tempColumns::::::', this.tempColumns);
-    const updateColumns = this.tempColumns.map((a) => {
-      if (a.name === e) {
-        console.log('e::::::', e);
-        console.log('a.name::::::', a.name);
-        a.hidden = !a.hidden;
+  setLocalStorageChages(data) {
+    return localStorage.setItem('changes', JSON.stringify(data));
+  }
+  getlocatChanges() {
+    return localStorage.getItem('changes');
+  }
+  getDataCoumnChanges(): any {
+    let localJSON = INITIALCOLUMNS;
+    const localData = this.getlocatChanges();
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+
+  toggleme(e) {
+    const updateColumns = this.tempColumns.map((columnName) => {
+      if (columnName.name === e) {
+        columnName.hidden = !columnName.hidden;
       }
-      return a;
+      return columnName;
     });
-    console.log('updateColumns:::::: down', updateColumns);
-    this.columns = updateColumns.filter((c) => !c.hidden);
-    // this.isToggle = !this.isToggle;
+
+    this.getDataCoumnChanges();
+    this.setLocalStorageChages(updateColumns);
+
+    this.columns = updateColumns.filter((col) => !col.hidden);
   }
   onSort(event) {
     console.log(event);
