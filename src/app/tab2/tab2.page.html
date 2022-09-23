@@ -3,12 +3,12 @@
     <ion-title>NGX Data Table</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-item>
+<ion-item *ngFor="let toogle of tempColumns">
   <ion-toggle
-    [checked]="isToggle"
-    (ionChange)="toggleme(!this.isToggle)"
+    [checked]="toogle.hidden"
+    (ionChange)="toggleme(toogle.name)"
   ></ion-toggle>
-  <ion-label>Hide Name</ion-label>
+  <ion-label>{{toogle.name}}</ion-label>
 </ion-item>
 
 <ion-content>
@@ -25,11 +25,12 @@
       (sort)="onSort($event)"
     >
       <ngx-datatable-column
-        *ngIf="!isToggle"
-        [name]="columns[0].name"
-        [prop]="columns[0].name |lowercase"
+        [name]="column.name"
+        [prop]="column.name |lowercase"
         [flexGrow]="3"
+        *ngFor="let column of columns "
       >
+        <!-- <div *ngIf="!column.hidden"> -->
         <ng-template
           let-column="column"
           let-sort="sortFn"
@@ -45,11 +46,21 @@
             >
           </span>
         </ng-template>
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span [attr.aria-label]="row.name">{{row.name}}</span>
+        <ng-template
+          let-value="value"
+          let-row="row"
+          ngx-datatable-cell-template
+        >
+          <div *ngIf="column.name == 'Image'">
+            <img [attr.aria-label]="value" [src]="value" />
+          </div>
+          <div *ngIf="column.name !== 'Image'">
+            <span [attr.aria-label]="value">{{value}}</span>
+          </div>
         </ng-template>
+        <!-- </div> -->
       </ngx-datatable-column>
-      <ngx-datatable-column
+      <!-- <ngx-datatable-column
         [name]="columns[1].name"
         [draggable]="true"
         [prop]="columns[1].name |lowercase"
@@ -123,7 +134,7 @@
             <img [src]="row.image" />
           </span>
         </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
     </ngx-datatable>
   </div>
 </ion-content>
