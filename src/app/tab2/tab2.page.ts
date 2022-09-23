@@ -19,7 +19,7 @@ export class Tab2Page {
       { name: 'Name' },
       { name: 'Company' },
       { name: 'Genre' },
-      { name: 'Icon' },
+      { name: 'Image' },
     ];
     this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
       console.log(res, 'resss');
@@ -29,21 +29,9 @@ export class Tab2Page {
   isToggle = false;
 
   toggleme(e) {
-    if (e) {
-      this.isToggle = true;
-      console.log('this.isToggle:::::: if', this.isToggle);
-      this.columns = [{ name: 'Company' }, { name: 'Genre' }, { name: 'Icon' }];
-    }
-    console.log('!this.isToggle::::::', !this.isToggle);
-    if (!e) {
-      this.isToggle = false;
-      console.log('this.isToggle:::::: else', this.isToggle);
-      this.columns = [
-        { name: 'Name' },
-        { name: 'Company' },
-        { name: 'Genre' },
-        { name: 'Icon' },
-      ];
-    }
+    this.isToggle = !this.isToggle;
+  }
+  onSort(event) {
+    console.log(event);
   }
 }

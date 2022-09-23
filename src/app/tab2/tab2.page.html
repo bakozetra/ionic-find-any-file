@@ -22,7 +22,108 @@
       [columnMode]="'force'"
       [headerHeight]="50"
       [footerHeight]="50"
+      (sort)="onSort($event)"
     >
+      <ngx-datatable-column
+        *ngIf="!isToggle"
+        [name]="columns[0].name"
+        [prop]="columns[0].name |lowercase"
+        [flexGrow]="3"
+      >
+        <ng-template
+          let-column="column"
+          let-sort="sortFn"
+          [draggable]="true"
+          ngx-datatable-header-template
+        >
+          <span class="datatable-header-cell-wrapper">
+            <span
+              class="datatable-header-cell-label draggable"
+              (click)="sort()"
+              [attr.aria-label]="column.name"
+              >{{ column.name }}</span
+            >
+          </span>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [attr.aria-label]="row.name">{{row.name}}</span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        [name]="columns[1].name"
+        [draggable]="true"
+        [prop]="columns[1].name |lowercase"
+        [flexGrow]="3"
+      >
+        <ng-template
+          let-column="column"
+          let-sort="sortFn"
+          ngx-datatable-header-template
+        >
+          <span class="datatable-header-cell-wrapper">
+            <span
+              class="datatable-header-cell-label draggable"
+              (click)="sort()"
+              [attr.aria-label]="column.name"
+              >{{ column.name }}</span
+            >
+          </span>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [attr.aria-label]="row.company">{{row.company}}</span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        [name]="columns[2].name"
+        [prop]="columns[2].name |lowercase"
+        [draggable]="true"
+        [flexGrow]="3"
+      >
+        <ng-template
+          let-column="column"
+          let-sort="sortFn"
+          ngx-datatable-header-template
+        >
+          <span class="datatable-header-cell-wrapper">
+            <span
+              class="datatable-header-cell-label draggable"
+              (click)="sort()"
+              [attr.aria-label]="column.name"
+              >{{ column.name }}</span
+            >
+          </span>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [attr.aria-label]="row.genre">{{row.genre}}</span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column
+        [name]="columns[3].name"
+        [draggable]="true"
+        [prop]="columns[3].name |lowercase"
+        [flexGrow]="3"
+      >
+        <ng-template
+          let-column="column"
+          let-sort="sortFn"
+          ngx-datatable-header-template
+        >
+          <span class="datatable-header-cell-wrapper">
+            <span
+              class="datatable-header-cell-label draggable"
+              (click)="sort()"
+              [attr.aria-label]="column.name"
+              >{{ column.name }}</span
+            >
+          </span>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span>
+            <img [src]="row.image" />
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
     </ngx-datatable>
   </div>
 </ion-content>

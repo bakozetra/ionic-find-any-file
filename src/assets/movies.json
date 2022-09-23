@@ -3,62 +3,16 @@
         {
             "name": "Escape Room",
             "company": "Columbia Pictures",
-            "genre": "Horror"
+            "genre": "Horror",
+            "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwug7XfFRPjYnyJPctcF4r5k-O7LVZK2d4bg&usqp=CAU"
         },
         {
             "name": "Rust Creek",
             "company": "IFC Films",
-            "genre": "Drama"
-        },
-        {
-            "name": "American Hangman",
-            "company": "Hangman Productions",
-            "genre": "Thriller"
-        },
-        {
-            "name": "The Upside",
-            "company": "STX Entertainment",
-            "genre": "Comedy"
-        },
-        {
-            "name": "Replicas",
-            "company": "Entertainment Studios",
-            "genre": "Sci-Fi"
-        },
-        {
-            "name": "After Darkness",
-            "company": "Grindstone Group",
-            "genre": "Drama"
-        },
-        {
-            "name": "Glass",
-            "company": "Universal Pictures",
-            "genre": "Superhero"
-        },
-        {
-            "name": "Close",
-            "company": "Netflix",
-            "genre": "Action"
-        },
-        {
-            "name": "The Final Wish",
-            "company": "BondIt Capital",
-            "genre": "Horror"
-        },
-        {
-            "name": "Serenity",
-            "company": "Aviron Pictures",
-            "genre": "Drama"
-        },
-        {
-            "name": "Miss Bala",
-            "company": "Columbia Pictures",
-            "genre": "Thriller"
-        },
-        {
-            "name": "Velvet Buzzsaw",
-            "company": "Netflix",
-            "genre": "Comedy"
+            "genre": "Drama",
+            "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh20W_FgZr_1_3Jwum1e5NShRMmtZo_ALj-Q&usqp=CAU"
         }
+        
     ]
+
 }
