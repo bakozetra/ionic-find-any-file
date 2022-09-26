@@ -20,6 +20,7 @@ export class Tab2Page implements OnInit {
   public columns: any;
   public tempColumns: any;
   public rows: any;
+
   constructor(private http: HttpClient) {
     this.tempColumns = INITIALCOLUMNS;
     this.columns = [
@@ -33,37 +34,38 @@ export class Tab2Page implements OnInit {
       this.rows = res.movies;
     });
   }
-  ngOnInit(): void {
-    // this.setPersistPresetSearch(INITIALCOLUMNS);
-  }
 
+  ngOnInit(): void {
+    this.tempColumns = this.getDataCoumnChanges();
+    this.columns = this.tempColumns.filter((col) => !col.hidden);
+  }
   setLocalStorageChages(data) {
     return localStorage.setItem('changes', JSON.stringify(data));
   }
+
   getlocatChanges() {
     return localStorage.getItem('changes');
   }
   getDataCoumnChanges(): any {
-    let localJSON = INITIALCOLUMNS;
+    let localJSON = this.tempColumns;
     const localData = this.getlocatChanges();
+    console.log('localData::::::', localData);
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
+
     return localJSON;
   }
 
-  toggleme(e) {
+  toggleme(toggleName) {
     const updateColumns = this.tempColumns.map((columnName) => {
-      if (columnName.name === e) {
+      if (columnName.name === toggleName) {
         columnName.hidden = !columnName.hidden;
       }
       return columnName;
     });
-
-    this.getDataCoumnChanges();
-    this.setLocalStorageChages(updateColumns);
-
     this.columns = updateColumns.filter((col) => !col.hidden);
+    this.setLocalStorageChages(updateColumns);
   }
   onSort(event) {
     console.log(event);
