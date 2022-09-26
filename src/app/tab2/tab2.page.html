@@ -48,13 +48,26 @@
         <ng-template
           let-value="value"
           let-row="row"
+          let-rowIndex="rowIndex"
           ngx-datatable-cell-template
         >
           <div *ngIf="column.name == 'Image'">
             <img [attr.aria-label]="value" [src]="value" />
           </div>
           <div *ngIf="column.name !== 'Image'">
-            <span [attr.aria-label]="value">{{value}}</span>
+            <span
+              (dblclick)="editing[rowIndex + column.name] = true"
+              *ngIf="!editing[rowIndex + column.name]"
+              [attr.aria-label]="value"
+              >{{value}}</span
+            >
+            <input
+              autofocus
+              (blur)="updateValue($event, column.name , rowIndex)"
+              *ngIf="editing[rowIndex + column.name]"
+              type="text"
+              [value]="value"
+            />
           </div>
         </ng-template>
       </ngx-datatable-column>

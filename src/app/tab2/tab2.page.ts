@@ -20,6 +20,7 @@ export class Tab2Page implements OnInit {
   public columns: any;
   public tempColumns: any;
   public rows: any;
+  editing = {};
 
   constructor(private http: HttpClient) {
     this.tempColumns = INITIALCOLUMNS;
@@ -69,5 +70,12 @@ export class Tab2Page implements OnInit {
   }
   onSort(event) {
     console.log(event);
+  }
+  updateValue(event, cell, rowIndex) {
+    console.log('inline editing rowIndex', rowIndex);
+    this.editing[`${rowIndex} + ${cell}`] = false;
+    this.rows[rowIndex][cell] = event.target.value;
+    this.rows = [...this.rows];
+    console.log('UPDATED!', this.rows[rowIndex][cell]);
   }
 }
