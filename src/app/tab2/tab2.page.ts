@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+
 export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false },
-  { name: 'Company', hidden: false },
-  { name: 'Genre', hidden: false },
-  { name: 'Image', hidden: false },
+  { name: 'Name', hidden: false, draggable: false },
+  { name: 'Company', hidden: false, draggable: false },
+  { name: 'Genre', hidden: false, draggable: false },
+  { name: 'Image', hidden: false, draggable: false },
 ];
 @Component({
   selector: 'app-tab2',
@@ -25,32 +26,60 @@ export class Tab2Page implements OnInit {
   constructor(private http: HttpClient) {
     this.tempColumns = INITIALCOLUMNS;
     this.columns = [
-      { name: 'Name', hidden: false },
-      { name: 'Company', hidden: false },
-      { name: 'Genre', hidden: false },
-      { name: 'Image', hidden: false },
+      { name: 'Name', hidden: false, draggable: false },
+      { name: 'Company', hidden: false, draggable: false },
+      { name: 'Genre', hidden: false, draggable: false },
+      { name: 'Image', hidden: false, draggable: false },
     ];
-    this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
-      console.log(res, 'resss');
-      this.rows = res.movies;
-    });
+    // this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
+    //   console.log(res, 'resss');
+    //   this.rows = res.movies;
+    //   // this.test = this.rows;
+    // });
   }
 
   ngOnInit(): void {
     this.tempColumns = this.getDataCoumnChanges();
     this.columns = this.tempColumns.filter((col) => !col.hidden);
-    console.log('this.rows:::::: ngOninit', this.rows);
-  }
-  setLocalStorageChages(data) {
-    return localStorage.setItem('changes', JSON.stringify(data));
+    console.log('test::::::', this.test);
+
+    if (this.getLocalStorageRow() !== null) {
+      console.log('not change');
+      this.rows = JSON.parse(this.getLocalStorageRow());
+    } else {
+      this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
+        console.log(res, 'resss');
+        this.rows = res.movies;
+      });
+    }
   }
 
-  getlocatChanges() {
-    return localStorage.getItem('changes');
+  setLocalStorageChages(data) {
+    return localStorage.setItem('column-data', JSON.stringify(data));
   }
+  setLocalStorageRow(data) {
+    return localStorage.setItem('row-data', JSON.stringify(data));
+  }
+
+  getLocalStorageRow() {
+    return localStorage.getItem('row-data');
+  }
+  getlocatChanges() {
+    return localStorage.getItem('column-data');
+  }
+
   getDataCoumnChanges(): any {
     let localJSON = this.tempColumns;
     const localData = this.getlocatChanges();
+    console.log('localData::::::', localData);
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+  getDataRowChanges(): any {
+    let localJSON = this.tempColumns;
+    const localData = this.getLocalStorageRow();
     console.log('localData::::::', localData);
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
@@ -72,6 +101,10 @@ export class Tab2Page implements OnInit {
   onSort(event) {
     console.log(event);
   }
+  test: any = [];
+  tet2(e) {
+    console.log('e:::::: tet2', e);
+  }
 
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
@@ -80,5 +113,6 @@ export class Tab2Page implements OnInit {
     this.rows = [...this.rows];
     console.log('this.rows::::::', this.rows);
     console.log('UPDATED!', this.rows[rowIndex][cell]);
+    this.setLocalStorageRow(this.rows);
   }
 }

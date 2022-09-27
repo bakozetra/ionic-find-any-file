@@ -35,13 +35,12 @@
         <ng-template
           let-column="column"
           let-sort="sortFn"
-          [draggable]="true"
           ngx-datatable-header-template
         >
           <span class="datatable-header-cell-wrapper">
             <span
               class="datatable-header-cell-label draggable"
-              (click)="sort()"
+              (click)="sort($event)"
               [attr.aria-label]="column.name"
               >{{ column.name }}</span
             >
@@ -53,7 +52,7 @@
           let-rowIndex="rowIndex"
           ngx-datatable-cell-template
         >
-          <div *ngIf="column.name == 'Image'">
+          <div *ngIf="column.name === 'Image'">
             <img [attr.aria-label]="value" [src]="value" />
           </div>
           <div *ngIf="column.name !== 'Image'">
@@ -61,6 +60,7 @@
               (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
+              [draggable]="true"
               >{{value}}</span
             >
             <input
