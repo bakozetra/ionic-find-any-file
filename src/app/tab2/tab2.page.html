@@ -3,13 +3,15 @@
     <ion-title>NGX Data Table</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-item *ngFor="let toogle of tempColumns">
-  <ion-toggle
-    [checked]="toogle.hidden"
-    (ionChange)="toggleme(toogle.name)"
-  ></ion-toggle>
-  <ion-label>{{toogle.name}}</ion-label>
-</ion-item>
+<div [ngStyle]="{ display: 'flex' }">
+  <ion-item *ngFor="let toogle of tempColumns">
+    <ion-toggle
+      [checked]="toogle.hidden"
+      (ionChange)="toggleme(toogle.name)"
+    ></ion-toggle>
+    <ion-label> Hide {{toogle.name}}</ion-label>
+  </ion-item>
+</div>
 
 <ion-content>
   <div class="ion-padding">
@@ -56,15 +58,15 @@
           </div>
           <div *ngIf="column.name !== 'Image'">
             <span
-              (dblclick)="editing[rowIndex + column.name] = true"
-              *ngIf="!editing[rowIndex + column.name]"
+              (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
+              *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
               >{{value}}</span
             >
             <input
               autofocus
-              (blur)="updateValue($event, column.name , rowIndex)"
-              *ngIf="editing[rowIndex + column.name]"
+              (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
+              *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
               type="text"
               [value]="value"
             />

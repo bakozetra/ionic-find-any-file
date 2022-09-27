@@ -39,6 +39,7 @@ export class Tab2Page implements OnInit {
   ngOnInit(): void {
     this.tempColumns = this.getDataCoumnChanges();
     this.columns = this.tempColumns.filter((col) => !col.hidden);
+    console.log('this.rows:::::: ngOninit', this.rows);
   }
   setLocalStorageChages(data) {
     return localStorage.setItem('changes', JSON.stringify(data));
@@ -54,7 +55,6 @@ export class Tab2Page implements OnInit {
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
-
     return localJSON;
   }
 
@@ -68,14 +68,17 @@ export class Tab2Page implements OnInit {
     this.columns = updateColumns.filter((col) => !col.hidden);
     this.setLocalStorageChages(updateColumns);
   }
+
   onSort(event) {
     console.log(event);
   }
+
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
-    this.editing[`${rowIndex} + ${cell}`] = false;
+    this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
+    console.log('this.rows::::::', this.rows);
     console.log('UPDATED!', this.rows[rowIndex][cell]);
   }
 }
