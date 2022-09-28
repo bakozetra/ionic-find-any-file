@@ -3,7 +3,7 @@
     <ion-title>NGX Data Table</ion-title>
   </ion-toolbar>
 </ion-header>
-<div [ngStyle]="{ display: 'flex' }">
+<div [ngStyle]="{flexWrap:'wrap', display: 'flex'}">
   <ion-item *ngFor="let toogle of tempColumns">
     <ion-toggle
       [checked]="toogle.hidden"
@@ -20,6 +20,7 @@
       [limit]="8"
       [rows]="rows"
       [rowHeight]="50"
+      [rowHeight]="'auto'"
       [columns]="columns"
       [columnMode]="'force'"
       [headerHeight]="50"
@@ -42,8 +43,9 @@
               class="datatable-header-cell-label draggable"
               (click)="sort($event)"
               [attr.aria-label]="column.name"
-              >{{ column.name }}</span
             >
+              {{ column.name }}
+            </span>
           </span>
         </ng-template>
         <ng-template
@@ -61,8 +63,9 @@
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
               [draggable]="true"
-              >{{value}}</span
             >
+              {{value}}
+            </span>
             <input
               autofocus
               (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
