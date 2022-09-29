@@ -26,6 +26,8 @@
       [headerHeight]="50"
       [footerHeight]="50"
       (sort)="onSort($event)"
+      [sorts]="this.sortOrder"
+      (reorder)="rearrange($event)"
     >
       <ngx-datatable-column
         [name]="column.name"
@@ -53,6 +55,7 @@
           let-row="row"
           let-rowIndex="rowIndex"
           ngx-datatable-cell-template
+          [draggable]="false"
         >
           <div *ngIf="column.name === 'Image'">
             <img [attr.aria-label]="value" [src]="value" />

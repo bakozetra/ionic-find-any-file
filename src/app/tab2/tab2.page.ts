@@ -5,10 +5,10 @@ export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false, draggable: false },
-  { name: 'Company', hidden: false, draggable: false },
-  { name: 'Genre', hidden: false, draggable: false },
-  { name: 'Image', hidden: false, draggable: false },
+  { name: 'Name', hidden: false },
+  { name: 'Company', hidden: false },
+  { name: 'Genre', hidden: false },
+  { name: 'Image', hidden: false },
 ];
 @Component({
   selector: 'app-tab2',
@@ -21,15 +21,24 @@ export class Tab2Page implements OnInit {
   public columns: any;
   public tempColumns: any;
   public rows: any;
+  public sort: any;
+  sortOrder = [];
+
   editing = {};
 
   constructor(private http: HttpClient) {
     this.tempColumns = INITIALCOLUMNS;
     this.columns = [
-      { name: 'Name', hidden: false, draggable: false },
-      { name: 'Company', hidden: false, draggable: false },
-      { name: 'Genre', hidden: false, draggable: false },
-      { name: 'Image', hidden: false, draggable: false },
+      {
+        name: 'Name',
+        hidden: false,
+        draggable: false,
+        dir: 'desc',
+        sortable: false,
+      },
+      { name: 'Company', hidden: false },
+      { name: 'Genre', hidden: false },
+      { name: 'Image', hidden: false },
     ];
     // this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
     //   console.log(res, 'resss');
@@ -43,8 +52,11 @@ export class Tab2Page implements OnInit {
     this.columns = this.tempColumns.filter((col) => !col.hidden);
     console.log('test::::::', this.test);
 
+    if (this.getLocalStoragSort() !== null) {
+      this.sortOrder = this.getDataRowSort();
+    }
+
     if (this.getLocalStorageRow() !== null) {
-      console.log('not change');
       this.rows = JSON.parse(this.getLocalStorageRow());
     } else {
       this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
@@ -97,13 +109,46 @@ export class Tab2Page implements OnInit {
     this.columns = updateColumns.filter((col) => !col.hidden);
     this.setLocalStorageChages(updateColumns);
   }
+  // test1;
+  setLocalStorageSort(data) {
+    return localStorage.setItem('sorting', JSON.stringify(data));
+  }
+
+  getLocalStoragSort() {
+    return localStorage.getItem('sorting');
+  }
+  getDataRowSort(): any {
+    let localJSON = this.tempColumns;
+    const localData = this.getLocalStoragSort();
+    console.log('localData::::::', localData);
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+  setLocalStorageDag(data) {
+    return localStorage.setItem('drag', JSON.stringify(data));
+  }
+
+  getLocalStoragDrag() {
+    return localStorage.getItem('drag');
+  }
+  getDataRowDrag(): any {
+    let localJSON = this.tempColumns;
+    const localData = this.getLocalStoragDrag();
+    console.log('localData::::::', localData);
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
 
   onSort(event) {
-    console.log(event);
+    this.setLocalStorageSort(event.sorts);
   }
   test: any = [];
-  tet2(e) {
-    console.log('e:::::: tet2', e);
+  rearrange(event) {
+    console.log('event::::::', event);
   }
 
   updateValue(event, cell, rowIndex) {
