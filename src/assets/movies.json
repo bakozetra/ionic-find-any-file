@@ -7,41 +7,29 @@
             "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwug7XfFRPjYnyJPctcF4r5k-O7LVZK2d4bg&usqp=CAU"
         },
         {
-            "name": "big",
+            "name": "big Escape Room",
             "company": "IFC Films",
             "genre": "Drama",
             "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh20W_FgZr_1_3Jwum1e5NShRMmtZo_ALj-Q&usqp=CAU"
         },
         {
-            "name": "center",
+            "name": "center Escape Room",
             "company": "Columbia Pictures",
             "genre": "Horror",
             "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwug7XfFRPjYnyJPctcF4r5k-O7LVZK2d4bg&usqp=CAU"
         },
         {
-            "name": "fanny",
+            "name": "funny Escape Room",
             "company": "IFC Films",
             "genre": "Drama",
             "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh20W_FgZr_1_3Jwum1e5NShRMmtZo_ALj-Q&usqp=CAU"
         },
         {
-            "name": "All you",
-            "company": "Columbia Pictures",
-            "genre": "Horror",
-            "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwug7XfFRPjYnyJPctcF4r5k-O7LVZK2d4bg&usqp=CAU"
-        },
-        {
-            "name": "Can't",
-            "company": "IFC Films",
-            "genre": "Drama",
-            "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh20W_FgZr_1_3Jwum1e5NShRMmtZo_ALj-Q&usqp=CAU"
-        },
-        {
-            "name": "hhh",
+            "name": "All Escape Room",
             "company": "Columbia Pictures",
             "genre": "Horror",
             "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwug7XfFRPjYnyJPctcF4r5k-O7LVZK2d4bg&usqp=CAU"
         }
-        ]
+               ]
 
 }
