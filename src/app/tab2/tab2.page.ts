@@ -56,7 +56,8 @@ export class Tab2Page implements OnInit {
       this.sortOrder = this.getDataRowSort();
     }
     if (this.getLocalStoragDrag !== null) {
-      this.columns = this.getDataRowDrag();
+      // testing the hiding
+      this.columns = this.getDataRowDrag().filter((col) => !col.hidden);
     }
 
     if (this.getLocalStorageRow() !== null) {
@@ -120,6 +121,7 @@ export class Tab2Page implements OnInit {
   getLocalStoragSort() {
     return localStorage.getItem('sorting');
   }
+
   getDataRowSort(): any {
     let localJSON = this.tempColumns;
     const localData = this.getLocalStoragSort();
