@@ -11,10 +11,10 @@ export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false },
-  { name: 'Company', hidden: false },
-  { name: 'Genre', hidden: false },
-  { name: 'Image', hidden: false },
+  { name: 'Name', hidden: false, index: 0 },
+  { name: 'Company', hidden: false, index: 1 },
+  { name: 'Genre', hidden: false, index: 2 },
+  { name: 'Image', hidden: false, index: 3 },
 ];
 @Component({
   selector: 'app-tab2',
@@ -22,7 +22,7 @@ const INITIALCOLUMNS = [
   styleUrls: ['tab2.page.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class Tab2Page implements OnInit, OnChanges {
+export class Tab2Page implements OnInit {
   public data: Data;
   public columns: any;
   public tempColumns: any;
@@ -53,10 +53,6 @@ export class Tab2Page implements OnInit, OnChanges {
     //   // this.test = this.rows;
     // });
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes::::::', changes);
-    // throw new Error('Method not implemented.');
-  }
 
   ngOnInit(): void {
     console.log('test::::::', this.test);
@@ -65,8 +61,6 @@ export class Tab2Page implements OnInit, OnChanges {
       this.sortOrder = this.getDataRowSort();
     }
     if (this.getLocalStoragDrag !== null) {
-      // testing the hiding
-      // console.log('this.columns:::::: up', this.columns);
       this.columns = this.getDataRowDrag();
       console.log('this.columns:::::: down', this.columns);
     }
@@ -86,13 +80,14 @@ export class Tab2Page implements OnInit, OnChanges {
       this.columnVisibility = this.getLocalStorageColumnVisibility();
     }
 
-    this.tempColumns = [...this.columns];
-    this.columns = this.tempColumns.filter((col) => {
-      const colomnName = col.name;
-      const isHidden = this.columnVisibility.find(
-        (visibilityCol) => visibilityCol.name === colomnName
-      ).hidden;
-      return !isHidden;
+    // this.tempColumns = ;
+    this.columns = this.columnVisibility.filter((col) => {
+      return !col.hidden;
+      // const colomnName = col.name;
+      // const isHidden = this.columnVisibility.find(
+      //   (visibilityCol) => visibilityCol.name === colomnName
+      // ).hidden;
+      // return !isHidden;
     });
   }
 
@@ -145,30 +140,37 @@ export class Tab2Page implements OnInit, OnChanges {
       }
       return columnName;
     });
-
+    this.columns = updateColumns.filter((col) => {
+      return !col.hidden;
+      // const colomnName = col.name;
+      // const isHidden = this.columnVisibility.find(
+      //   (visibilityCol) => visibilityCol.name === colomnName
+      // ).hidden;
+      // return !isHidden;
+    });
+    this.setLocalStorageColumnVisibility(updateColumns);
     console.log('toggleName::::::', toggleName);
     console.log('this.columns::::::', this.columns);
-    const updateColumns2 = this.columns.map((column) => {
-      console.log('column:name:::::', column.name);
-      console.log('toggleName::::::', toggleName);
-      const isSame = column.name === toggleName;
-      console.log('column::::before::', column);
-      console.log('isSame::::::', isSame);
-      if (isSame) {
-        console.log('column.hidden::::::', column.hidden.toString());
-        console.log('column.hidden:::typeof:::', typeof column.hidden);
-        const newValue = !column.hidden;
-        console.log('newValue::::::', newValue);
-        column.hidden = newValue;
-      }
-      console.log('column::AFTER::::', column);
-      return column;
-    });
-    console.log('updateColumns2::::::', updateColumns2);
-    this.columns = updateColumns2.filter((col) => !col.hidden);
-    this.setLocalStorageChages(updateColumns2);
+    // const updateColumns2 = this.columns.map((column) => {
+    //   console.log('column:name:::::', column.name);
+    //   console.log('toggleName::::::', toggleName);
+    //   const isSame = column.name === toggleName;
+    //   console.log('column::::before::', column);
+    //   console.log('isSame::::::', isSame);
+    //   if (isSame) {
+    //     console.log('column.hidden::::::', column.hidden.toString());
+    //     console.log('column.hidden:::typeof:::', typeof column.hidden);
+    //     const newValue = !column.hidden;
+    //     console.log('newValue::::::', newValue);
+    //     column.hidden = newValue;
+    //   }
+    //   console.log('column::AFTER::::', column);
+    //   return column;
+    // });
+    // console.log('updateColumns2::::::', updateColumns2);
+    // this.columns = updateColumns2.filter((col) => !col.hidden);
+    // this.setLocalStorageChages(updateColumns2);
     // ;
-    this.setLocalStorageColumnVisibility(updateColumns);
   }
 
   // test1;
