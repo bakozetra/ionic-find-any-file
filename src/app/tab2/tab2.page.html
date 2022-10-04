@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 <div [ngStyle]="{flexWrap:'wrap', display: 'flex'}">
-  <ion-item *ngFor="let toogle of tempColumns">
+  <ion-item *ngFor="let toogle of columnVisibility">
     <ion-toggle
       [checked]="toogle.hidden"
       (ionChange)="toggleme(toogle.name)"
@@ -33,7 +33,8 @@
         [name]="column.name"
         [prop]="column.name |lowercase"
         [flexGrow]="3"
-        *ngFor="let column of columns "
+        *ngFor="let column of columns"
+        [style.color]="'pink'"
       >
         <ng-template
           let-column="column"

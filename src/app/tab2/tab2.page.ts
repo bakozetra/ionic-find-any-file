@@ -1,5 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 
 export interface Data {
   movies: string;
@@ -16,13 +22,14 @@ const INITIALCOLUMNS = [
   styleUrls: ['tab2.page.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class Tab2Page implements OnInit {
+export class Tab2Page implements OnInit, OnChanges {
   public data: Data;
   public columns: any;
   public tempColumns: any;
   public rows: any;
   public sort: any;
   sortOrder = [];
+  public columnVisibility;
 
   editing = {};
 
@@ -46,10 +53,12 @@ export class Tab2Page implements OnInit {
     //   // this.test = this.rows;
     // });
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes::::::', changes);
+    // throw new Error('Method not implemented.');
+  }
 
   ngOnInit(): void {
-    this.tempColumns = this.getDataCoumnChanges();
-    this.columns = this.tempColumns.filter((col) => !col.hidden);
     console.log('test::::::', this.test);
 
     if (this.getLocalStoragSort() !== null) {
@@ -57,7 +66,9 @@ export class Tab2Page implements OnInit {
     }
     if (this.getLocalStoragDrag !== null) {
       // testing the hiding
-      this.columns = this.getDataRowDrag().filter((col) => !col.hidden);
+      // console.log('this.columns:::::: up', this.columns);
+      this.columns = this.getDataRowDrag();
+      console.log('this.columns:::::: down', this.columns);
     }
 
     if (this.getLocalStorageRow() !== null) {
@@ -68,13 +79,37 @@ export class Tab2Page implements OnInit {
         this.rows = res.movies;
       });
     }
+    if (!this.getLocalStorageColumnVisibility()) {
+      this.setLocalStorageColumnVisibility(INITIALCOLUMNS);
+      this.columnVisibility = JSON.parse(JSON.stringify(INITIALCOLUMNS));
+    } else {
+      this.columnVisibility = this.getLocalStorageColumnVisibility();
+    }
+
+    this.tempColumns = [...this.columns];
+    this.columns = this.tempColumns.filter((col) => {
+      const colomnName = col.name;
+      const isHidden = this.columnVisibility.find(
+        (visibilityCol) => visibilityCol.name === colomnName
+      ).hidden;
+      return !isHidden;
+    });
   }
 
   setLocalStorageChages(data) {
+    console.log('data::::::', data);
     return localStorage.setItem('column-data', JSON.stringify(data));
   }
   setLocalStorageRow(data) {
     return localStorage.setItem('row-data', JSON.stringify(data));
+  }
+
+  setLocalStorageColumnVisibility(data) {
+    return localStorage.setItem('column-visibility', JSON.stringify(data));
+  }
+
+  getLocalStorageColumnVisibility() {
+    return JSON.parse(localStorage.getItem('column-visibility'));
   }
 
   getLocalStorageRow() {
@@ -104,15 +139,38 @@ export class Tab2Page implements OnInit {
   }
 
   toggleme(toggleName) {
-    const updateColumns = this.tempColumns.map((columnName) => {
+    const updateColumns = this.columnVisibility.map((columnName) => {
       if (columnName.name === toggleName) {
         columnName.hidden = !columnName.hidden;
       }
       return columnName;
     });
-    this.columns = updateColumns.filter((col) => !col.hidden);
-    this.setLocalStorageChages(updateColumns);
+
+    console.log('toggleName::::::', toggleName);
+    console.log('this.columns::::::', this.columns);
+    const updateColumns2 = this.columns.map((column) => {
+      console.log('column:name:::::', column.name);
+      console.log('toggleName::::::', toggleName);
+      const isSame = column.name === toggleName;
+      console.log('column::::before::', column);
+      console.log('isSame::::::', isSame);
+      if (isSame) {
+        console.log('column.hidden::::::', column.hidden.toString());
+        console.log('column.hidden:::typeof:::', typeof column.hidden);
+        const newValue = !column.hidden;
+        console.log('newValue::::::', newValue);
+        column.hidden = newValue;
+      }
+      console.log('column::AFTER::::', column);
+      return column;
+    });
+    console.log('updateColumns2::::::', updateColumns2);
+    this.columns = updateColumns2.filter((col) => !col.hidden);
+    this.setLocalStorageChages(updateColumns2);
+    // ;
+    this.setLocalStorageColumnVisibility(updateColumns);
   }
+
   // test1;
   setLocalStorageSort(data) {
     return localStorage.setItem('sorting', JSON.stringify(data));
@@ -131,7 +189,7 @@ export class Tab2Page implements OnInit {
     }
     return localJSON;
   }
-  setLocalStorageDag(data) {
+  setLocalStorageDrag(data) {
     return localStorage.setItem('drag', JSON.stringify(data));
   }
 
@@ -153,8 +211,10 @@ export class Tab2Page implements OnInit {
   }
   test: any = [];
   rearrange(event) {
+    console.log('event::::::', event);
     const arr = this.array_move(this.columns, event.prevValue, event.newValue);
-    this.setLocalStorageDag(arr);
+    console.log('arr::::::', arr);
+    this.setLocalStorageDrag(arr);
   }
   array_move(arr, old_index, new_index) {
     if (new_index >= arr.length) {
