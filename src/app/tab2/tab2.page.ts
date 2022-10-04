@@ -81,13 +81,13 @@ export class Tab2Page implements OnInit {
     }
 
     // this.tempColumns = ;
-    this.columns = this.columnVisibility.filter((col) => {
-      return !col.hidden;
-      // const colomnName = col.name;
-      // const isHidden = this.columnVisibility.find(
-      //   (visibilityCol) => visibilityCol.name === colomnName
-      // ).hidden;
-      // return !isHidden;
+    this.columns = this.columns.filter((col) => {
+      // return !col.hidden;
+      const colomnName = col.name;
+      const isHidden = this.columnVisibility.find(
+        (visibilityCol) => visibilityCol.name === colomnName
+      ).hidden;
+      return !isHidden;
     });
   }
 
@@ -141,16 +141,18 @@ export class Tab2Page implements OnInit {
       return columnName;
     });
     this.columns = updateColumns.filter((col) => {
-      return !col.hidden;
-      // const colomnName = col.name;
-      // const isHidden = this.columnVisibility.find(
-      //   (visibilityCol) => visibilityCol.name === colomnName
-      // ).hidden;
-      // return !isHidden;
+      // return !col.hidden;
+      const colomnName = col.name;
+      const isHidden = this.columnVisibility.find(
+        (visibilityCol) => visibilityCol.name === colomnName
+      ).hidden;
+      return !isHidden;
     });
+    console.log('this.columns::::::toggleme', this.columns);
+    console.log('updateColumns::::::', updateColumns);
     this.setLocalStorageColumnVisibility(updateColumns);
-    console.log('toggleName::::::', toggleName);
-    console.log('this.columns::::::', this.columns);
+    // console.log('toggleName::::::', toggleName);
+    // console.log('this.columns::::::', this.columns);
     // const updateColumns2 = this.columns.map((column) => {
     //   console.log('column:name:::::', column.name);
     //   console.log('toggleName::::::', toggleName);
@@ -214,7 +216,12 @@ export class Tab2Page implements OnInit {
   test: any = [];
   rearrange(event) {
     console.log('event::::::', event);
-    const arr = this.array_move(this.columns, event.prevValue, event.newValue);
+    // this.columns === this.columnVisibility
+    const arr = this.array_move(
+      this.columnVisibility,
+      event.prevValue,
+      event.newValue
+    );
     console.log('arr::::::', arr);
     this.setLocalStorageDrag(arr);
   }
