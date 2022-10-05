@@ -11,10 +11,10 @@ export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false, index: 0 },
-  { name: 'Company', hidden: false, index: 1 },
-  { name: 'Genre', hidden: false, index: 2 },
-  { name: 'Image', hidden: false, index: 3 },
+  { name: 'Name', hidden: false, index: 0, width: 50 },
+  { name: 'Company', hidden: false, index: 1, width: 50 },
+  { name: 'Genre', hidden: false, index: 2, width: 50 },
+  { name: 'Image', hidden: false, index: 3, width: 50 },
 ];
 @Component({
   selector: 'app-tab2',
@@ -42,10 +42,11 @@ export class Tab2Page implements OnInit {
         draggable: false,
         dir: 'desc',
         sortable: false,
+        width: 50,
       },
-      { name: 'Company', hidden: false },
-      { name: 'Genre', hidden: false },
-      { name: 'Image', hidden: false },
+      { name: 'Company', hidden: false, width: 50 },
+      { name: 'Genre', hidden: false, width: 50 },
+      { name: 'Image', hidden: false, width: 50 },
     ];
     // this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
     //   console.log(res, 'resss');
@@ -53,6 +54,12 @@ export class Tab2Page implements OnInit {
     //   // this.test = this.rows;
     // });
   }
+  columnWidths = [
+    { column: 'name', width: 50 },
+    { column: 'gender', width: 100 },
+    { column: 'company', width: 150 },
+    { column: 'image', hidden: false },
+  ];
 
   ngOnInit(): void {
     console.log('test::::::', this.test);
@@ -88,6 +95,15 @@ export class Tab2Page implements OnInit {
         (visibilityCol) => visibilityCol.name === colomnName
       ).hidden;
       return !isHidden;
+    });
+
+    this.columns.forEach((col: any) => {
+      const colWidth = this.columnWidths.find(
+        (colWidth) => colWidth.column === col.prop
+      );
+      if (colWidth) {
+        col.width = colWidth.width;
+      }
     });
   }
 
