@@ -5,16 +5,22 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
+import {
+  forceFillColumnWidths,
+  adjustColumnWidths,
+} from '@swimlane/ngx-datatable';
 
 export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false, index: 0, width: 50 },
-  { name: 'Company', hidden: false, index: 1, width: 50 },
-  { name: 'Genre', hidden: false, index: 2, width: 50 },
-  { name: 'Image', hidden: false, index: 3, width: 50 },
+  { name: 'Name', hidden: false, index: 0, width: 200 },
+  { name: 'Company', hidden: false, index: 1, width: 300 },
+  { name: 'Genre', hidden: false, index: 2, width: 300 },
+  { name: 'Image', hidden: false, index: 3, width: 500 },
 ];
 @Component({
   selector: 'app-tab2',
@@ -42,11 +48,10 @@ export class Tab2Page implements OnInit {
         draggable: false,
         dir: 'desc',
         sortable: false,
-        width: 50,
       },
-      { name: 'Company', hidden: false, width: 50 },
-      { name: 'Genre', hidden: false, width: 50 },
-      { name: 'Image', hidden: false, width: 50 },
+      { name: 'Company', hidden: false },
+      { name: 'Genre', hidden: false },
+      { name: 'Image', hidden: false },
     ];
     // this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
     //   console.log(res, 'resss');
@@ -54,16 +59,9 @@ export class Tab2Page implements OnInit {
     //   // this.test = this.rows;
     // });
   }
-  columnWidths = [
-    { column: 'name', width: 50 },
-    { column: 'gender', width: 100 },
-    { column: 'company', width: 150 },
-    { column: 'image', hidden: false },
-  ];
 
   ngOnInit(): void {
     console.log('test::::::', this.test);
-
     if (this.getLocalStoragSort() !== null) {
       this.sortOrder = this.getDataRowSort();
     }
@@ -87,7 +85,7 @@ export class Tab2Page implements OnInit {
       this.columnVisibility = this.getLocalStorageColumnVisibility();
     }
 
-    // this.tempColumns = ;
+    // this.tempColumns =
     this.columns = this.columns.filter((col) => {
       // return !col.hidden;
       const colomnName = col.name;
@@ -96,15 +94,12 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
-
-    this.columns.forEach((col: any) => {
-      const colWidth = this.columnWidths.find(
-        (colWidth) => colWidth.column === col.prop
-      );
-      if (colWidth) {
-        col.width = colWidth.width;
-      }
-    });
+    console.log(window, 'column');
+    window.dispatchEvent(new Event('resize'));
+    console.log(
+      'window.dispatchEvent(new Event(resize));::::::',
+      window.dispatchEvent(new Event('resize'))
+    );
   }
 
   setLocalStorageChages(data) {
@@ -216,6 +211,17 @@ export class Tab2Page implements OnInit {
   getLocalStoragDrag() {
     return localStorage.getItem('drag');
   }
+
+  test(col) {
+    this.columns.map((column) => {
+      console.log('column::::::', column);
+      console.log('col::::::', col);
+      if (column.name === col) {
+        return column.width;
+      }
+    });
+  }
+
   getDataRowDrag(): any {
     let localJSON = this.tempColumns;
     const localData = this.getLocalStoragDrag();
@@ -229,7 +235,7 @@ export class Tab2Page implements OnInit {
   onSort(event) {
     this.setLocalStorageSort(event.sorts);
   }
-  test: any = [];
+  // test: any = [];
   rearrange(event) {
     console.log('event::::::', event);
     // this.columns === this.columnVisibility

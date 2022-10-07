@@ -15,9 +15,10 @@
 
 <ion-content>
   <div class="ion-padding">
+    <!-- <mat-table> -->
     <ngx-datatable
-      class="material"
       [limit]="8"
+      class="material"
       [rows]="rows"
       [rowHeight]="50"
       [rowHeight]="'auto'"
@@ -28,11 +29,13 @@
       (sort)="onSort($event)"
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
+      ngx-resize-watcher
     >
       <ngx-datatable-column
         [name]="column.name"
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
+        [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
       >
         <ng-template
           let-column="column"
@@ -57,7 +60,7 @@
           [draggable]="false"
         >
           <div *ngIf="column.name === 'Image'">
-            <img [attr.aria-label]="value" [src]="value" />
+            <img [attr.aria-label]="value" [src]="value" style="width: 800px" />
           </div>
           <div *ngIf="column.name !== 'Image'">
             <span
@@ -79,5 +82,6 @@
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
+    <!-- </mat-table> -->
   </div>
 </ion-content>

@@ -1,5 +1,41 @@
-// .class1 {
-//     background-color: aqua;
-//     color: red;
-//     width: 0;
+// // .class1 {
+// //     background-color: aqua;
+// //     color: red;
+// //     width: 0;
+// // }
+// .ngx-datatable .datatable-header-cell {
+//     // max-width: 250px;
+//     // width: 220px;
+// }
+// .datatable-body-cell .sort-active {
+//     // max-width: fit-content;
+// }
+
+// img {
+//     max-width: none;
+// }
+
+// // :host ::ng-deep {
+// //     .datatable-row-wrapper {
+// //         width: fit-content;
+
+// //         .datatable-row-detail {
+// //             height: 100% !important;
+// //         }
+// //     }
+// // }
+// .datatable-header-cell-wrapper {
+//     // width: 30;
+//     width: fit-content;
+// }
+.class1 {
+    width: fit-content !important;
+    // background-color: red;
+}
+.class2 {
+    // width: fit-content !important;
+}
+
+// .sort-active {
+//     width: fit-content;
 // }
