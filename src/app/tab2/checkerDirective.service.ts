@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 
-@Directive({ selector: '[ngx-resize-watcher]' })
+@Directive({ selector: '[app-tab2]' })
 export class NgxResizeWatcherDirective implements AfterContentChecked {
   constructor(
     private table: DatatableComponent,
@@ -16,6 +16,7 @@ export class NgxResizeWatcherDirective implements AfterContentChecked {
 
   public ngAfterContentChecked() {
     if (this.table && this.table.element.clientWidth !== this.latestWidth) {
+      console.log('this.table::::::', this.table);
       this.latestWidth = this.table.element.clientWidth;
       console.log('this.latestWidth::::::', this.latestWidth);
       this.table.recalculate();

@@ -20,8 +20,6 @@
       [limit]="8"
       class="material"
       [rows]="rows"
-      [rowHeight]="50"
-      [rowHeight]="'auto'"
       [columns]="columns"
       [columnMode]="'force'"
       [headerHeight]="50"
@@ -29,20 +27,25 @@
       (sort)="onSort($event)"
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
-      ngx-resize-watcher
+      [scrollbarH]="true"
+      (cdkObserveContent)="adjustColumnMinWidth()"
     >
       <ngx-datatable-column
         [name]="column.name"
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
         [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
+        [minWidth]="column.minWidth"
       >
         <ng-template
           let-column="column"
           let-sort="sortFn"
           ngx-datatable-header-template
         >
-          <span class="datatable-header-cell-wrapper">
+          <span
+            class="datatable-header-cell-wrapper"
+            [style]="{flexWrap:'wrap', display: 'flex'}"
+          >
             <span
               class="datatable-header-cell-label draggable"
               (click)="sort($event)"

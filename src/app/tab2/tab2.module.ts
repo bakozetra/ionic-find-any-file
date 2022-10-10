@@ -7,6 +7,7 @@ import { Tab2Page } from './tab2.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { Tab2PageRoutingModule } from './tab2-routing.module';
+import { ObserversModule } from '@angular/cdk/observers';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
     ExploreContainerComponentModule,
     Tab2PageRoutingModule,
     NgxDatatableModule,
+    ObserversModule,
   ],
   declarations: [Tab2Page],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

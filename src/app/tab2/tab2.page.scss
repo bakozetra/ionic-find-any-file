@@ -30,8 +30,9 @@
 // }
 .class1 {
     width: fit-content !important;
-    // background-color: red;
+    height: 100% !important;
 }
+// background-color: red;
 .class2 {
     // width: fit-content !important;
 }
@@ -39,3 +40,6 @@
 // .sort-active {
 //     width: fit-content;
 // }
+.datatable-scroller {
+    width: 100% !important;
+}

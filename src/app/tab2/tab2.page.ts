@@ -6,21 +6,25 @@ import {
   OnChanges,
   SimpleChanges,
   ViewChild,
+  NgZone,
+  ElementRef,
+  AfterContentChecked,
 } from '@angular/core';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import {
   forceFillColumnWidths,
   adjustColumnWidths,
 } from '@swimlane/ngx-datatable';
+import { NgxResizeWatcherDirective } from './checkerDirective.service';
 
 export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false, index: 0, width: 200 },
-  { name: 'Company', hidden: false, index: 1, width: 300 },
-  { name: 'Genre', hidden: false, index: 2, width: 300 },
-  { name: 'Image', hidden: false, index: 3, width: 500 },
+  { name: 'Name', hidden: false, index: 0, width: 200, minWidth: 0 },
+  { name: 'Company', hidden: false, index: 1, width: 300, minWidth: 0 },
+  { name: 'Genre', hidden: false, index: 2, width: 300, minWidth: 0 },
+  { name: 'Image', hidden: false, index: 3, width: 500, minWidth: 0 },
 ];
 @Component({
   selector: 'app-tab2',
@@ -38,8 +42,13 @@ export class Tab2Page implements OnInit {
   public columnVisibility;
 
   editing = {};
+  ngxResizeWatcherDirective;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private _zone: NgZone,
+    private elementRef: ElementRef
+  ) {
     this.tempColumns = INITIALCOLUMNS;
     this.columns = [
       {
@@ -48,17 +57,25 @@ export class Tab2Page implements OnInit {
         draggable: false,
         dir: 'desc',
         sortable: false,
+        minWidth: 0,
       },
-      { name: 'Company', hidden: false },
-      { name: 'Genre', hidden: false },
-      { name: 'Image', hidden: false },
+      { name: 'Company', hidden: false, minWidth: 0 },
+      { name: 'Genre', hidden: false, minWidth: 0 },
+      { name: 'Image', hidden: false, minWidth: 0 },
     ];
+    this.ngxResizeWatcherDirective = NgxResizeWatcherDirective;
+
     // this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
     //   console.log(res, 'resss');
     //   this.rows = res.movies;
     //   // this.test = this.rows;
     // });
   }
+  // ngAfterContentChecked(): void {
+  //   console.log('hellooooooooo');
+  //   // this.ngxResizeWatcherDirective.ngAfterContentChecked;
+  //   // this.ngxResizeWatcherDirective.latestWidth;
+  // }
 
   ngOnInit(): void {
     console.log('test::::::', this.test);
@@ -266,5 +283,25 @@ export class Tab2Page implements OnInit {
     console.log('this.rows::::::', this.rows);
     console.log('UPDATED!', this.rows[rowIndex][cell]);
     this.setLocalStorageRow(this.rows);
+  }
+  adjustColumnMinWidth() {
+    // this._zone.run(() => {
+    const element = this.elementRef.nativeElement as HTMLElement;
+    console.log('element::::::', element);
+    const rows = element.getElementsByTagName('datatable-body-row');
+    console.log('rows::::::', rows);
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName('datatable-body-cell');
+      for (let k = 0; k < cells.length; k++) {
+        const cell = cells[k];
+        const cellSizer = cell.children[0].children[0] as HTMLElement;
+        // console.log('cellSizer::::::', cellSizer);
+        const sizerWidth = cellSizer.getBoundingClientRect().width;
+        console.log('sizerWidth::::::', sizerWidth);
+        if (this.columns[k].minWidth < sizerWidth) {
+          this.columns[k].minWidth = sizerWidth;
+        }
+      }
+    }
   }
 }
