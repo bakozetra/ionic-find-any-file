@@ -83,9 +83,9 @@ export class Tab2Page implements OnInit {
       const rowbreakLine = JSON.parse(this.getLocalStorageRow()).map((row) => {
         console.log('row::::::', row.name);
         const aaa = row.name.replace(new RegExp('\n', 'g'), '<br/>');
-        console.log('aaa::::::', aaa);
+        return aaa;
       });
-      // this.rows = rowbreakLine;
+      console.log('rowbreakLine::::::', rowbreakLine);
       console.log('this.getLocalStorageRow()::::::', this.getLocalStorageRow());
     } else {
       this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
@@ -293,32 +293,27 @@ export class Tab2Page implements OnInit {
         // const cellSizer = cell.children[0].children[0] as HTMLElement;
         const cellSizer = cell.children[0].children[0]
           .children[0] as HTMLElement;
+        console.log('cellSizer::::::', cellSizer.innerText);
+        var text = document.querySelector('.test34').childNodes[0];
+        console.log('text::::::', text);
+        var range = document.createRange();
+        range.selectNode(text);
+        var rect = range.getBoundingClientRect().width;
+        range.detach();
+        console.log('rect::::::', rect);
         const sizerWidth = cellSizer.getBoundingClientRect().width;
-        if (this.columns[k].minWidth < sizerWidth) {
-          this.columns[k].minWidth = sizerWidth;
+        if (this.columns[k].minWidth < rect) {
+          this.columns[k].minWidth = rect;
         }
       }
     }
   }
 
-  ele = document.getElementById('message');
-  // @HostListener('keydown') onMouseEnter(e) {
-  //   console.log('e::::::', e);
-  //   // if (this.timer) clearTimeout(this.timer);
-  //   // if (this.myPopup) {
-  //   //   this.myPopup.remove();
-  //   // }
-  // }
   @HostListener('window:keydown.enter', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     console.log('event::::::', event);
-    // console.log('event::::::srcElement', event.srcElement);
-
     const keyCode = event.which || event.keyCode;
     console.log('keyCode::::::', keyCode);
-    // 13 represents the Enter key
-    // const kk = document.getElementById('recommend');
-    // console.log('kk::::::', kk);
     if (keyCode === 13 && !event.shiftKey) {
     }
   }

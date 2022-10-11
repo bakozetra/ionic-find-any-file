@@ -70,7 +70,8 @@
             />
           </div>
           <div *ngIf="column.name !== 'Image'">
-            <label
+            <div
+              style="white-space: pre"
               (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
               [attr.aria-label]="value"
@@ -78,7 +79,7 @@
               class="test34"
             >
               {{value}}
-            </label>
+            </div>
             <textarea
               autofocus
               (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
