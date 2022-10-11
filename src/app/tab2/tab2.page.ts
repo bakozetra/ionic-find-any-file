@@ -9,6 +9,7 @@ import {
   NgZone,
   ElementRef,
   AfterContentChecked,
+  HostListener,
 } from '@angular/core';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import {
@@ -64,18 +65,7 @@ export class Tab2Page implements OnInit {
       { name: 'Image', hidden: false, minWidth: 0 },
     ];
     this.ngxResizeWatcherDirective = NgxResizeWatcherDirective;
-
-    // this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
-    //   console.log(res, 'resss');
-    //   this.rows = res.movies;
-    //   // this.test = this.rows;
-    // });
   }
-  // ngAfterContentChecked(): void {
-  //   console.log('hellooooooooo');
-  //   // this.ngxResizeWatcherDirective.ngAfterContentChecked;
-  //   // this.ngxResizeWatcherDirective.latestWidth;
-  // }
 
   ngOnInit(): void {
     console.log('test::::::', this.test);
@@ -89,6 +79,14 @@ export class Tab2Page implements OnInit {
 
     if (this.getLocalStorageRow() !== null) {
       this.rows = JSON.parse(this.getLocalStorageRow());
+      console.log('this.rows::::::', this.rows);
+      const rowbreakLine = JSON.parse(this.getLocalStorageRow()).map((row) => {
+        console.log('row::::::', row.name);
+        const aaa = row.name.replace(new RegExp('\n', 'g'), '<br/>');
+        console.log('aaa::::::', aaa);
+      });
+      // this.rows = rowbreakLine;
+      console.log('this.getLocalStorageRow()::::::', this.getLocalStorageRow());
     } else {
       this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
         console.log(res, 'resss');
@@ -106,6 +104,7 @@ export class Tab2Page implements OnInit {
     this.columns = this.columns.filter((col) => {
       // return !col.hidden;
       const colomnName = col.name;
+      console.log('colomnName::::::', colomnName);
       const isHidden = this.columnVisibility.find(
         (visibilityCol) => visibilityCol.name === colomnName
       ).hidden;
@@ -285,23 +284,42 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageRow(this.rows);
   }
   adjustColumnMinWidth() {
-    // this._zone.run(() => {
     const element = this.elementRef.nativeElement as HTMLElement;
-    console.log('element::::::', element);
     const rows = element.getElementsByTagName('datatable-body-row');
-    console.log('rows::::::', rows);
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
         const cell = cells[k];
-        const cellSizer = cell.children[0].children[0] as HTMLElement;
-        // console.log('cellSizer::::::', cellSizer);
+        // const cellSizer = cell.children[0].children[0] as HTMLElement;
+        const cellSizer = cell.children[0].children[0]
+          .children[0] as HTMLElement;
         const sizerWidth = cellSizer.getBoundingClientRect().width;
-        console.log('sizerWidth::::::', sizerWidth);
         if (this.columns[k].minWidth < sizerWidth) {
           this.columns[k].minWidth = sizerWidth;
         }
       }
+    }
+  }
+
+  ele = document.getElementById('message');
+  // @HostListener('keydown') onMouseEnter(e) {
+  //   console.log('e::::::', e);
+  //   // if (this.timer) clearTimeout(this.timer);
+  //   // if (this.myPopup) {
+  //   //   this.myPopup.remove();
+  //   // }
+  // }
+  @HostListener('window:keydown.enter', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    console.log('event::::::', event);
+    // console.log('event::::::srcElement', event.srcElement);
+
+    const keyCode = event.which || event.keyCode;
+    console.log('keyCode::::::', keyCode);
+    // 13 represents the Enter key
+    // const kk = document.getElementById('recommend');
+    // console.log('kk::::::', kk);
+    if (keyCode === 13 && !event.shiftKey) {
     }
   }
 }

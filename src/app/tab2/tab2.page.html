@@ -15,20 +15,20 @@
 
 <ion-content>
   <div class="ion-padding">
-    <!-- <mat-table> -->
     <ngx-datatable
-      [limit]="8"
       class="material"
+      [limit]="8"
       [rows]="rows"
       [columns]="columns"
       [columnMode]="'force'"
       [headerHeight]="50"
       [footerHeight]="50"
+      [rowHeight]="200"
       (sort)="onSort($event)"
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
-      [scrollbarH]="true"
       (cdkObserveContent)="adjustColumnMinWidth()"
+      [scrollbarH]="true"
     >
       <ngx-datatable-column
         [name]="column.name"
@@ -63,28 +63,33 @@
           [draggable]="false"
         >
           <div *ngIf="column.name === 'Image'">
-            <img [attr.aria-label]="value" [src]="value" style="width: 800px" />
+            <img
+              [attr.aria-label]="value"
+              [src]="value"
+              style="width: 400px; height: 200px"
+            />
           </div>
           <div *ngIf="column.name !== 'Image'">
-            <span
+            <label
               (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
-              *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
+              *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
               [attr.aria-label]="value"
               [draggable]="true"
+              class="test34"
             >
               {{value}}
-            </span>
-            <input
+            </label>
+            <textarea
               autofocus
               (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
               *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
               type="text"
               [value]="value"
-            />
+            >
+            </textarea>
           </div>
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
-    <!-- </mat-table> -->
   </div>
 </ion-content>

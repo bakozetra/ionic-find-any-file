@@ -37,9 +37,11 @@
     // width: fit-content !important;
 }
 
-// .sort-active {
-//     width: fit-content;
-// }
-.datatable-scroller {
-    width: 100% !important;
+.test34 {
+    // white-space: pre-line;
+    // white-space: normal;
+    span::after {
+        content: "\n";
+        white-space: pre;
+    }
 }
