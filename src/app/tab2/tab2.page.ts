@@ -22,10 +22,10 @@ export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false, index: 0, width: 200, minWidth: 0 },
-  { name: 'Company', hidden: false, index: 1, width: 300, minWidth: 0 },
-  { name: 'Genre', hidden: false, index: 2, width: 300, minWidth: 0 },
-  { name: 'Image', hidden: false, index: 3, width: 500, minWidth: 0 },
+  { name: 'Name', hidden: false, index: 0, width: 0, minWidth: 0 },
+  { name: 'Company', hidden: false, index: 1, width: 0, minWidth: 0 },
+  { name: 'Genre', hidden: false, index: 2, width: 0, minWidth: 0 },
+  { name: 'Image', hidden: false, index: 3, width: 0, minWidth: 0 },
 ];
 @Component({
   selector: 'app-tab2',
@@ -290,21 +290,31 @@ export class Tab2Page implements OnInit {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
         const cell = cells[k];
-        // const cellSizer = cell.children[0].children[0] as HTMLElement;
-        const cellSizer = cell.children[0].children[0]
-          .children[0] as HTMLElement;
-        console.log('cellSizer::::::', cellSizer.innerText);
+        const cellSizer = cell.children[0].children[0].children[0] as Node;
         var text = document.querySelector('.test34').childNodes[0];
         console.log('text::::::', text);
         var range = document.createRange();
-        range.selectNode(text);
+        range.selectNode(cellSizer);
         var rect = range.getBoundingClientRect().width;
         range.detach();
-        console.log('rect::::::', rect);
-        const sizerWidth = cellSizer.getBoundingClientRect().width;
+
+        console.log(
+          'this.columns[k].minWidth::::::',
+          this.columns[k].minWidth,
+          'rect::::::',
+          rect,
+          this.columns[k].minWidth < rect
+        );
         if (this.columns[k].minWidth < rect) {
           this.columns[k].minWidth = rect;
         }
+        // if (this.columns[k].minWidth > rect) {
+        //   this.columns[k].minWidth = rect;
+        // }
+        //   if (Math.round(this.columns[k].minWidth) !== Math.round(rect)) {
+        //   this.columns[k].minWidth = rect;
+        //   this.columns[k].width = rect;
+        // }
       }
     }
   }
