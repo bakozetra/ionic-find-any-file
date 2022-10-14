@@ -8,7 +8,6 @@ import {
   ViewChild,
   NgZone,
   ElementRef,
-  AfterContentChecked,
   HostListener,
 } from '@angular/core';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
@@ -22,10 +21,10 @@ export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false, index: 0, width: 0, minWidth: 0 },
-  { name: 'Company', hidden: false, index: 1, width: 0, minWidth: 0 },
-  { name: 'Genre', hidden: false, index: 2, width: 0, minWidth: 0 },
-  { name: 'Image', hidden: false, index: 3, width: 0, minWidth: 0 },
+  { name: 'Name', hidden: false, minWidth: 0 },
+  { name: 'Company', hidden: false, minWidth: 0 },
+  { name: 'Genre', hidden: false, minWidth: 0 },
+  { name: 'Image', hidden: false, minWidth: 0 },
 ];
 @Component({
   selector: 'app-tab2',
@@ -55,9 +54,6 @@ export class Tab2Page implements OnInit {
       {
         name: 'Name',
         hidden: false,
-        draggable: false,
-        dir: 'desc',
-        sortable: false,
         minWidth: 0,
       },
       { name: 'Company', hidden: false, minWidth: 0 },
@@ -79,14 +75,7 @@ export class Tab2Page implements OnInit {
 
     if (this.getLocalStorageRow() !== null) {
       this.rows = JSON.parse(this.getLocalStorageRow());
-      console.log('this.rows::::::', this.rows);
-      const rowbreakLine = JSON.parse(this.getLocalStorageRow()).map((row) => {
-        console.log('row::::::', row.name);
-        const aaa = row.name.replace(new RegExp('\n', 'g'), '<br/>');
-        return aaa;
-      });
-      console.log('rowbreakLine::::::', rowbreakLine);
-      console.log('this.getLocalStorageRow()::::::', this.getLocalStorageRow());
+      // console.log('this.rows::::::', this.rows);
     } else {
       this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
         console.log(res, 'resss');
@@ -102,7 +91,6 @@ export class Tab2Page implements OnInit {
 
     // this.tempColumns =
     this.columns = this.columns.filter((col) => {
-      // return !col.hidden;
       const colomnName = col.name;
       console.log('colomnName::::::', colomnName);
       const isHidden = this.columnVisibility.find(
@@ -110,12 +98,6 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
-    console.log(window, 'column');
-    window.dispatchEvent(new Event('resize'));
-    console.log(
-      'window.dispatchEvent(new Event(resize));::::::',
-      window.dispatchEvent(new Event('resize'))
-    );
   }
 
   setLocalStorageChages(data) {
@@ -221,6 +203,7 @@ export class Tab2Page implements OnInit {
     return localJSON;
   }
   setLocalStorageDrag(data) {
+    console.log('data::::::setLocalStorageDrag', data);
     return localStorage.setItem('drag', JSON.stringify(data));
   }
 
@@ -286,36 +269,34 @@ export class Tab2Page implements OnInit {
   adjustColumnMinWidth() {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
+    console.log('rows::::::adjustColumnMinWidth', rows);
+    let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
         const cell = cells[k];
-        const cellSizer = cell.children[0].children[0].children[0] as Node;
-        var text = document.querySelector('.test34').childNodes[0];
-        console.log('text::::::', text);
+        const cellSizer = cell.children[0].children[0].children[0];
         var range = document.createRange();
+        console.log('range::::::', range);
         range.selectNode(cellSizer);
-        var rect = range.getBoundingClientRect().width;
-        range.detach();
-
         console.log(
-          'this.columns[k].minWidth::::::',
-          this.columns[k].minWidth,
-          'rect::::::',
-          rect,
-          this.columns[k].minWidth < rect
+          'range.selectNode(cellSizer)::::::',
+          range.selectNode(cellSizer)
         );
-        if (this.columns[k].minWidth < rect) {
-          this.columns[k].minWidth = rect;
+        var rect = range.getBoundingClientRect().width;
+        console.log('rect::::::', rect);
+        range.detach();
+        if (!(k in columnsWidth)) {
+          columnsWidth = { ...columnsWidth, [k]: 0 };
         }
-        // if (this.columns[k].minWidth > rect) {
-        //   this.columns[k].minWidth = rect;
-        // }
-        //   if (Math.round(this.columns[k].minWidth) !== Math.round(rect)) {
-        //   this.columns[k].minWidth = rect;
-        //   this.columns[k].width = rect;
-        // }
+        const currentColunWidth = columnsWidth[k];
+        const newColumnWidth = Math.max(currentColunWidth, rect);
+        columnsWidth[k] = newColumnWidth;
+        this.columns[k].minWidth = newColumnWidth;
       }
+      // Should add condition to check if the width of the column is big
+      // How to change the width of the Data.
+      //
     }
   }
 

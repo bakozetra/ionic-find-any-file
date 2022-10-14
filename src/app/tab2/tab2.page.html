@@ -60,10 +60,10 @@
           let-row="row"
           let-rowIndex="rowIndex"
           ngx-datatable-cell-template
-          [draggable]="false"
+          [draggable]="true"
         >
           <div *ngIf="column.name === 'Image'">
-            <img [attr.aria-label]="value" [src]="value" />
+            <img [attr.aria-label]="value" [src]="value" style="width: 100%" />
           </div>
           <div *ngIf="column.name !== 'Image'">
             <div
@@ -72,7 +72,6 @@
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
               [attr.aria-label]="value"
               [draggable]="true"
-              class="test34"
             >
               {{value}}
             </div>
@@ -82,6 +81,7 @@
               *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
               type="text"
               [value]="value"
+              [ngStyle]="{width:'100%', minHeight:'200px'}"
             >
             </textarea>
           </div>
