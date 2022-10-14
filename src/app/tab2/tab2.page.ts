@@ -51,11 +51,7 @@ export class Tab2Page implements OnInit {
   ) {
     this.tempColumns = INITIALCOLUMNS;
     this.columns = [
-      {
-        name: 'Name',
-        hidden: false,
-        minWidth: 0,
-      },
+      { name: 'Name', hidden: false, minWidth: 0 },
       { name: 'Company', hidden: false, minWidth: 0 },
       { name: 'Genre', hidden: false, minWidth: 0 },
       { name: 'Image', hidden: false, minWidth: 0 },
@@ -64,18 +60,15 @@ export class Tab2Page implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('test::::::', this.test);
     if (this.getLocalStoragSort() !== null) {
       this.sortOrder = this.getDataRowSort();
     }
     if (this.getLocalStoragDrag !== null) {
       this.columns = this.getDataRowDrag();
-      console.log('this.columns:::::: down', this.columns);
     }
 
     if (this.getLocalStorageRow() !== null) {
       this.rows = JSON.parse(this.getLocalStorageRow());
-      // console.log('this.rows::::::', this.rows);
     } else {
       this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
         console.log(res, 'resss');
@@ -89,10 +82,8 @@ export class Tab2Page implements OnInit {
       this.columnVisibility = this.getLocalStorageColumnVisibility();
     }
 
-    // this.tempColumns =
     this.columns = this.columns.filter((col) => {
       const colomnName = col.name;
-      console.log('colomnName::::::', colomnName);
       const isHidden = this.columnVisibility.find(
         (visibilityCol) => visibilityCol.name === colomnName
       ).hidden;
@@ -150,38 +141,14 @@ export class Tab2Page implements OnInit {
       return columnName;
     });
     this.columns = updateColumns.filter((col) => {
-      // return !col.hidden;
       const colomnName = col.name;
       const isHidden = this.columnVisibility.find(
         (visibilityCol) => visibilityCol.name === colomnName
       ).hidden;
       return !isHidden;
     });
-    console.log('this.columns::::::toggleme', this.columns);
-    console.log('updateColumns::::::', updateColumns);
+
     this.setLocalStorageColumnVisibility(updateColumns);
-    // console.log('toggleName::::::', toggleName);
-    // console.log('this.columns::::::', this.columns);
-    // const updateColumns2 = this.columns.map((column) => {
-    //   console.log('column:name:::::', column.name);
-    //   console.log('toggleName::::::', toggleName);
-    //   const isSame = column.name === toggleName;
-    //   console.log('column::::before::', column);
-    //   console.log('isSame::::::', isSame);
-    //   if (isSame) {
-    //     console.log('column.hidden::::::', column.hidden.toString());
-    //     console.log('column.hidden:::typeof:::', typeof column.hidden);
-    //     const newValue = !column.hidden;
-    //     console.log('newValue::::::', newValue);
-    //     column.hidden = newValue;
-    //   }
-    //   console.log('column::AFTER::::', column);
-    //   return column;
-    // });
-    // console.log('updateColumns2::::::', updateColumns2);
-    // this.columns = updateColumns2.filter((col) => !col.hidden);
-    // this.setLocalStorageChages(updateColumns2);
-    // ;
   }
 
   // test1;
@@ -211,16 +178,6 @@ export class Tab2Page implements OnInit {
     return localStorage.getItem('drag');
   }
 
-  test(col) {
-    this.columns.map((column) => {
-      console.log('column::::::', column);
-      console.log('col::::::', col);
-      if (column.name === col) {
-        return column.width;
-      }
-    });
-  }
-
   getDataRowDrag(): any {
     let localJSON = this.tempColumns;
     const localData = this.getLocalStoragDrag();
@@ -234,26 +191,27 @@ export class Tab2Page implements OnInit {
   onSort(event) {
     this.setLocalStorageSort(event.sorts);
   }
-  // test: any = [];
   rearrange(event) {
     console.log('event::::::', event);
     // this.columns === this.columnVisibility
-    const arr = this.array_move(
-      this.columnVisibility,
-      event.prevValue,
-      event.newValue
-    );
+    const arr = this.array_move(this.columns, event.prevValue, event.newValue);
+    console.log('event.prevValue::::::', event.prevValue);
+    console.log('event.newValue::::::', event.newValue);
     console.log('arr::::::', arr);
     this.setLocalStorageDrag(arr);
   }
   array_move(arr, old_index, new_index) {
+    console.log('(new_index >= arr.length::::::', new_index >= arr.length);
     if (new_index >= arr.length) {
+      console.log('new_index::::::', new_index);
       var k = new_index - arr.length + 1;
+      console.log('k::::::', k);
       while (k--) {
         arr.push(undefined);
       }
     }
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+
     return arr;
   }
 
@@ -266,10 +224,11 @@ export class Tab2Page implements OnInit {
     console.log('UPDATED!', this.rows[rowIndex][cell]);
     this.setLocalStorageRow(this.rows);
   }
+
   adjustColumnMinWidth() {
     const element = this.elementRef.nativeElement as HTMLElement;
+    const columns = element.getElementsByTagName('datatable-header-cell');
     const rows = element.getElementsByTagName('datatable-body-row');
-    console.log('rows::::::adjustColumnMinWidth', rows);
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
@@ -277,14 +236,8 @@ export class Tab2Page implements OnInit {
         const cell = cells[k];
         const cellSizer = cell.children[0].children[0].children[0];
         var range = document.createRange();
-        console.log('range::::::', range);
         range.selectNode(cellSizer);
-        console.log(
-          'range.selectNode(cellSizer)::::::',
-          range.selectNode(cellSizer)
-        );
         var rect = range.getBoundingClientRect().width;
-        console.log('rect::::::', rect);
         range.detach();
         if (!(k in columnsWidth)) {
           columnsWidth = { ...columnsWidth, [k]: 0 };
@@ -294,9 +247,6 @@ export class Tab2Page implements OnInit {
         columnsWidth[k] = newColumnWidth;
         this.columns[k].minWidth = newColumnWidth;
       }
-      // Should add condition to check if the width of the column is big
-      // How to change the width of the Data.
-      //
     }
   }
 

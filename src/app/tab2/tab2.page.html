@@ -14,9 +14,9 @@
 </div>
 
 <ion-content>
-  <div class="ion-padding">
+  <div class="ion-padding" style="width: 100%">
     <ngx-datatable
-      class="bootstrap expandable virtualized"
+      class="material"
       [limit]="8"
       [rows]="rows"
       [columns]="columns"
@@ -38,6 +38,7 @@
         [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
         [minWidth]="column.minWidth"
         [canAutoResize]="true"
+        [flexGrow]="0"
         id="class3"
       >
         <ng-template
