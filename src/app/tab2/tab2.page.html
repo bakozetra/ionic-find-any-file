@@ -29,7 +29,6 @@
       (reorder)="rearrange($event)"
       (cdkObserveContent)="adjustColumnMinWidth()"
       [scrollbarH]="true"
-      id="datatablele"
     >
       <ngx-datatable-column
         [name]="column.name"
@@ -82,7 +81,7 @@
               *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
               type="text"
               [value]="value"
-              [ngStyle]="{width:'100%', minHeight:'200px'}"
+              [ngStyle]="{width:'100%', minHeight:'auto'}"
             >
             </textarea>
           </div>

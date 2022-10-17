@@ -65,6 +65,7 @@ export class Tab2Page implements OnInit {
     }
     if (this.getLocalStoragDrag !== null) {
       this.columns = this.getDataRowDrag();
+      console.log('this.columns::::::this.columns', this.columns);
     }
 
     if (this.getLocalStorageRow() !== null) {
@@ -140,6 +141,7 @@ export class Tab2Page implements OnInit {
       }
       return columnName;
     });
+    console.log('updateColumns::::::toggleme', updateColumns);
     this.columns = updateColumns.filter((col) => {
       const colomnName = col.name;
       const isHidden = this.columnVisibility.find(
@@ -149,6 +151,7 @@ export class Tab2Page implements OnInit {
     });
 
     this.setLocalStorageColumnVisibility(updateColumns);
+    this.setLocalStorageDrag(updateColumns);
   }
 
   // test1;
@@ -193,15 +196,10 @@ export class Tab2Page implements OnInit {
   }
   rearrange(event) {
     console.log('event::::::', event);
-    // this.columns === this.columnVisibility
     const arr = this.array_move(this.columns, event.prevValue, event.newValue);
-    console.log('event.prevValue::::::', event.prevValue);
-    console.log('event.newValue::::::', event.newValue);
-    console.log('arr::::::', arr);
     this.setLocalStorageDrag(arr);
   }
   array_move(arr, old_index, new_index) {
-    console.log('(new_index >= arr.length::::::', new_index >= arr.length);
     if (new_index >= arr.length) {
       console.log('new_index::::::', new_index);
       var k = new_index - arr.length + 1;
@@ -210,6 +208,7 @@ export class Tab2Page implements OnInit {
         arr.push(undefined);
       }
     }
+    console.log('arr::::::arr', arr);
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
 
     return arr;
@@ -220,14 +219,11 @@ export class Tab2Page implements OnInit {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
-    console.log('this.rows::::::', this.rows);
-    console.log('UPDATED!', this.rows[rowIndex][cell]);
     this.setLocalStorageRow(this.rows);
   }
 
   adjustColumnMinWidth() {
     const element = this.elementRef.nativeElement as HTMLElement;
-    const columns = element.getElementsByTagName('datatable-header-cell');
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
