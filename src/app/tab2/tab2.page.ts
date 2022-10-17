@@ -159,6 +159,20 @@ export class Tab2Page implements OnInit {
     return localStorage.setItem('sorting', JSON.stringify(data));
   }
 
+  resize(e) {
+    console.log('e::::::resize', e);
+    console.log(e.column, 'hhhhhh');
+    e.column.minWidth = 1;
+    const element = this.elementRef.nativeElement as HTMLElement;
+    const columns = element.getElementsByClassName('datatable-header-cell');
+    console.log('test::::::', columns);
+    for (let i = 0; i < columns.length; i++) {
+      console.log('i::::::', i);
+      const cells = columns[i].getElementsByTagName('datatable-header-cell');
+      console.log('cells::::::resize', cells);
+    }
+  }
+
   getLocalStoragSort() {
     return localStorage.getItem('sorting');
   }
@@ -226,6 +240,7 @@ export class Tab2Page implements OnInit {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
+    console.log('rows::::::adjustColumnMinWidth', rows);
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {

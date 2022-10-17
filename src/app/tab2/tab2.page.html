@@ -29,6 +29,7 @@
       (reorder)="rearrange($event)"
       (cdkObserveContent)="adjustColumnMinWidth()"
       [scrollbarH]="true"
+      (resize)="resize($event)"
     >
       <ngx-datatable-column
         [name]="column.name"

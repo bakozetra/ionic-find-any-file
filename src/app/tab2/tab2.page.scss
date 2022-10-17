@@ -55,4 +55,13 @@
 }
 // .class3 {
 //     width: auto;
+// // }
+// .datatable-body-row,
+// .datatable-scroll {
+//     max-width: 100%;
+//     min-width: 100%;
 // }
+
+.datatable-scroll {
+    display: inherit !important;
+}
