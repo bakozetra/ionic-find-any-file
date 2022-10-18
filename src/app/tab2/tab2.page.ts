@@ -162,14 +162,40 @@ export class Tab2Page implements OnInit {
   resize(e) {
     console.log('e::::::resize', e);
     console.log(e.column, 'hhhhhh');
-    e.column.minWidth = 1;
+    // e.column.minWidth = 1;
+
     const element = this.elementRef.nativeElement as HTMLElement;
-    const columns = element.getElementsByClassName('datatable-header-cell');
+    console.log('element::::::', element);
+
+    const columns = element.getElementsByClassName('datatable-header');
+    const rows = element.getElementsByClassName('datatable-body-row');
     console.log('test::::::', columns);
-    for (let i = 0; i < columns.length; i++) {
-      console.log('i::::::', i);
+    console.log('rows::::::', rows);
+    let columnsWidth = {};
+    for (let i = 0; i < columns.length && rows.length; i++) {
       const cells = columns[i].getElementsByTagName('datatable-header-cell');
+      const cellsRows = rows[i].getElementsByClassName('datatable-body-cell');
       console.log('cells::::::resize', cells);
+      for (let k = 0; k < cells.length && cellsRows.length; k++) {
+        const cell = cells[k];
+        const cellRow = cellsRows[k];
+        console.log('cellRow::::::', cellRow);
+        const cellSizer = cell.children[0].children[0].children[0];
+        // const cellSizeRows =
+        console.log('cellSizer::::::', cellSizer);
+        var range = document.createRange();
+        range.selectNode(cellSizer);
+        var rect = range.getBoundingClientRect().width;
+        range.detach();
+        if (!(k in columnsWidth)) {
+          columnsWidth = { ...columnsWidth, [k]: 0 };
+        }
+
+        const currentColunWidth = columnsWidth[k];
+        const newColumnWidth = Math.max(currentColunWidth, rect);
+        columnsWidth[k] = newColumnWidth;
+        this.columns[k].minWidth = newColumnWidth;
+      }
     }
   }
 
@@ -240,12 +266,12 @@ export class Tab2Page implements OnInit {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
-    console.log('rows::::::adjustColumnMinWidth', rows);
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
         const cell = cells[k];
         const cellSizer = cell.children[0].children[0].children[0];
+        // console.log('cellSizer::::::adjustColumnMinWidth', cellSizer);
         var range = document.createRange();
         range.selectNode(cellSizer);
         var rect = range.getBoundingClientRect().width;

@@ -27,9 +27,9 @@
       (sort)="onSort($event)"
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
+      (resize)="resize($event)"
       (cdkObserveContent)="adjustColumnMinWidth()"
       [scrollbarH]="true"
-      (resize)="resize($event)"
     >
       <ngx-datatable-column
         [name]="column.name"
@@ -37,6 +37,7 @@
         *ngFor="let column of columns"
         [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
         [minWidth]="column.minWidth"
+        [width]="0"
         [canAutoResize]="true"
         [flexGrow]="0"
         id="class3"
