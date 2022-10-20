@@ -9,6 +9,8 @@ import {
   NgZone,
   ElementRef,
   HostListener,
+  OnDestroy,
+  AfterViewChecked,
 } from '@angular/core';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import {
@@ -40,6 +42,7 @@ export class Tab2Page implements OnInit {
   public sort: any;
   sortOrder = [];
   public columnVisibility;
+  public ignoreFitContent = new Set([]);
 
   editing = {};
   ngxResizeWatcherDirective;
@@ -154,54 +157,25 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageDrag(updateColumns);
   }
 
-  // test1;
   setLocalStorageSort(data) {
     return localStorage.setItem('sorting', JSON.stringify(data));
   }
 
   resize(e) {
-    console.log('e::::::resize', e);
-
-    // e.column.minWidth = 1;
-    console.log('e.column.name === Company::::::', e.column.name === 'Company');
-    if (e.column.name === 'Company') {
-      console.log(e.column, 'hhhhhh');
-      this.columnSize = 0;
+    if (e.column.name) {
+      this.ignoreFitContent.add(e.column.name);
     }
-
-    // const element = this.elementRef.nativeElement as HTMLElement;
-    // console.log('element::::::', element);
-
-    // const columns = element.getElementsByClassName('datatable-header');
-    // const rows = element.getElementsByClassName('datatable-body-row');
-    // console.log('test::::::', columns);
-    // console.log('rows::::::', rows);
-    // let columnsWidth = {};
-    // for (let i = 0; i < columns.length && rows.length; i++) {
-    //   const cells = columns[i].getElementsByTagName('datatable-header-cell');
-    //   const cellsRows = rows[i].getElementsByClassName('datatable-body-cell');
-    //   console.log('cells::::::resize', cells);
-    //   for (let k = 0; k < cells.length && cellsRows.length; k++) {
-    //     const cell = cells[k];
-    //     const cellRow = cellsRows[k];
-    //     console.log('cellRow::::::', cellRow);
-    //     const cellSizer = cell.children[0].children[0].children[0];
-    //     // const cellSizeRows =
-    //     console.log('cellSizer::::::', cellSizer);
-    //     var range = document.createRange();
-    //     range.selectNode(cellSizer);
-    //     var rect = range.getBoundingClientRect().width;
-    //     range.detach();
-    //     if (!(k in columnsWidth)) {
-    //       columnsWidth = { ...columnsWidth, [k]: 0 };
-    //     }
-
-    //     const currentColunWidth = columnsWidth[k];
-    //     const newColumnWidth = Math.max(currentColunWidth, rect);
-    //     columnsWidth[k] = newColumnWidth;
-    //     this.columns[k].minWidth = newColumnWidth;
-    //   }
-    // }
+    this.ignoreFitContent.forEach((value) => {
+      console.log('value::::::', value);
+    });
+    const resizedCol = this.columns.find((c) => {
+      return c.name === e.column.name;
+    });
+    console.log('resizedCol::::::', resizedCol);
+    resizedCol.minWidth = 0;
+    console.log('this.columns::::::', this.columns);
+    // console.log('this.ignoreFitContent::::::', this.ignoreFitContent);
+    console.log('e::::::resize', e);
   }
 
   getLocalStoragSort() {
@@ -268,14 +242,28 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageRow(this.rows);
   }
 
-  columnSize;
-  adjustColumnMinWidth() {
+  adjustColumnMinWidth(e?) {
+    console.log('e::::::', e);
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
+        console.log(
+          'this.ignoreFitContent::::::',
+          this.columns[k].name,
+          this.ignoreFitContent.has(this.columns[k].name)
+        );
+
+        this.ignoreFitContent.forEach((value) => {
+          console.log('forEach adjustColumnMinWidth value::::::', value);
+        });
+
+        if (this.ignoreFitContent.has(this.columns[k].name)) {
+          return;
+        }
+
         const cell = cells[k];
         const cellSizer = cell.children[0].children[0].children[0];
         var range = document.createRange();
@@ -288,28 +276,14 @@ export class Tab2Page implements OnInit {
         const currentColunWidth = columnsWidth[k];
         const newColumnWidth = Math.max(currentColunWidth, rect);
         columnsWidth[k] = newColumnWidth;
-        this.columnSize = newColumnWidth;
-        this.columns[k].minWidth = this.columnSize;
-
-        const dattableRow = document.querySelector(
-          '.datatable-row-center'
-        ) as HTMLElement | null;
-        const AlldattableColumn = dattableRow.querySelectorAll(
-          '.datatable-header-cell'
-        ) as unknown as HTMLElement | null;
-        // console.log('aaa::::::', aaa[0]);
-        if (dattableRow != null) {
-          // box.style.backgroundColor = 'salmon';
-          // console.log(
-          //   'aaa[0].style.minWidth::::::',
-          //   dattableRow[0].style.minWidth
-          // );
-          AlldattableColumn[0].style.minWidth = 'fit-content';
-          AlldattableColumn[1].style.minWidth = 'fit-content';
-          AlldattableColumn[2].style.minWidth = 'fit-content';
-          AlldattableColumn[3].style.minWidth = 'fit-content';
-          // aaa.style.width = 'fit-content';
-        }
+        this.columns[k].minWidth = newColumnWidth;
+        console.log('this.columns[k]::::::', this.columns[k]);
+        // const columnName = this.columns.map((column) => column.name);
+        // console.log('columnName[0]::::::', columnName[0]);
+        // console.log(
+        //   '(e?.column?.name === columnName[k]::::::',
+        //   e?.column?.name === columnName[k]
+        // );
       }
     }
   }
