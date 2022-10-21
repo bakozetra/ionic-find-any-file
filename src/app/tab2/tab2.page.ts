@@ -174,7 +174,6 @@ export class Tab2Page implements OnInit {
     console.log('resizedCol::::::', resizedCol);
     resizedCol.minWidth = 0;
     console.log('this.columns::::::', this.columns);
-    // console.log('this.ignoreFitContent::::::', this.ignoreFitContent);
     console.log('e::::::resize', e);
   }
 
@@ -228,11 +227,14 @@ export class Tab2Page implements OnInit {
         arr.push(undefined);
       }
     }
-    console.log('arr::::::arr', arr);
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
 
     return arr;
   }
+
+  //   @HostListener('click', ['$event']) onPress(event) {
+  //     console.log('User Clicked on Window...' + event.target.tagName);
+  //   }
 
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
@@ -242,20 +244,13 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageRow(this.rows);
   }
 
-  adjustColumnMinWidth(e?) {
-    console.log('e::::::', e);
+  adjustColumnMinWidth() {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
-        console.log(
-          'this.ignoreFitContent::::::',
-          this.columns[k].name,
-          this.ignoreFitContent.has(this.columns[k].name)
-        );
-
         this.ignoreFitContent.forEach((value) => {
           console.log('forEach adjustColumnMinWidth value::::::', value);
         });
@@ -277,23 +272,38 @@ export class Tab2Page implements OnInit {
         const newColumnWidth = Math.max(currentColunWidth, rect);
         columnsWidth[k] = newColumnWidth;
         this.columns[k].minWidth = newColumnWidth;
-        console.log('this.columns[k]::::::', this.columns[k]);
-        // const columnName = this.columns.map((column) => column.name);
-        // console.log('columnName[0]::::::', columnName[0]);
-        // console.log(
-        //   '(e?.column?.name === columnName[k]::::::',
-        //   e?.column?.name === columnName[k]
-        // );
       }
     }
   }
 
-  @HostListener('window:keydown.enter', ['$event'])
+  @HostListener('keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    console.log('event::::::', event);
-    const keyCode = event.which || event.keyCode;
-    console.log('keyCode::::::', keyCode);
-    if (keyCode === 13 && !event.shiftKey) {
-    }
+    // console.log('event::::::, mmmmmm', event);
+  }
+
+  @HostListener('window:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    console.log(event);
+  }
+
+  @HostListener('pointerover', ['$event'])
+  onPointerOver(event) {
+    console.log(
+      'event::::::event',
+      event.target.getElementsByTagName('datatable-header-cell')
+    );
+    const columnTagName = event.target.getElementsByTagName(
+      'datatable-header-cell'
+    );
+
+    // console.log(
+    //   'columnTagName::::::',
+    //   columnTagName.getElementsByClassName('datatable-header-cell')
+    // );
+
+    const resizedCol = this.columns.find((c) => {
+      c.minWidth = 0;
+      return c.name === 'Company';
+    });
   }
 }
