@@ -93,7 +93,19 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
+
+    const element = this.elementRef.nativeElement as HTMLElement;
+    const rows = element.getElementsByTagName('datatable-header-cell');
+    console.log('rows::::::', rows);
   }
+
+  @ViewChild('table') table: DatatableComponent;
+
+  //   @HostListener('window:resize', ['$event'])
+  //   onResize(event) {
+  //     this.table.recalculate();
+  //     this.table.recalculateColumns();
+  //   }
 
   setLocalStorageChages(data) {
     console.log('data::::::', data);
@@ -162,6 +174,7 @@ export class Tab2Page implements OnInit {
   }
 
   resize(e) {
+    console.log('e::::::', e);
     if (e.column.name) {
       this.ignoreFitContent.add(e.column.name);
     }
@@ -173,7 +186,7 @@ export class Tab2Page implements OnInit {
     });
     console.log('resizedCol::::::', resizedCol);
     resizedCol.minWidth = 0;
-    console.log('this.columns::::::', this.columns);
+    // console.log('this.columns::::::', this.columns);
     console.log('e::::::resize', e);
   }
 
@@ -232,9 +245,10 @@ export class Tab2Page implements OnInit {
     return arr;
   }
 
-  //   @HostListener('click', ['$event']) onPress(event) {
-  //     console.log('User Clicked on Window...' + event.target.tagName);
-  //   }
+  @HostListener('pointerover', ['$event.target'])
+  onPointerOver(event) {
+    console.log('buttonevent', event);
+  }
 
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
@@ -243,10 +257,39 @@ export class Tab2Page implements OnInit {
     this.rows = [...this.rows];
     this.setLocalStorageRow(this.rows);
   }
+  onColumnResize() {
+    console.log('onColumnResize::::::');
+  }
+  //   ngDoCheck() {
+  //     let nameCol;
+  //     const value = this.ignoreFitContent.forEach((value) => {
+  //       nameCol = value;
+  //     });
+  //     const element = this.elementRef.nativeElement as HTMLElement;
+  //     const rows = element.getElementsByTagName('datatable-body-row');
+
+  //     for (let i = 0; i < rows.length; i++) {
+  //       const cells = rows[i].getElementsByTagName('datatable-body-cell');
+  //       for (let k = 0; k < cells.length; k++) {
+  //         this.ignoreFitContent.forEach((value) => {
+  //           console.log('forEach adjustColumnMinWidth value::::::', value);
+  //         });
+
+  //         if (this.ignoreFitContent.has(this.columns[k].name)) {
+  //           this.columns[k].minWidth = 0;
+  //           return;
+  //         }
+  //         console.log('nameCol::::::', nameCol);
+  //         console.log('value::::::ngDoCheck', value);
+  //         console.log('ngDoCheck()');
+  //       }
+  //     }
+  //   }
 
   adjustColumnMinWidth() {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
+
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
@@ -256,6 +299,7 @@ export class Tab2Page implements OnInit {
         });
 
         if (this.ignoreFitContent.has(this.columns[k].name)) {
+          this.columns[k].minWidth = 0;
           return;
         }
 
@@ -276,34 +320,32 @@ export class Tab2Page implements OnInit {
     }
   }
 
-  @HostListener('keydown', ['$event'])
-  handleKeyDown(event: KeyboardEvent) {
-    // console.log('event::::::, mmmmmm', event);
-  }
+  //   @HostListener('keydown', ['$event'])
+  //   handleKeyDown(event: KeyboardEvent) {
+  //     // console.log('event::::::, mmmmmm', event);
+  //   }
 
-  @HostListener('window:keypress', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    console.log(event);
-  }
+  //   @HostListener('window:keypress', ['$event'])
+  //   handleKeyboardEvent(event: KeyboardEvent) {
+  //     console.log(event);
+  //   }
 
-  @HostListener('pointerover', ['$event'])
-  onPointerOver(event) {
-    console.log(
-      'event::::::event',
-      event.target.getElementsByTagName('datatable-header-cell')
-    );
-    const columnTagName = event.target.getElementsByTagName(
-      'datatable-header-cell'
-    );
-
-    // console.log(
-    //   'columnTagName::::::',
-    //   columnTagName.getElementsByClassName('datatable-header-cell')
-    // );
-
-    const resizedCol = this.columns.find((c) => {
-      c.minWidth = 0;
-      return c.name === 'Company';
-    });
-  }
+  //   @HostListener('pointerover', ['$event'])
+  //   onPointerOver(event) {
+  // console.log(
+  //   'event::::::event',
+  //   event.target.getElementsByTagName('datatable-header-cell')
+  // );
+  // const columnTagName = event.target.getElementsByTagName(
+  //   'datatable-header-cell'
+  // );
+  // console.log(
+  //   'columnTagName::::::',
+  //   columnTagName.getElementsByClassName('datatable-header-cell')
+  // );
+  // const resizedCol = this.columns.find((c) => {
+  //   c.minWidth = 0;
+  //   return c.name === 'Company';
+  // });
+  //   }
 }
