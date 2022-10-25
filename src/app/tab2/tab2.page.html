@@ -28,15 +28,15 @@
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
       (resize)="resize($event)"
-      (cdkObserveContent)="adjustColumnMinWidth()"
       [scrollbarH]="true"
+      (cdkObserveContent)="adjustColumnMinWidth()"
     >
       <ngx-datatable-column
         [name]="column.name"
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
         [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
-        [minWidth]="column.minWidth"
+        [minWidth]="column.minWidth !== 0 ? column.minWidth : 0"
         [width]="0"
         [canAutoResize]="true"
         [flexGrow]="0"

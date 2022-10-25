@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -94,18 +95,30 @@ export class Tab2Page implements OnInit {
       return !isHidden;
     });
 
-    const element = this.elementRef.nativeElement as HTMLElement;
-    const rows = element.getElementsByTagName('datatable-header-cell');
-    console.log('rows::::::', rows);
+    this.adjustColumnMinWidth();
   }
+  ngDoCheck() {
+    const element = this.elementRef.nativeElement as HTMLElement;
+    const columns = element.getElementsByClassName('datatable-row-center');
 
-  @ViewChild('table') table: DatatableComponent;
-
-  //   @HostListener('window:resize', ['$event'])
-  //   onResize(event) {
-  //     this.table.recalculate();
-  //     this.table.recalculateColumns();
-  //   }
+    for (let i = 0; i < columns.length; i++) {
+      const cells = columns[i].getElementsByClassName('resize-handle');
+      for (let k = 0; k < cells.length; k++) {
+        const cell = cells[k];
+        cell.addEventListener('click', (event) => {
+          console.log('event::::::dragstartdragstart', event);
+          console.log(
+            'event::::::dragstartdragstartisTrusted',
+            event.target['attributes']['class']
+          );
+          console.log('event::::::dragstartdragstartdelegateTarget', event[0]);
+        });
+        ondragstart = (event) => {
+          console.log('event::::::ondragstart', event);
+        };
+      }
+    }
+  }
 
   setLocalStorageChages(data) {
     console.log('data::::::', data);
@@ -174,7 +187,7 @@ export class Tab2Page implements OnInit {
   }
 
   resize(e) {
-    console.log('e::::::', e);
+    console.log('e::::::', e.column.width);
     if (e.column.name) {
       this.ignoreFitContent.add(e.column.name);
     }
@@ -186,8 +199,6 @@ export class Tab2Page implements OnInit {
     });
     console.log('resizedCol::::::', resizedCol);
     resizedCol.minWidth = 0;
-    // console.log('this.columns::::::', this.columns);
-    console.log('e::::::resize', e);
   }
 
   getLocalStoragSort() {
@@ -245,11 +256,6 @@ export class Tab2Page implements OnInit {
     return arr;
   }
 
-  @HostListener('pointerover', ['$event.target'])
-  onPointerOver(event) {
-    console.log('buttonevent', event);
-  }
-
   updateValue(event, cell, rowIndex) {
     console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
@@ -257,49 +263,17 @@ export class Tab2Page implements OnInit {
     this.rows = [...this.rows];
     this.setLocalStorageRow(this.rows);
   }
-  onColumnResize() {
-    console.log('onColumnResize::::::');
-  }
-  //   ngDoCheck() {
-  //     let nameCol;
-  //     const value = this.ignoreFitContent.forEach((value) => {
-  //       nameCol = value;
-  //     });
-  //     const element = this.elementRef.nativeElement as HTMLElement;
-  //     const rows = element.getElementsByTagName('datatable-body-row');
-
-  //     for (let i = 0; i < rows.length; i++) {
-  //       const cells = rows[i].getElementsByTagName('datatable-body-cell');
-  //       for (let k = 0; k < cells.length; k++) {
-  //         this.ignoreFitContent.forEach((value) => {
-  //           console.log('forEach adjustColumnMinWidth value::::::', value);
-  //         });
-
-  //         if (this.ignoreFitContent.has(this.columns[k].name)) {
-  //           this.columns[k].minWidth = 0;
-  //           return;
-  //         }
-  //         console.log('nameCol::::::', nameCol);
-  //         console.log('value::::::ngDoCheck', value);
-  //         console.log('ngDoCheck()');
-  //       }
-  //     }
-  //   }
 
   adjustColumnMinWidth() {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
-
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
-        this.ignoreFitContent.forEach((value) => {
-          console.log('forEach adjustColumnMinWidth value::::::', value);
-        });
-
         if (this.ignoreFitContent.has(this.columns[k].name)) {
-          this.columns[k].minWidth = 0;
+          //   this.columns[k].minWidth = 0;
+          //   this.resize();
           return;
         }
 
