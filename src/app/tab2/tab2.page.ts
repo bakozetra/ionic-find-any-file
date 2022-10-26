@@ -97,27 +97,90 @@ export class Tab2Page implements OnInit {
 
     this.adjustColumnMinWidth();
   }
-  ngDoCheck() {
-    const element = this.elementRef.nativeElement as HTMLElement;
-    const columns = element.getElementsByClassName('datatable-row-center');
+  //   ngDoCheck() {
+  //     const element = this.elementRef.nativeElement as HTMLElement;
+  //     const columns = element.getElementsByClassName('datatable-row-center');
 
-    for (let i = 0; i < columns.length; i++) {
-      const cells = columns[i].getElementsByClassName('resize-handle');
-      for (let k = 0; k < cells.length; k++) {
-        const cell = cells[k];
-        cell.addEventListener('click', (event) => {
-          console.log('event::::::dragstartdragstart', event);
-          console.log(
-            'event::::::dragstartdragstartisTrusted',
-            event.target['attributes']['class']
-          );
-          console.log('event::::::dragstartdragstartdelegateTarget', event[0]);
-        });
-        ondragstart = (event) => {
-          console.log('event::::::ondragstart', event);
-        };
-      }
+  //     for (let i = 0; i < columns.length; i++) {
+  //       const cells = columns[i].getElementsByClassName('resize-handle');
+  //       for (let k = 0; k < cells.length; k++) {
+  //         const cell = cells[k];
+  //         cell.addEventListener('click', (event) => {
+  //           console.log('event::::::dragstartdragstart', event);
+  //           console.log(
+  //             'event::::::dragstartdragstartisTrusted',
+  //             event.target['attributes'].getNamedItem('style')
+  //           );
+  //           //   console.log('event::::::dragstartdragstartdelegateTarget', event[0]);
+  //         });
+  //         ondragstart = (event) => {
+  //           console.log('event::::::ondragstart', event);
+  //         };
+  //       }
+  //     }
+  //   }
+
+  // @HostListener('document: ', ['$event']) onClick(e) {
+
+  // }
+  @HostListener('pointerdown', ['$event']) onPointerDown(e) {
+    // e.preventDefault();
+    e.stopPropagation();
+    console.log(
+      'e::::::pointerdown',
+      e.target.parentNode.querySelector('.datatable-header-cell-label')
+        .innerHTML
+    );
+    const columnName = e.target.parentNode.querySelector(
+      '.datatable-header-cell-label'
+    ).innerHTML;
+    if (columnName) {
+      this.ignoreFitContent.add(columnName.trim());
     }
+    this.ignoreFitContent.forEach((value) => {
+      console.log('value::::::pointerdown', value);
+    });
+    const resizedCol = this.columns.find((c) => {
+      console.log('c.name::::::', c.name, columnName);
+
+      return c.name.trim() === columnName.trim();
+    });
+    console.log('resizedCol::::::pointerdown', resizedCol);
+    resizedCol.minWidth = 0;
+
+    this.columns.forEach((col) => {
+      //   console.log('col::::::', col.minWidth, col.name);
+    });
+    // console.log('e::::::pointerdown');
+    // const resizeHadler = document
+    //   .querySelectorAll('.resize-handle')
+    //   .forEach((el) => {
+    //     el.addEventListener('mouseover', (event) => {
+    //       console.log('event::::::mousemove', event);
+    //       //   WheelEvent
+    //       console.log(
+    //         'event::::::mousemoveevent:uuuuuuuuuuuuuuuu:::::mousemove',
+    //         // event.target.parentNode.toString()
+    //         <HTMLElement>(<HTMLElement>event.target).parentNode
+    //       );
+    //       const resizedCol = this.columns.find((c) => {
+    //         return c.name === 'Company';
+    //       });
+    //       console.log('resizedCol::::::', resizedCol);
+    //       //   console.log(
+    //       //     'resizedCol.minWidth::::::HostListener up',
+    //       //     resizedCol.minWidth
+    //       //   );
+    //       resizedCol.minWidth = 0;
+    //       //   console.log(
+    //       //     'resizedCol.minWidth::::::HostListener down',
+    //       //     resizedCol.minWidth
+    //       //   );
+    //     });
+    //     // relatedTarget
+    //   });
+    // console.log('resizeHadler::::::', resizeHadler);
+    // console.log('e::::::HostListener', e);
   }
 
   setLocalStorageChages(data) {
@@ -199,6 +262,10 @@ export class Tab2Page implements OnInit {
     });
     console.log('resizedCol::::::', resizedCol);
     resizedCol.minWidth = 0;
+
+    this.columns.forEach((col) => {
+      console.log('col::::::', col.minWidth, col.name);
+    });
   }
 
   getLocalStoragSort() {
@@ -265,15 +332,17 @@ export class Tab2Page implements OnInit {
   }
 
   adjustColumnMinWidth() {
+    console.log('adjustColumnMinWidth::::::');
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
+    this.ignoreFitContent.forEach((val) => {
+      console.log('val::::::', val);
+    });
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       for (let k = 0; k < cells.length; k++) {
         if (this.ignoreFitContent.has(this.columns[k].name)) {
-          //   this.columns[k].minWidth = 0;
-          //   this.resize();
           return;
         }
 
