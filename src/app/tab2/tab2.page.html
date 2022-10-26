@@ -21,7 +21,7 @@
       [rows]="rows"
       [columns]="columns"
       [columnMode]="'force'"
-      [headerHeight]="50"
+      [headerHeight]="75"
       [footerHeight]="50"
       [rowHeight]="'auto'"
       (sort)="onSort($event)"
@@ -47,7 +47,7 @@
           let-sort="sortFn"
           ngx-datatable-header-template
         >
-          <span class="datatable-header-cell-wrapper">
+          <span class="datatable-header-cell-wrapper" style="height: 100px">
             <span
               class="datatable-header-cell-label draggable"
               (click)="sort($event)"
@@ -56,6 +56,15 @@
               {{ column.name }}
             </span>
           </span>
+          <ion-select
+            interface="popover"
+            placeholder="Select size"
+            style="color: black"
+          >
+            <ion-select-option value="apples">fit-content</ion-select-option>
+            <!-- <ion-select-option value="oranges">Oranges</ion-select-option>
+            <ion-select-option value="bananas">Bananas</ion-select-option> -->
+          </ion-select>
         </ng-template>
         <ng-template
           let-value="value"

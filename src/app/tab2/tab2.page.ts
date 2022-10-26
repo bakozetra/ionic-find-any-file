@@ -94,97 +94,23 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
-
-    this.adjustColumnMinWidth();
   }
-  //   ngDoCheck() {
-  //     const element = this.elementRef.nativeElement as HTMLElement;
-  //     const columns = element.getElementsByClassName('datatable-row-center');
 
-  //     for (let i = 0; i < columns.length; i++) {
-  //       const cells = columns[i].getElementsByClassName('resize-handle');
-  //       for (let k = 0; k < cells.length; k++) {
-  //         const cell = cells[k];
-  //         cell.addEventListener('click', (event) => {
-  //           console.log('event::::::dragstartdragstart', event);
-  //           console.log(
-  //             'event::::::dragstartdragstartisTrusted',
-  //             event.target['attributes'].getNamedItem('style')
-  //           );
-  //           //   console.log('event::::::dragstartdragstartdelegateTarget', event[0]);
-  //         });
-  //         ondragstart = (event) => {
-  //           console.log('event::::::ondragstart', event);
-  //         };
-  //       }
-  //     }
-  //   }
-
-  // @HostListener('document: ', ['$event']) onClick(e) {
-
-  // }
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
-    // e.preventDefault();
     e.stopPropagation();
-    console.log(
-      'e::::::pointerdown',
-      e.target.parentNode.querySelector('.datatable-header-cell-label')
-        .innerHTML
-    );
     const columnName = e.target.parentNode.querySelector(
       '.datatable-header-cell-label'
     ).innerHTML;
     if (columnName) {
       this.ignoreFitContent.add(columnName.trim());
+      const resizedCol = this.columns.find((c) => {
+        console.log('c.name::::::', c.name, columnName);
+        return c.name.trim() === columnName.trim();
+      });
     }
-    this.ignoreFitContent.forEach((value) => {
-      console.log('value::::::pointerdown', value);
-    });
-    const resizedCol = this.columns.find((c) => {
-      console.log('c.name::::::', c.name, columnName);
-
-      return c.name.trim() === columnName.trim();
-    });
-    console.log('resizedCol::::::pointerdown', resizedCol);
-    resizedCol.minWidth = 0;
-
-    this.columns.forEach((col) => {
-      //   console.log('col::::::', col.minWidth, col.name);
-    });
-    // console.log('e::::::pointerdown');
-    // const resizeHadler = document
-    //   .querySelectorAll('.resize-handle')
-    //   .forEach((el) => {
-    //     el.addEventListener('mouseover', (event) => {
-    //       console.log('event::::::mousemove', event);
-    //       //   WheelEvent
-    //       console.log(
-    //         'event::::::mousemoveevent:uuuuuuuuuuuuuuuu:::::mousemove',
-    //         // event.target.parentNode.toString()
-    //         <HTMLElement>(<HTMLElement>event.target).parentNode
-    //       );
-    //       const resizedCol = this.columns.find((c) => {
-    //         return c.name === 'Company';
-    //       });
-    //       console.log('resizedCol::::::', resizedCol);
-    //       //   console.log(
-    //       //     'resizedCol.minWidth::::::HostListener up',
-    //       //     resizedCol.minWidth
-    //       //   );
-    //       resizedCol.minWidth = 0;
-    //       //   console.log(
-    //       //     'resizedCol.minWidth::::::HostListener down',
-    //       //     resizedCol.minWidth
-    //       //   );
-    //     });
-    //     // relatedTarget
-    //   });
-    // console.log('resizeHadler::::::', resizeHadler);
-    // console.log('e::::::HostListener', e);
   }
 
   setLocalStorageChages(data) {
-    console.log('data::::::', data);
     return localStorage.setItem('column-data', JSON.stringify(data));
   }
   setLocalStorageRow(data) {
@@ -232,7 +158,6 @@ export class Tab2Page implements OnInit {
       }
       return columnName;
     });
-    console.log('updateColumns::::::toggleme', updateColumns);
     this.columns = updateColumns.filter((col) => {
       const colomnName = col.name;
       const isHidden = this.columnVisibility.find(
@@ -253,19 +178,18 @@ export class Tab2Page implements OnInit {
     console.log('e::::::', e.column.width);
     if (e.column.name) {
       this.ignoreFitContent.add(e.column.name);
+      const resizedCol = this.columns.find((c) => {
+        return c.name === e.column.name;
+      });
+      resizedCol.minWidth = 0;
     }
     this.ignoreFitContent.forEach((value) => {
       console.log('value::::::', value);
     });
-    const resizedCol = this.columns.find((c) => {
-      return c.name === e.column.name;
-    });
-    console.log('resizedCol::::::', resizedCol);
-    resizedCol.minWidth = 0;
+  }
 
-    this.columns.forEach((col) => {
-      console.log('col::::::', col.minWidth, col.name);
-    });
+  updateFilter(e) {
+    console.log('e::::::', e);
   }
 
   getLocalStoragSort() {
