@@ -37,7 +37,7 @@
         *ngFor="let column of columns"
         [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
         [minWidth]="column.minWidth !== 0 ? column.minWidth : 0"
-        [width]="0"
+        [width]="column.minWidth"
         [canAutoResize]="true"
         [flexGrow]="0"
         id="class3"
@@ -53,18 +53,38 @@
               (click)="sort($event)"
               [attr.aria-label]="column.name"
             >
+              <!-- <ion-button
+                class="btn-primary dropdown-toggle plus-button"
+                type="button"
+                id="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                [tooltip]="'menu'"
+                style="background: white"
+              >
+                <ion-icon
+                  src="../../assets/icon/dark-dropdown.svg"
+                  name="caret-down-outline"
+                ></ion-icon>
+              </ion-button>
+              <ul class="dropdown-menu" aria-labelledby="dropdown">
+                <li>select Size</li>
+              </ul> -->
+              <!-- </ion-button> -->
+              <!-- <ion-select
+                interface="popover"
+                placeholder="Select size"
+                style="color: black"
+              >
+                
+                <ion-select-option value="apples"
+                  >fit-content</ion-select-option
+                >
+                <ion-select-option value="oranges">100</ion-select-option>
+              </ion-select> -->
               {{ column.name }}
             </span>
           </span>
-          <ion-select
-            interface="popover"
-            placeholder="Select size"
-            style="color: black"
-          >
-            <ion-select-option value="apples">fit-content</ion-select-option>
-            <!-- <ion-select-option value="oranges">Oranges</ion-select-option>
-            <ion-select-option value="bananas">Bananas</ion-select-option> -->
-          </ion-select>
         </ng-template>
         <ng-template
           let-value="value"

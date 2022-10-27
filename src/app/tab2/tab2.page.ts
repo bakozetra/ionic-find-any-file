@@ -12,6 +12,7 @@ import {
   HostListener,
   OnDestroy,
   AfterViewChecked,
+  AfterViewInit,
 } from '@angular/core';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import {
@@ -98,15 +99,23 @@ export class Tab2Page implements OnInit {
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
     e.stopPropagation();
-    const columnName = e.target.parentNode.querySelector(
+    console.log('e::::::pointerdown', e);
+    console.log('e?.target::::::', e?.target?.style.width);
+    const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
-    ).innerHTML;
+    )?.innerHTML;
+    console.log('columnName::::::pointerdown', columnName);
     if (columnName) {
       this.ignoreFitContent.add(columnName.trim());
       const resizedCol = this.columns.find((c) => {
+        console.log('c::::::c.width', c.width);
         console.log('c.name::::::', c.name, columnName);
         return c.name.trim() === columnName.trim();
       });
+      console.log('resizedCol.minWidth::::::up', resizedCol.minWidth);
+      resizedCol.minWidth = 0;
+      console.log('resizedCol.width::::::', resizedCol.width);
+      console.log('resizedCol.minWidth::::::down', resizedCol.minWidth);
     }
   }
 
@@ -175,8 +184,7 @@ export class Tab2Page implements OnInit {
   }
 
   resize(e) {
-    console.log('e::::::', e.column.width);
-    if (e.column.name) {
+    if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
       const resizedCol = this.columns.find((c) => {
         return c.name === e.column.name;
@@ -184,7 +192,7 @@ export class Tab2Page implements OnInit {
       resizedCol.minWidth = 0;
     }
     this.ignoreFitContent.forEach((value) => {
-      console.log('value::::::', value);
+      console.log('value::::::resize', value);
     });
   }
 
@@ -271,21 +279,62 @@ export class Tab2Page implements OnInit {
         }
 
         const cell = cells[k];
-        const cellSizer = cell.children[0].children[0].children[0];
-        var range = document.createRange();
-        range.selectNode(cellSizer);
-        var rect = range.getBoundingClientRect().width;
-        range.detach();
-        if (!(k in columnsWidth)) {
-          columnsWidth = { ...columnsWidth, [k]: 0 };
+        const cellSizer = cell.children[0].children[0].children[0].lastChild;
+        console.log('cellSizer::::::', cellSizer);
+        try {
+          var range = document.createRange();
+          range.selectNode(cellSizer);
+          var rect = range.getBoundingClientRect().width;
+          console.log('rect::::::', rect, cellSizer);
+          range.detach();
+          if (!(k in columnsWidth)) {
+            columnsWidth = { ...columnsWidth, [k]: 0 };
+          }
+          const currentColunWidth = columnsWidth[k];
+          const newColumnWidth = Math.max(currentColunWidth, rect);
+          columnsWidth[k] = newColumnWidth;
+          this.columns[k].minWidth = newColumnWidth;
+        } catch (e) {
+          console.log('e::getting width error::::', e);
         }
-        const currentColunWidth = columnsWidth[k];
-        const newColumnWidth = Math.max(currentColunWidth, rect);
-        columnsWidth[k] = newColumnWidth;
-        this.columns[k].minWidth = newColumnWidth;
       }
     }
+    console.log('columnsWidth::::::', columnsWidth);
   }
+
+  // adjustColumnMinWidth() {
+  //   console.log('adjustColumnMinWidth::::::');
+  //   const element = this.elementRef.nativeElement as HTMLElement;
+  //   const rows = element.getElementsByTagName('datatable-body-row');
+  //   let columnsWidth = {};
+  //   this.ignoreFitContent.forEach((val) => {
+  //     console.log('val::::::', val);
+  //   });
+  //   for (let i = 0; i < rows.length; i++) {
+  //     const cells = rows[i].getElementsByTagName('datatable-body-cell');
+  //     for (let k = 0; k < cells.length; k++) {
+  //       if (this.ignoreFitContent.has(this.columns[k].name)) {
+  //         return;
+  //       }
+
+  //       const cell = cells[k];
+  //       const cellSizer = cell.children[0].children[0].children[0].lastChild;
+  //       console.log('cellSizer::::::', cellSizer);
+  //       var range = document.createRange();
+  //       range.selectNode(cellSizer);
+  //       // range.selectNodeContents(cellSizer);
+  //       var rect = range.getBoundingClientRect().width;
+  //       range.detach();
+  //       if (!(k in columnsWidth)) {
+  //         columnsWidth = { ...columnsWidth, [k]: 0 };
+  //       }
+  //       const currentColunWidth = columnsWidth[k];
+  //       const newColumnWidth = Math.max(currentColunWidth, rect);
+  //       columnsWidth[k] = newColumnWidth;
+  //       this.columns[k].minWidth = newColumnWidth;
+  //     }
+  //   }
+  // }
 
   //   @HostListener('keydown', ['$event'])
   //   handleKeyDown(event: KeyboardEvent) {
