@@ -16,7 +16,7 @@
       [checked]="this.rowHeight"
       (ionChange)="toggleRow($event)"
     ></ion-toggle>
-    <ion-label>row Height</ion-label>
+    <ion-label>Row Height resizing</ion-label>
   </ion-item>
 </div>
 
@@ -28,7 +28,7 @@
       [rows]="rows"
       [columns]="columns"
       [columnMode]="'force'"
-      [headerHeight]="75"
+      [headerHeight]="50"
       [footerHeight]="50"
       [rowHeight]=" this.rowHeight == undefined? 'auto' : this.rowHeight"
       (sort)="onSort($event)"
@@ -74,6 +74,7 @@
           <div *ngIf="column.name === 'Image'">
             <img [attr.aria-label]="value" [src]="value" style="width: 100%" />
           </div>
+          <!-- <div *ngIf="desktopPlatforme == true else Mobile"> -->
           <div *ngIf="column.name !== 'Image'">
             <div
               style="white-space: pre"
@@ -94,6 +95,29 @@
             >
             </textarea>
           </div>
+          <!-- </div> -->
+          <!-- <ng-template #Mobile>
+            <div *ngIf="column.name !== 'Image'">
+              <div
+                style="white-space: pre"
+                (click)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
+                *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
+                [attr.aria-label]="value"
+                [draggable]="true"
+              >
+                {{value}}
+              </div>
+              <textarea
+                autofocus
+                (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
+                *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
+                type="text"
+                [value]="value"
+                [ngStyle]="{width:'100%', minHeight:'auto'}"
+              >
+              </textarea>
+            </div>
+          </ng-template> -->
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>

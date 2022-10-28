@@ -1,3 +1,4 @@
+import { Platform } from '@ionic/angular';
 import { element } from 'protractor';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -48,11 +49,13 @@ export class Tab2Page implements OnInit {
 
   editing = {};
   ngxResizeWatcherDirective;
+  rowHeight;
 
   constructor(
     private http: HttpClient,
     private _zone: NgZone,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private platform: Platform
   ) {
     this.tempColumns = INITIALCOLUMNS;
     this.columns = [
@@ -63,8 +66,11 @@ export class Tab2Page implements OnInit {
     ];
     this.ngxResizeWatcherDirective = NgxResizeWatcherDirective;
   }
+  desktopPlatforme = this.platform.is('desktop');
+  mobilePlatforme = this.platform.is('android');
 
   ngOnInit(): void {
+    console.log('desktopPlatforme::::::', this.desktopPlatforme);
     if (this.getLocalStoragSort() !== null) {
       this.sortOrder = this.getDataRowSort();
     }
@@ -112,7 +118,19 @@ export class Tab2Page implements OnInit {
         console.log('c.name::::::', c.name, columnName);
         return c.name.trim() === columnName.trim();
       });
-      console.log('resizedCol.minWidth::::::up', resizedCol.minWidth);
+      // if (resizedCol.minWidth !== 0) {
+      //   let columnWidth = e?.target?.parentNode;
+      //   columnWidth.style.width = '400px';
+      //   // columnWidth.style.minWidth;
+      //   console.log(
+      //     'columnWidth.style.minWidth::::::',
+      //     columnWidth.style.minWidth
+      //   );
+      //   // console.log('resizedCol.minWidth::::::', resizedCol.minWidth);
+      //   console.log('columnWidth::::::columnWidth', columnWidth);
+      //   console.log('columnWidth::::::', columnWidth.style.width);
+      // }
+      // console.log('resizedCol.minWidth::::::up', resizedCol.minWidth);
       resizedCol.minWidth = 0;
       console.log('resizedCol.width::::::', resizedCol.width);
       console.log('resizedCol.minWidth::::::down', resizedCol.minWidth);
@@ -179,10 +197,7 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageDrag(updateColumns);
   }
 
-  rowHeight;
   toggleRow(e) {
-    console.log('this.rowHeight::::::up', this.rowHeight);
-    console.log('e::::::toggleRow', e.detail);
     if (e.detail.checked) {
       this.rowHeight = '80px';
     } else {
@@ -196,7 +211,7 @@ export class Tab2Page implements OnInit {
   }
 
   resize(e) {
-    console.log('e::::::', e);
+    console.log('e::::::resize');
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
       const resizedCol = this.columns.find((c) => {
@@ -220,7 +235,6 @@ export class Tab2Page implements OnInit {
   getDataRowSort(): any {
     let localJSON = this.tempColumns;
     const localData = this.getLocalStoragSort();
-    console.log('localData::::::', localData);
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
@@ -269,8 +283,6 @@ export class Tab2Page implements OnInit {
   }
 
   updateValue(event, cell, rowIndex) {
-    console.log('event::::::updateValue', event);
-    console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
@@ -300,7 +312,6 @@ export class Tab2Page implements OnInit {
           var range = document.createRange();
           range.selectNode(cellSizer);
           var rect = range.getBoundingClientRect().width;
-          console.log('rect::::::', rect, cellSizer);
           range.detach();
           if (!(k in columnsWidth)) {
             columnsWidth = { ...columnsWidth, [k]: 0 };
@@ -309,6 +320,10 @@ export class Tab2Page implements OnInit {
           const newColumnWidth = Math.max(currentColunWidth, rect);
           columnsWidth[k] = newColumnWidth;
           this.columns[k].minWidth = newColumnWidth;
+          console.log(
+            'this.columns[k].minWidth::::::',
+            this.columns[k].minWidth
+          );
         } catch (e) {
           console.log('e::getting width error::::', e);
         }
