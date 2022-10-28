@@ -11,6 +11,13 @@
     ></ion-toggle>
     <ion-label> Hide {{toogle.name}}</ion-label>
   </ion-item>
+  <ion-item>
+    <ion-toggle
+      [checked]="this.rowHeight"
+      (ionChange)="toggleRow($event)"
+    ></ion-toggle>
+    <ion-label>row Height</ion-label>
+  </ion-item>
 </div>
 
 <ion-content>
@@ -23,7 +30,7 @@
       [columnMode]="'force'"
       [headerHeight]="75"
       [footerHeight]="50"
-      [rowHeight]="'auto'"
+      [rowHeight]=" this.rowHeight == undefined? 'auto' : this.rowHeight"
       (sort)="onSort($event)"
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
@@ -36,8 +43,8 @@
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
         [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
-        [minWidth]="column.minWidth !== 0 ? column.minWidth : 0"
-        [width]="column.minWidth"
+        [minWidth]="column.minWidth"
+        [width]="0"
         [canAutoResize]="true"
         [flexGrow]="0"
         id="class3"
@@ -53,35 +60,6 @@
               (click)="sort($event)"
               [attr.aria-label]="column.name"
             >
-              <!-- <ion-button
-                class="btn-primary dropdown-toggle plus-button"
-                type="button"
-                id="dropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                [tooltip]="'menu'"
-                style="background: white"
-              >
-                <ion-icon
-                  src="../../assets/icon/dark-dropdown.svg"
-                  name="caret-down-outline"
-                ></ion-icon>
-              </ion-button>
-              <ul class="dropdown-menu" aria-labelledby="dropdown">
-                <li>select Size</li>
-              </ul> -->
-              <!-- </ion-button> -->
-              <!-- <ion-select
-                interface="popover"
-                placeholder="Select size"
-                style="color: black"
-              >
-                
-                <ion-select-option value="apples"
-                  >fit-content</ion-select-option
-                >
-                <ion-select-option value="oranges">100</ion-select-option>
-              </ion-select> -->
               {{ column.name }}
             </span>
           </span>

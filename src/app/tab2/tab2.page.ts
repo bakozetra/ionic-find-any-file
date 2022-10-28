@@ -179,11 +179,24 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageDrag(updateColumns);
   }
 
+  rowHeight;
+  toggleRow(e) {
+    console.log('this.rowHeight::::::up', this.rowHeight);
+    console.log('e::::::toggleRow', e.detail);
+    if (e.detail.checked) {
+      this.rowHeight = '80px';
+    } else {
+      this.rowHeight = undefined;
+    }
+    console.log('this.rowHeight::::::down', this.rowHeight);
+  }
+
   setLocalStorageSort(data) {
     return localStorage.setItem('sorting', JSON.stringify(data));
   }
 
   resize(e) {
+    console.log('e::::::', e);
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
       const resizedCol = this.columns.find((c) => {
@@ -256,11 +269,13 @@ export class Tab2Page implements OnInit {
   }
 
   updateValue(event, cell, rowIndex) {
+    console.log('event::::::updateValue', event);
     console.log('inline editing rowIndex', rowIndex);
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
     this.setLocalStorageRow(this.rows);
+    this.ignoreFitContent = new Set([]);
   }
 
   adjustColumnMinWidth() {
@@ -301,67 +316,4 @@ export class Tab2Page implements OnInit {
     }
     console.log('columnsWidth::::::', columnsWidth);
   }
-
-  // adjustColumnMinWidth() {
-  //   console.log('adjustColumnMinWidth::::::');
-  //   const element = this.elementRef.nativeElement as HTMLElement;
-  //   const rows = element.getElementsByTagName('datatable-body-row');
-  //   let columnsWidth = {};
-  //   this.ignoreFitContent.forEach((val) => {
-  //     console.log('val::::::', val);
-  //   });
-  //   for (let i = 0; i < rows.length; i++) {
-  //     const cells = rows[i].getElementsByTagName('datatable-body-cell');
-  //     for (let k = 0; k < cells.length; k++) {
-  //       if (this.ignoreFitContent.has(this.columns[k].name)) {
-  //         return;
-  //       }
-
-  //       const cell = cells[k];
-  //       const cellSizer = cell.children[0].children[0].children[0].lastChild;
-  //       console.log('cellSizer::::::', cellSizer);
-  //       var range = document.createRange();
-  //       range.selectNode(cellSizer);
-  //       // range.selectNodeContents(cellSizer);
-  //       var rect = range.getBoundingClientRect().width;
-  //       range.detach();
-  //       if (!(k in columnsWidth)) {
-  //         columnsWidth = { ...columnsWidth, [k]: 0 };
-  //       }
-  //       const currentColunWidth = columnsWidth[k];
-  //       const newColumnWidth = Math.max(currentColunWidth, rect);
-  //       columnsWidth[k] = newColumnWidth;
-  //       this.columns[k].minWidth = newColumnWidth;
-  //     }
-  //   }
-  // }
-
-  //   @HostListener('keydown', ['$event'])
-  //   handleKeyDown(event: KeyboardEvent) {
-  //     // console.log('event::::::, mmmmmm', event);
-  //   }
-
-  //   @HostListener('window:keypress', ['$event'])
-  //   handleKeyboardEvent(event: KeyboardEvent) {
-  //     console.log(event);
-  //   }
-
-  //   @HostListener('pointerover', ['$event'])
-  //   onPointerOver(event) {
-  // console.log(
-  //   'event::::::event',
-  //   event.target.getElementsByTagName('datatable-header-cell')
-  // );
-  // const columnTagName = event.target.getElementsByTagName(
-  //   'datatable-header-cell'
-  // );
-  // console.log(
-  //   'columnTagName::::::',
-  //   columnTagName.getElementsByClassName('datatable-header-cell')
-  // );
-  // const resizedCol = this.columns.find((c) => {
-  //   c.minWidth = 0;
-  //   return c.name === 'Company';
-  // });
-  //   }
 }
