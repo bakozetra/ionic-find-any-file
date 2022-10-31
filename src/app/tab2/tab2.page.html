@@ -34,9 +34,9 @@
       (sort)="onSort($event)"
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
-      (resize)="resize($event)"
       [scrollbarH]="true"
       (cdkObserveContent)="adjustColumnMinWidth()"
+      (resize)="resize($event)"
     >
       <ngx-datatable-column
         [name]="column.name"

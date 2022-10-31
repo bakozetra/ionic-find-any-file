@@ -118,22 +118,30 @@ export class Tab2Page implements OnInit {
         console.log('c.name::::::', c.name, columnName);
         return c.name.trim() === columnName.trim();
       });
-      // if (resizedCol.minWidth !== 0) {
-      //   let columnWidth = e?.target?.parentNode;
-      //   columnWidth.style.width = '400px';
-      //   // columnWidth.style.minWidth;
-      //   console.log(
-      //     'columnWidth.style.minWidth::::::',
-      //     columnWidth.style.minWidth
-      //   );
-      //   // console.log('resizedCol.minWidth::::::', resizedCol.minWidth);
-      //   console.log('columnWidth::::::columnWidth', columnWidth);
-      //   console.log('columnWidth::::::', columnWidth.style.width);
-      // }
-      // console.log('resizedCol.minWidth::::::up', resizedCol.minWidth);
-      resizedCol.minWidth = 0;
-      console.log('resizedCol.width::::::', resizedCol.width);
-      console.log('resizedCol.minWidth::::::down', resizedCol.minWidth);
+      let columnWidth = e?.target?.parentNode;
+      console.log(
+        'resizedCol.minWidth < columnWidth.style.width::::::',
+        resizedCol.minWidth > parseInt(columnWidth.style.width)
+      );
+      console.log(
+        'columnWidth::::::resizedCol.minWidth',
+        resizedCol.minWidth,
+        parseInt(columnWidth.style.width)
+      );
+      if (resizedCol.minWidth > parseInt(columnWidth.style.width)) {
+        columnWidth.style.width = resizedCol.minWidth + 'px';
+        columnWidth.style.minWidth = '0px';
+
+        console.log(
+          'columnWidth.style.minWidth::::::',
+          columnWidth.style.minWidth,
+          resizedCol.minWidth
+        );
+      }
+
+      if (resizedCol.minWidth < parseInt(columnWidth.style.width)) {
+        resizedCol.minWidth = 0;
+      }
     }
   }
 
@@ -211,13 +219,15 @@ export class Tab2Page implements OnInit {
   }
 
   resize(e) {
-    console.log('e::::::resize');
+    console.log('e::::::resize', e);
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
       const resizedCol = this.columns.find((c) => {
         return c.name === e.column.name;
       });
       resizedCol.minWidth = 0;
+      e.column.width = e.newValue;
+      console.log('e.column.width::::::', e.column.width);
     }
     this.ignoreFitContent.forEach((value) => {
       console.log('value::::::resize', value);
