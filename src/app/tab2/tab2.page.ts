@@ -1,4 +1,4 @@
-import { Platform } from '@ionic/angular';
+import { ItemReorderEventDetail, Platform } from '@ionic/angular';
 import { element } from 'protractor';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -38,6 +38,13 @@ const INITIALCOLUMNS = [
   encapsulation: ViewEncapsulation.None,
 })
 export class Tab2Page implements OnInit {
+  allowDrop($event: DragEvent) {
+    console.log('$event::::::allowDrop', $event);
+  }
+  ondrop($event: DragEvent) {
+    // throw new Error('Method not implemented.');
+    console.log('$event::::::ondrop', $event);
+  }
   public data: Data;
   public columns: any;
   public tempColumns: any;
@@ -101,6 +108,18 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
+  }
+
+  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+    console.log('ev::::::', ev);
+    // The `from` and `to` properties contain the index of the item
+    // when the drag started and ended, respectively
+    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+
+    // Finish the reorder and position the item in the DOM based on
+    // where the gesture ended. This method can also be called directly
+    // by the reorder group
+    ev.detail.complete();
   }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
@@ -273,7 +292,7 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageSort(event.sorts);
   }
   rearrange(event) {
-    console.log('event::::::', event);
+    console.log('event::::::rearrange', event);
     const arr = this.array_move(this.columns, event.prevValue, event.newValue);
     this.setLocalStorageDrag(arr);
   }
