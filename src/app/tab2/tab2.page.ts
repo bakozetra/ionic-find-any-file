@@ -1,6 +1,7 @@
 import { ItemReorderEventDetail, Platform } from '@ionic/angular';
 import { element } from 'protractor';
 import { HttpClient } from '@angular/common/http';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   Component,
   ViewEncapsulation,
@@ -108,18 +109,6 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
-  }
-
-  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-    console.log('ev::::::', ev);
-    // The `from` and `to` properties contain the index of the item
-    // when the drag started and ended, respectively
-    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
-
-    // Finish the reorder and position the item in the DOM based on
-    // where the gesture ended. This method can also be called directly
-    // by the reorder group
-    ev.detail.complete();
   }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
@@ -293,6 +282,8 @@ export class Tab2Page implements OnInit {
   }
   rearrange(event) {
     console.log('event::::::rearrange', event);
+    console.log('event.prevValue::::::', event.prevValue);
+    console.log('event.newValue::::::', event.newValue);
     const arr = this.array_move(this.columns, event.prevValue, event.newValue);
     this.setLocalStorageDrag(arr);
   }
@@ -359,5 +350,21 @@ export class Tab2Page implements OnInit {
       }
     }
     console.log('columnsWidth::::::', columnsWidth);
+  }
+  timePeriods = [
+    'Bronze age',
+    'Iron age',
+    'Middle ages',
+    'Early modern period',
+    'Long nineteenth century',
+  ];
+
+  drop(event: CdkDragDrop<string[]>) {
+    const arr = this.array_move(
+      this.columns,
+      event.previousIndex,
+      event.currentIndex
+    );
+    this.setLocalStorageDrag(arr);
   }
 }

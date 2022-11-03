@@ -8,6 +8,7 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { Tab2PageRoutingModule } from './tab2-routing.module';
 import { ObserversModule } from '@angular/cdk/observers';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ObserversModule } from '@angular/cdk/observers';
     Tab2PageRoutingModule,
     NgxDatatableModule,
     ObserversModule,
+    DragDropModule,
   ],
   declarations: [Tab2Page],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

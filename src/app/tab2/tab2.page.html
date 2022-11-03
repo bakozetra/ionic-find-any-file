@@ -40,6 +40,9 @@
       (resize)="resize($event)"
       [swapColumns]="true"
       (cdkObserveContent)="adjustColumnMinWidth()"
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)"
     >
       <ngx-datatable-column
         [name]="column.name"
@@ -52,37 +55,23 @@
         [flexGrow]="0"
         id="class3"
         [draggable]="true"
+        [canAutoResize]="true"
       >
-        <!-- [canAutoResize]="true" -->
         <ng-template
           let-column="column"
           let-sort="sortFn"
           ngx-datatable-header-template
         >
-          <!-- <ion-reorder-group
-            class="datatable-header-cell-wrapper"
-            style="height: 100px"
-            (ionItemReorder)="handleReorder($any($event))"
-            [disabled]="false"
-          > -->
-          <!-- <ion-reorder
-              class="datatable-header-cell-label draggable"
-              (click)="sort($event)"
-              [attr.aria-label]="column.name"
-            > -->
-          <span class="datatable-header-cell-wrapper" style="height: 100px">
+          <span style="height: 100px" class="datatable-header-cell-wrapper">
             <span
-              class="datatable-header-cell-label draggable"
+              class="datatable-header-cell-label draggable example-box"
               (click)="sort($event)"
               [attr.aria-label]="column.name"
-            ></span>
+              cdkDrag
+            >
+              {{ column.name }}
+            </span>
           </span>
-          {{ column.name }}
-          <!-- </span> -->
-          <!-- (drop)="ondrop($event)"
-              (dragover)="allowDrop($event)" -->
-          <!-- </ion-reorder> -->
-          <!-- </ion-reorder-group> -->
         </ng-template>
         <ng-template
           let-value="value"
@@ -99,7 +88,6 @@
               [class]="this.rowHeight === undefined ? '' : 'heightResize'"
             />
           </div>
-          <!-- <div *ngIf="desktopPlatforme == true else Mobile"> -->
           <div *ngIf="column.name !== 'Image'">
             <div
               style="white-space: pre"
@@ -119,49 +107,9 @@
               [ngStyle]="{width:'100%', minHeight:'auto'}"
             >
             </textarea>
-            <!-- height: calc(100% - 50px) -->
           </div>
-          <!-- </div> -->
-          <!-- <ng-template #Mobile>
-            <div *ngIf="column.name !== 'Image'">
-              <div
-                style="white-space: pre"
-                (click)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
-                *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
-                [attr.aria-label]="value"
-                [draggable]="true"
-              >
-                {{value}}
-              </div>
-              <textarea
-                autofocus
-                (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
-                *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
-                type="text"
-                [value]="value"
-                [ngStyle]="{width:'100%', minHeight:'auto'}"
-              >
-              </textarea>
-            </div>
-          </ng-template> -->
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
   </div>
-  <!-- <ion-reorder-group
-    class="datatable-header-cell-wrapper"
-    style="height: 100px"
-    (ionItemReorder)="handleReorder($any($event))"
-    [disabled]="false"
-  >
-    <ion-reorder class="datatable-header-cell-label draggable">
-      <ion-item> Item1 </ion-item>
-    </ion-reorder>
-    <ion-reorder class="datatable-header-cell-label draggable">
-      <ion-item> Item2 </ion-item>
-    </ion-reorder>
-    <ion-reorder class="datatable-header-cell-label draggable">
-      <ion-item> Item3 </ion-item>
-    </ion-reorder>
-  </ion-reorder-group> -->
 </ion-content>
