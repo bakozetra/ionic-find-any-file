@@ -39,6 +39,9 @@ const INITIALCOLUMNS = [
   encapsulation: ViewEncapsulation.None,
 })
 export class Tab2Page implements OnInit {
+  scrollcontent($event: any) {
+    console.log('$event::::::scrollcontent', $event);
+  }
   allowDrop($event: DragEvent) {
     console.log('$event::::::allowDrop', $event);
   }
@@ -109,6 +112,14 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
+  }
+  // @HostListener('document:scroll', ['$event']) onScoll(e) {
+  //   console.log('e::::::document:scroll', e);
+  // }
+  @HostListener('document:scroll', [])
+  onWindowScroll(ee) {
+    console.log('ee::::::', ee);
+    console.log(window.scrollY);
   }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
@@ -360,6 +371,7 @@ export class Tab2Page implements OnInit {
   ];
 
   drop(event: CdkDragDrop<string[]>) {
+    console.log('event::::::drop', event);
     const arr = this.array_move(
       this.columns,
       event.previousIndex,

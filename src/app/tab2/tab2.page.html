@@ -25,7 +25,7 @@
 <ion-content>
   <div class="ion-padding" style="width: 100%">
     <ngx-datatable
-      class="material"
+      class="material server-scrolling-demo"
       [limit]="8"
       [rows]="rows"
       [columns]="columns"
@@ -43,12 +43,13 @@
       cdkDropList
       cdkDropListOrientation="horizontal"
       (cdkDropListDropped)="drop($event)"
+      (scroll)="scrollcontent($event)"
     >
+      <!-- [cellClass]="column.name === 'Image' ? 'class1' : 'class2'" -->
       <ngx-datatable-column
         [name]="column.name"
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
-        [cellClass]="column.name === 'Image' ? 'class1' : 'class2'"
         [minWidth]="column.minWidth"
         [width]="0"
         [canAutoResize]="true"
@@ -56,18 +57,35 @@
         id="class3"
         [draggable]="true"
         [canAutoResize]="true"
+        style="overflow-y: auto"
       >
         <ng-template
           let-column="column"
           let-sort="sortFn"
           ngx-datatable-header-template
         >
-          <span style="height: 100px" class="datatable-header-cell-wrapper">
+          <span
+            style="height: 100px"
+            class="datatable-header-cell-wrapper"
+            *ngIf="mobilePlatforme else deskTop "
+            cdkScrollable
+          >
             <span
               class="datatable-header-cell-label draggable example-box"
               (click)="sort($event)"
               [attr.aria-label]="column.name"
               cdkDrag
+            >
+              {{ column.name }}
+            </span>
+          </span>
+        </ng-template>
+        <ng-template #deskTop>
+          <span style="height: 100px" class="datatable-header-cell-wrapper">
+            <span
+              class="datatable-header-cell-label draggable"
+              (click)="sort($event)"
+              [attr.aria-label]="column.name"
             >
               {{ column.name }}
             </span>
@@ -112,4 +130,5 @@
       </ngx-datatable-column>
     </ngx-datatable>
   </div>
+  <!-- <ion-content > ... </ion-content> -->
 </ion-content>
