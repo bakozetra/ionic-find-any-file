@@ -43,9 +43,7 @@
       cdkDropList
       cdkDropListOrientation="horizontal"
       (cdkDropListDropped)="drop($event)"
-      (scroll)="scrollcontent($event)"
     >
-      <!-- [cellClass]="column.name === 'Image' ? 'class1' : 'class2'" -->
       <ngx-datatable-column
         [name]="column.name"
         [prop]="column.name |lowercase"

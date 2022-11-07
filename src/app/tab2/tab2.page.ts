@@ -39,16 +39,16 @@ const INITIALCOLUMNS = [
   encapsulation: ViewEncapsulation.None,
 })
 export class Tab2Page implements OnInit {
-  scrollcontent($event: any) {
-    console.log('$event::::::scrollcontent', $event);
-  }
-  allowDrop($event: DragEvent) {
-    console.log('$event::::::allowDrop', $event);
-  }
-  ondrop($event: DragEvent) {
-    // throw new Error('Method not implemented.');
-    console.log('$event::::::ondrop', $event);
-  }
+  // scrollcontent($event: any) {
+  //   console.log('$event::::::scrollcontent', $event);
+  // }
+  // allowDrop($event: DragEvent) {
+  //   console.log('$event::::::allowDrop', $event);
+  // }
+  // ondrop($event: DragEvent) {
+  //   // throw new Error('Method not implemented.');
+  //   console.log('$event::::::ondrop', $event);
+  // }
   public data: Data;
   public columns: any;
   public tempColumns: any;
@@ -116,16 +116,16 @@ export class Tab2Page implements OnInit {
   // @HostListener('document:scroll', ['$event']) onScoll(e) {
   //   console.log('e::::::document:scroll', e);
   // }
-  @HostListener('document:scroll', [])
-  onWindowScroll(ee) {
-    console.log('ee::::::', ee);
-    console.log(window.scrollY);
-  }
+  // @HostListener('document:scroll', [])
+  // onWindowScroll(ee) {
+  //   console.log('ee::::::', ee);
+  //   console.log(window.scrollY);
+  // }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
     e.stopPropagation();
-    console.log('e::::::pointerdown', e);
-    console.log('e?.target::::::', e?.target?.style.width);
+    // console.log('e::::::pointerdown', e);
+    // console.log('e?.target::::::', e?.target?.style.width);
     const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
     )?.innerHTML;
@@ -137,30 +137,30 @@ export class Tab2Page implements OnInit {
         console.log('c.name::::::', c.name, columnName);
         return c.name.trim() === columnName.trim();
       });
-      let columnWidth = e?.target?.parentNode;
-      console.log(
-        'resizedCol.minWidth < columnWidth.style.width::::::',
-        resizedCol.minWidth > parseInt(columnWidth.style.width)
-      );
-      console.log(
-        'columnWidth::::::resizedCol.minWidth',
-        resizedCol.minWidth,
-        parseInt(columnWidth.style.width)
-      );
-      if (resizedCol.minWidth > parseInt(columnWidth.style.width)) {
-        columnWidth.style.width = resizedCol.minWidth + 'px';
-        columnWidth.style.minWidth = '0px';
+      // let columnWidth = e?.target?.parentNode;
+      // console.log(
+      //   'resizedCol.minWidth < columnWidth.style.width::::::',
+      //   resizedCol.minWidth > parseInt(columnWidth.style.width)
+      // );
+      // console.log(
+      //   'columnWidth::::::resizedCol.minWidth',
+      //   resizedCol.minWidth,
+      //   parseInt(columnWidth.style.width)
+      // );
+      // if (resizedCol.minWidth > parseInt(columnWidth.style.width)) {
+      //   columnWidth.style.width = resizedCol.minWidth + 'px';
+      //   columnWidth.style.minWidth = '0px';
 
-        console.log(
-          'columnWidth.style.minWidth::::::',
-          columnWidth.style.minWidth,
-          resizedCol.minWidth
-        );
-      }
+      //   console.log(
+      //     'columnWidth.style.minWidth::::::',
+      //     columnWidth.style.minWidth,
+      //     resizedCol.minWidth
+      //   );
+      // }
 
-      if (resizedCol.minWidth < parseInt(columnWidth.style.width)) {
-        resizedCol.minWidth = 0;
-      }
+      // if (resizedCol.minWidth < parseInt(columnWidth.style.width)) {
+      // }
+      resizedCol.minWidth = 0;
     }
   }
 
@@ -245,12 +245,12 @@ export class Tab2Page implements OnInit {
         return c.name === e.column.name;
       });
       resizedCol.minWidth = 0;
-      e.column.width = e.newValue;
+      // e.column.width = e.newValue;
       console.log('e.column.width::::::', e.column.width);
     }
-    this.ignoreFitContent.forEach((value) => {
-      console.log('value::::::resize', value);
-    });
+    // this.ignoreFitContent.forEach((value) => {
+    //   console.log('value::::::resize', value);
+    // });
   }
 
   updateFilter(e) {
