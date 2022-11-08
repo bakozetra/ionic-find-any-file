@@ -43,6 +43,8 @@
       cdkDropList
       cdkDropListOrientation="horizontal"
       (cdkDropListDropped)="drop($event)"
+      (scroll)="onChange($event)"
+      id="container"
     >
       <ngx-datatable-column
         [name]="column.name"
@@ -66,8 +68,8 @@
             style="height: 100px"
             class="datatable-header-cell-wrapper"
             *ngIf="mobilePlatforme else deskTop "
-            cdkScrollable
           >
+            <!-- ()="onDragMoved($event)" -->
             <span
               class="datatable-header-cell-label draggable example-box"
               (click)="sort($event)"

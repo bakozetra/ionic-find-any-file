@@ -1,7 +1,11 @@
 import { ItemReorderEventDetail, Platform } from '@ionic/angular';
 import { element } from 'protractor';
 import { HttpClient } from '@angular/common/http';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  CdkDragMove,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 import {
   Component,
   ViewEncapsulation,
@@ -39,6 +43,9 @@ const INITIALCOLUMNS = [
   encapsulation: ViewEncapsulation.None,
 })
 export class Tab2Page implements OnInit {
+  onChange($event: any) {
+    console.log('$event::::::onChange', $event);
+  }
   // scrollcontent($event: any) {
   //   console.log('$event::::::scrollcontent', $event);
   // }
@@ -126,42 +133,49 @@ export class Tab2Page implements OnInit {
     e.stopPropagation();
     // console.log('e::::::pointerdown', e);
     // console.log('e?.target::::::', e?.target?.style.width);
+
     const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
     )?.innerHTML;
     console.log('columnName::::::pointerdown', columnName);
-    if (columnName) {
+
+    if (!columnName) {
       this.ignoreFitContent.add(columnName.trim());
       const resizedCol = this.columns.find((c) => {
-        console.log('c::::::c.width', c.width);
+        console.log('c::::::c.width', c.name);
         console.log('c.name::::::', c.name, columnName);
+        console.log(
+          'c.name.trim() === columnName.trim()::::::',
+          c.name.trim() === columnName.trim()
+        );
         return c.name.trim() === columnName.trim();
       });
-      // let columnWidth = e?.target?.parentNode;
-      // console.log(
-      //   'resizedCol.minWidth < columnWidth.style.width::::::',
-      //   resizedCol.minWidth > parseInt(columnWidth.style.width)
-      // );
-      // console.log(
-      //   'columnWidth::::::resizedCol.minWidth',
-      //   resizedCol.minWidth,
-      //   parseInt(columnWidth.style.width)
-      // );
-      // if (resizedCol.minWidth > parseInt(columnWidth.style.width)) {
-      //   columnWidth.style.width = resizedCol.minWidth + 'px';
-      //   columnWidth.style.minWidth = '0px';
-
-      //   console.log(
-      //     'columnWidth.style.minWidth::::::',
-      //     columnWidth.style.minWidth,
-      //     resizedCol.minWidth
-      //   );
-      // }
-
-      // if (resizedCol.minWidth < parseInt(columnWidth.style.width)) {
-      // }
       resizedCol.minWidth = 0;
     }
+
+    // if (columnName) {
+    // let columnWidth = e?.target?.parentNode;
+    // console.log(
+    //   'resizedCol.minWidth < columnWidth.style.width::::::',
+    //   resizedCol.minWidth > parseInt(columnWidth.style.width)
+    // );
+    // console.log(
+    //   'columnWidth::::::resizedCol.minWidth',
+    //   resizedCol.minWidth,
+    //   parseInt(columnWidth.style.width)
+    // );
+    // if (resizedCol.minWidth > parseInt(columnWidth.style.width)) {
+    //   columnWidth.style.width = resizedCol.minWidth + 'px';
+    //   columnWidth.style.minWidth = '0px';
+    //   console.log(
+    //     'columnWidth.style.minWidth::::::',
+    //     columnWidth.style.minWidth,
+    //     resizedCol.minWidth
+    //   );
+    // }
+    // if (resizedCol.minWidth < parseInt(columnWidth.style.width)) {
+    // }
+    // }
   }
 
   setLocalStorageChages(data) {
@@ -242,11 +256,11 @@ export class Tab2Page implements OnInit {
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
       const resizedCol = this.columns.find((c) => {
+        console.log('c.name === e.column.name::::::', c.name === e.column.name);
         return c.name === e.column.name;
       });
       resizedCol.minWidth = 0;
-      // e.column.width = e.newValue;
-      console.log('e.column.width::::::', e.column.width);
+      // console.log('e.column.width::::::', e.column.width);
     }
     // this.ignoreFitContent.forEach((value) => {
     //   console.log('value::::::resize', value);
@@ -324,7 +338,15 @@ export class Tab2Page implements OnInit {
   adjustColumnMinWidth() {
     console.log('adjustColumnMinWidth::::::');
     const element = this.elementRef.nativeElement as HTMLElement;
+
     const rows = element.getElementsByTagName('datatable-body-row');
+    // const test = element.getElementsByTagName('datatable-header');
+    // document.getElement('datatable-header').style
+    const headerelement = document.querySelector<HTMLElement>('#container');
+    headerelement.style.scrollSnapType = 'x';
+    console.log('headerelement::::::', headerelement);
+
+    // test.style.paddingRight = child.offsetWidth - child.clientWidth + "px";
     let columnsWidth = {};
     this.ignoreFitContent.forEach((val) => {
       console.log('val::::::', val);
@@ -341,7 +363,7 @@ export class Tab2Page implements OnInit {
         console.log('cellSizer::::::', cellSizer);
         try {
           var range = document.createRange();
-          range.selectNode(cellSizer);
+          range?.selectNode(cellSizer);
           var rect = range.getBoundingClientRect().width;
           range.detach();
           if (!(k in columnsWidth)) {
@@ -362,13 +384,6 @@ export class Tab2Page implements OnInit {
     }
     console.log('columnsWidth::::::', columnsWidth);
   }
-  timePeriods = [
-    'Bronze age',
-    'Iron age',
-    'Middle ages',
-    'Early modern period',
-    'Long nineteenth century',
-  ];
 
   drop(event: CdkDragDrop<string[]>) {
     console.log('event::::::drop', event);
@@ -378,5 +393,9 @@ export class Tab2Page implements OnInit {
       event.currentIndex
     );
     this.setLocalStorageDrag(arr);
+    // console.log('window.scrollY ::::::', window.scrollY);
   }
+  // onDragMoved(event: CdkDragMove<any>) {
+  //   console.log('event::::::onDragMoved', event);
+  // }
 }

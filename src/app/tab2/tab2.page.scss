@@ -91,6 +91,7 @@
     cursor: move;
     flex-grow: 1;
     flex-basis: 0;
+    overflow-x: scroll !important;
 }
 // display: flex;
 // font-size: 14px;
@@ -130,3 +131,23 @@
 // .ngx-datatable.scroll-vertical .datatable-body {
 //     overflow-y: scroll !important;
 // }
+
+// .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
+//     overflow-x: auto;
+// }
+.ngx-datatable.material .datatable-header {
+    overflow: overlay;
+}
+
+.ngx-datatable.materia {
+    scroll-snap-type: x;
+}
+#cdk-drop-list-0 {
+    scroll-snap-type: x;
+    scroll-snap-type: x mandatory;
+}
+
+// .server-scrolling-demo {
+//     scroll-snap-type: x;
+// }
+// scroll-snap-type: none;
