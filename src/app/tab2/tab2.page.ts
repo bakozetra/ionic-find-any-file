@@ -360,7 +360,7 @@ export class Tab2Page implements OnInit {
 
     element1.addEventListener('touchstart', (event) => {
       console.log('event::::::element1', event);
-      if (event.touches.length === 2) {
+      if (event.touches.length === 1) {
         event.preventDefault();
         lastTouchY = event.touches[0].clientX;
       }
@@ -368,11 +368,15 @@ export class Tab2Page implements OnInit {
 
     element1.addEventListener('touchmove', (event) => {
       console.log('event::::::touchmove', event);
-      if (event.touches.length === 2) {
-        event.preventDefault();
+      console.log('event.touches.length::::::', event.touches.length);
+      if (event.touches.length === 1) {
+        // event.preventDefault();
+        console.log('lastTouchY::::::', lastTouchY);
         const delta = lastTouchY - event.touches[0].clientX;
+        console.log('event.touches[0].clientX::::::', event.touches[0].clientX);
+        console.log('delta::::::', delta);
         lastTouchY = event.touches[0].clientX;
-        element.scrollTop += delta;
+        element.scrollLeft += delta;
         console.log(element.scrollTo);
       }
     });
@@ -399,4 +403,5 @@ export class Tab2Page implements OnInit {
   //   console.log('event::::::onMousemove', event);
   //   // window.scrollTo(document.body.scrollLeft + (curXPos - e.pageX);
   // }
+  currentlyLoadedPage = 0;
 }
