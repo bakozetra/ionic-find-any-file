@@ -123,32 +123,6 @@ export class Tab2Page implements OnInit {
       });
       resizedCol.minWidth = 0;
     }
-    // if (!columnName) {
-    // }
-
-    // if (columnName) {
-    // let columnWidth = e?.target?.parentNode;
-    // console.log(
-    //   'resizedCol.minWidth < columnWidth.style.width::::::',
-    //   resizedCol.minWidth > parseInt(columnWidth.style.width)
-    // );
-    // console.log(
-    //   'columnWidth::::::resizedCol.minWidth',
-    //   resizedCol.minWidth,
-    //   parseInt(columnWidth.style.width)
-    // );
-    // if (resizedCol.minWidth > parseInt(columnWidth.style.width)) {
-    //   columnWidth.style.width = resizedCol.minWidth + 'px';
-    //   columnWidth.style.minWidth = '0px';
-    //   console.log(
-    //     'columnWidth.style.minWidth::::::',
-    //     columnWidth.style.minWidth,
-    //     resizedCol.minWidth
-    //   );
-    // }
-    // if (resizedCol.minWidth < parseInt(columnWidth.style.width)) {
-    // }
-    // }
   }
 
   setLocalStorageChages(data) {
