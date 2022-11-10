@@ -316,9 +316,6 @@ export class Tab2Page implements OnInit {
     // document.getElement('datatable-header').style
     const headerelement = document.querySelector<HTMLElement>('#container');
     headerelement.style.scrollSnapType = 'x';
-    // console.log('headerelement::::::', headerelement);
-
-    // test.style.paddingRight = child.offsetWidth - child.clientWidth + "px";
     let columnsWidth = {};
     // this.ignoreFitContent.forEach((val) => {
     //   console.log('val::::::', val);
