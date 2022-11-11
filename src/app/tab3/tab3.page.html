@@ -60,7 +60,16 @@
       <span *ngIf="s.selected;" id="`${{s.id}}`">{{s.value }} </span>
     </ion-text>
   </div>
-  <!-- <div class="ui-elements">
+  <div class="ui-elements">
+    <app-button
+      [buttonTextTooltip]="tooltipsTranslate.buttonTooltip"
+      buttonText="button from component"
+    >
+      (mouseenter)="handlesentenceHover($event)"
+      (click)="onSelectSentences(s.id)" >
+    </app-button>
+  </div>
+  <div class="ui-elements">
     <ion-title>Button</ion-title>
     <app-button
       [buttonTextTooltip]="tooltipsTranslate.buttonTooltip"
@@ -89,10 +98,10 @@
       [dropboxesTooltipTextPet]="tooltipsTranslate.dropTooltipTextPet"
     ></app-drop-boxes>
     <ion-title> Radio button</ion-title>
-    <app-radiio-buttons
+    <app-radio-buttons
       [friensTooltipText]="tooltipsTranslate.radiofriensTooltipText"
       [familyTooltipText]="tooltipsTranslate.radiofamilyTooltipText"
       [enemiesTooltipText]="tooltipsTranslate.radioenemiesTooltipText"
-    ></app-radiio-buttons>
-  </div> -->
+    ></app-radio-buttons>
+  </div>
 </ion-content>

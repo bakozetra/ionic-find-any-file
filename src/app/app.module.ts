@@ -25,6 +25,10 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateConfigService } from './translate-config.service';
 import { HttpClient } from '@angular/common/http';
+import { ComponentModule } from './component/component.module';
+// import { ButtonComponent } from './component/button/button.component';
+// import { ButtonComponent } from './component/button/button.component';
+// import { ImageComponent } from './component/image/image.component';
 export function LanguageLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
@@ -53,6 +57,7 @@ export function LanguageLoader(http: HttpClient) {
     }),
     NgxDaterangepickerMd.forRoot(),
     NgxDatatableModule,
+    ComponentModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
