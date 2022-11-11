@@ -8,6 +8,13 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 
 import { Tab3PageRoutingModule } from './tab3-routing.module';
 
+// import { HomePageRoutingModule } from './home-routing.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
+// import { ComponentModule } from '../component/component.module';
+import { MyCommonModule } from '../tooltip/tooltip.module';
+
 @NgModule({
   imports: [
     IonicModule,
@@ -16,7 +23,26 @@ import { Tab3PageRoutingModule } from './tab3-routing.module';
     ExploreContainerComponentModule,
     RouterModule.forChild([{ path: '', component: Tab3Page }]),
     Tab3PageRoutingModule,
+    MatTooltipModule,
+    TranslateModule,
+    NgbModule,
+    MyCommonModule,
   ],
-  declarations: [Tab3Page]
+  declarations: [Tab3Page],
 })
 export class Tab3PageModule {}
+
+// @NgModule({
+//   imports: [
+//     CommonModule,
+//     FormsModule,
+//     IonicModule,
+//     MatTooltipModule,
+//     NgbModule,
+//     TranslateModule,
+//     MyCommonModule,
+//     ComponentModule,
+//   ],
+//   declarations: [HomePage],
+// })
+// export class HomePageModule {}

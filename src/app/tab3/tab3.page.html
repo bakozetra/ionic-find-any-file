@@ -1,17 +1,98 @@
-<ion-header [translucent]="true">
+<ion-header collapse="fade">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title>{{ "HOME.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content
+  [fullscreen]="true"
+  class="container"
+  [scrollEvents]="true"
+  (ionScroll)="ionScrolling()"
+>
+  <div class="content">
+    <ion-title> date:17th and version:5</ion-title>
+    <ion-list>
+      <ion-item>
+        <ion-select
+          placeholder="Select One"
+          [(ngModel)]="selectedLanguage"
+          (ionChange)="languageChanged()"
+        >
+          <ion-select-option value="en">English</ion-select-option>
+          <ion-select-option value="nor">Norwegian</ion-select-option>
+          <ion-select-option value="fr">French</ion-select-option>
+          <ion-select-option value="spa">Spanish</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <div>
+      <ion-button (click)="ionViewDidEnter($event)"
+        >{{ "HOME.buttonText" | translate }}</ion-button
+      >
+    </div>
+    <ion-text id="hove-button" *ngFor="let s of sentences">
+      <span
+        *ngIf="s.selected; else normal"
+        style="color: rgb(12, 187, 187)"
+        (mouseenter)="handlesentenceHover($event)"
+        [tooltip]="tooltipsTranslate.tooltipText"
+        wordsNumber=" {{wordsCount}}"
+        (click)="onSelectSentences(s.id)"
+        id="`${{s.id}}`"
+        >{{s.value }}
+      </span>
+      <ng-template #normal>
+        <span
+          (click)="onSelectSentences(s.id)"
+          (mouseenter)="handlesentenceHover($event)"
+          [tooltip]="tooltipsTranslate.tooltipText"
+          wordsNumber=" {{wordsCount}}"
+          id="`${{s.id}}`"
+          >{{s.value }}
+        </span></ng-template
+      >
+    </ion-text>
+    <ion-text *ngIf="desktopPlatform">
+      <h2>{{ "HOME.selectedTitle" | translate }} :</h2>
+    </ion-text>
+    <ion-text *ngFor="let s of sentences">
+      <span *ngIf="s.selected;" id="`${{s.id}}`">{{s.value }} </span>
+    </ion-text>
+  </div>
+  <!-- <div class="ui-elements">
+    <ion-title>Button</ion-title>
+    <app-button
+      [buttonTextTooltip]="tooltipsTranslate.buttonTooltip"
+      buttonText="button from component"
+    >
+      (mouseenter)="handlesentenceHover($event)"
+      (click)="onSelectSentences(s.id)" >
+    </app-button>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+    <ion-title>Image</ion-title>
+
+    <app-image
+      [imageTextTooltip]="tooltipsTranslate.imageTooltip"
+      imageUrl="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+    >
+    </app-image>
+    <ion-title>Label</ion-title>
+
+    <app-label
+      [labelTooltipText]="tooltipsTranslate.labelTooltip"
+      label="label text"
+    ></app-label>
+    <ion-title>drop boxes</ion-title>
+    <app-drop-boxes
+      [dropboxesTooltipTextTop]="tooltipsTranslate.dropTooltipTextTop"
+      [dropboxesTooltipTextPet]="tooltipsTranslate.dropTooltipTextPet"
+    ></app-drop-boxes>
+    <ion-title> Radio button</ion-title>
+    <app-radiio-buttons
+      [friensTooltipText]="tooltipsTranslate.radiofriensTooltipText"
+      [familyTooltipText]="tooltipsTranslate.radiofamilyTooltipText"
+      [enemiesTooltipText]="tooltipsTranslate.radioenemiesTooltipText"
+    ></app-radiio-buttons>
+  </div> -->
 </ion-content>

@@ -1,0 +1,31 @@
+{
+    "HOME": {
+        "title": "Word count with tooltip",
+        "buttonText" : "Generate text",
+        "selectedTitle": "selected"
+    },
+
+  "TOOLTIPSTEXT" : {
+     "buttonTooltip" : "button",
+     "imageTooltip" : "Image",
+     "labelTooltip" : "label",
+     "tooltipText":"Count words",
+     "dropTooltipTextTop":"Choose topping",
+     "dropTooltipTextPet":"Choose pet",
+     "radiofriensTooltipText": "Friends",
+     "radiofamilyTooltipText": "Family",
+     "radioenemiesTooltipText": "Enemies"
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+

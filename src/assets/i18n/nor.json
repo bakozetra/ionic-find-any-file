@@ -1,0 +1,19 @@
+{
+    "HOME": {
+        "title": "Ordtelling med verktøytips",
+        "buttonText" :"generere tekst",
+        "selectedTitle": "valgt"
+    },
+    "TOOLTIPSTEXT" : {
+        "buttonTooltip" : "knapp",
+        "imageTooltip" : "Bilde",
+        "labelTooltip" : "merkelapp",
+        "tooltipText":"Telle ord",
+        "dropTooltipTextTop":"Velg topping",
+        "dropTooltipTextPet":"Velg kjæledyr",
+        "radiofriensTooltipText": "Venner",
+        "radiofamilyTooltipText": "Familie",
+        "radioenemiesTooltipText": "Fiender"
+
+     }
+}

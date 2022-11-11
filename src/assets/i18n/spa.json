@@ -1,0 +1,20 @@
+
+{
+    "HOME": {
+        "title": "Recuento de palabras con información sobre herramientas",
+        "buttonText" : "Generar texto",
+        "selectedTitle": "Contar"
+    },
+    "TOOLTIPSTEXT" : {
+        "buttonTooltip" : "botón",
+        "imageTooltip" : "Imagen",
+        "labelTooltip" : "etiqueta",
+        "tooltipText":"cuenta las palabras",
+        "dropTooltipTextTop":"elegir cobertura",
+        "dropTooltipTextPet":"elegir mascota",
+        "radiofriensTooltipText": "Amigos",
+        "radiofamilyTooltipText": "Familia",
+        "radioenemiesTooltipText": "Enemigos"
+     }
+}
+

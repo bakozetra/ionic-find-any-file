@@ -136,17 +136,17 @@
 // .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
 //     overflow-x: auto;
 // }
-// .ngx-datatable.material .datatable-header {
-//     overflow: overlay;
-// }
+.ngx-datatable.material .datatable-header {
+    overflow: overlay;
+}
 
-// .ngx-datatable.material {
-//     scroll-snap-type: x;
-// }
-// #cdk-drop-list-0 {
-//     scroll-snap-type: x;
-//     scroll-snap-type: x mandatory;
-// }
+.ngx-datatable.material {
+    scroll-snap-type: x;
+}
+#cdk-drop-list-0 {
+    scroll-snap-type: x;
+    scroll-snap-type: x mandatory;
+}
 
 // .server-scrolling-demo {
 //     scroll-snap-type: x;

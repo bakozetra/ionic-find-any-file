@@ -1,0 +1,36 @@
+.container {
+    width: 100%;
+    .content {
+        width: 80%;
+        margin: auto;
+    }
+    #hove-button {
+        .wordsSelect {
+            color: rgb(12, 187, 187);
+        }
+        span:hover {
+            background-color: greenyellow;
+        }
+    }
+}
+
+span {
+    display: inline-block;
+}
+
+.ui-elements {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    line-height: 3;
+    align-items: stretch;
+    justify-content: space-around;
+
+    ion-title {
+        padding: 0;
+        color: blueviolet;
+        padding-top: 2rem;
+    }
+}

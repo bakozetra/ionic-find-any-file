@@ -110,6 +110,14 @@ export class Tab2Page implements OnInit {
     });
   }
 
+  @HostListener('scroll') onScrollHost(e: Event): void {
+    console.log('this.getYPosition(e)', this.getYPosition(e));
+  }
+
+  getYPosition(e: Event): number {
+    return (e.target as Element).scrollTop;
+  }
+
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
     e.stopPropagation();
     const columnName = e?.target?.parentNode?.querySelector(

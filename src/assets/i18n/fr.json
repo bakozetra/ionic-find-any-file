@@ -1,0 +1,20 @@
+{
+    "HOME": {
+        "title": "Nombre de mots avec info-bulle",
+        "buttonText" : "bouton générer",
+        "selectedTitle": "choisi"
+    },
+
+    "TOOLTIPSTEXT" : {
+        "buttonTooltip" : "bouton",
+        "imageTooltip" : "Image",
+        "labelTooltip" : "étiquette",
+        "tooltipText" :"Compter les mots",
+        "dropTooltipTextTop":"Choisissez la garniture",
+        "dropTooltipTextPet":"Choisissez un animal de compagnie",
+        "radiofriensTooltipText": "Amis",
+        "radiofamilyTooltipText": "Famille",
+        "radioenemiesTooltipText": "Ennemis"
+     }
+      
+}
