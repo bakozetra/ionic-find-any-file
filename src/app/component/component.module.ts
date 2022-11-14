@@ -9,6 +9,7 @@ import { DropBoxesComponent } from './drop-boxes/drop-boxes.component';
 import { RadioButtonsComponent } from './radio-buttons/radio-buttons.component';
 import { ImageComponent } from './image/image.component';
 import { LabelComponent } from './label/label.component';
+import { StandarButtonComponent } from './standar-button/standar-button.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { LabelComponent } from './label/label.component';
     ButtonComponent,
     DropBoxesComponent,
     RadioButtonsComponent,
+    StandarButtonComponent,
   ],
   exports: [
     ImageComponent,
@@ -24,6 +26,7 @@ import { LabelComponent } from './label/label.component';
     ButtonComponent,
     DropBoxesComponent,
     RadioButtonsComponent,
+    StandarButtonComponent,
   ],
 
   imports: [

@@ -137,4 +137,9 @@ export class Tab3Page {
         this.tooltipsTranslate = val;
       });
   }
+  addItem(newItem) {
+    console.log('newItem::::::', newItem);
+
+    // this.items.push(newItem);
+  }
 }
