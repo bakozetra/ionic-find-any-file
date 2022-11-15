@@ -11,16 +11,17 @@ width: 98px;
 height: 28px;
 }
 
-
 ::ng-deep .standar-button:hover {
     --background: linear-gradient(128.11deg, #2D2E35 6.67%, #34393F 97.78%);
     --box-shadow: -3px -3px 9px #353B42, 1px 1px 5px #0D0E0F, inset 1px 1px 9px #2D2E35;
     --border-radius: 5px;
+    color: #C4CCCA;
     }
 ::ng-deep .standar-button:active {
     --background: linear-gradient(128.11deg, #2D2E35 6.67%, #34393F 97.78%);
     filter: drop-shadow(0px 1px 1px rgba(255, 255, 255, 0.4));
     --box-shadow: none;
+    color: #EDEDED;
 }
 
 .button-disabled {
