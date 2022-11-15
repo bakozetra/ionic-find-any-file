@@ -10,6 +10,9 @@ color: #939A98;
 width: 98px;
 height: 28px;
 }
+ion-button {
+    --ripple-color: transparent;
+}
 
 ::ng-deep .standar-button:hover {
     --background: linear-gradient(128.11deg, #2D2E35 6.67%, #34393F 97.78%);

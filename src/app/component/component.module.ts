@@ -10,6 +10,7 @@ import { RadioButtonsComponent } from './radio-buttons/radio-buttons.component';
 import { ImageComponent } from './image/image.component';
 import { LabelComponent } from './label/label.component';
 import { StandarButtonComponent } from './standar-button/standar-button.component';
+import { DropDownComponent } from './drop-down/drop-down.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { StandarButtonComponent } from './standar-button/standar-button.componen
     DropBoxesComponent,
     RadioButtonsComponent,
     StandarButtonComponent,
+    DropDownComponent,
   ],
   exports: [
     ImageComponent,
@@ -27,6 +29,7 @@ import { StandarButtonComponent } from './standar-button/standar-button.componen
     DropBoxesComponent,
     RadioButtonsComponent,
     StandarButtonComponent,
+    DropDownComponent,
   ],
 
   imports: [
