@@ -106,11 +106,14 @@
   </div>
   <div class="ui-elements">
     <h3>Button elements</h3>
-    <div style="background-color: #333333">
+    <div style="background-color: #2d2e35">
       <app-standar-button
         buttonText="Date"
-        (click)="addItem($event)"
+        (newItemEvent)="addItem($event)"
+        [disableButton]="disableValue"
       ></app-standar-button>
     </div>
   </div>
 </ion-content>
+
+<!-- (ionFocus)="ionfocus($event)" -->

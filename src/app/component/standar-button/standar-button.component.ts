@@ -7,13 +7,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class StandarButtonComponent implements OnInit {
   @Input() buttonText: string;
-  @Output() newItemEvent = new EventEmitter<string>();
+  @Output() newItemEvent = new EventEmitter();
+  buttonActive: boolean = true;
+  @Input() disableButton: any = false;
 
   constructor() {}
 
   ngOnInit(): void {}
-
-  clickButton(value) {
-    this.newItemEvent.emit(value);
+  clickButton() {
+    this.newItemEvent.emit(!this.disableButton);
   }
 }

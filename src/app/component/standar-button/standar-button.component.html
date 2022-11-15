@@ -1,3 +1,9 @@
-<ion-button class="standar-button" (click)="clickButton($event)">{{
+<ion-button class="standar-button" (ionChange)="clickButton()">{{
   buttonText
 }}</ion-button>
+<ion-button
+  class="standar-button"
+  (click)="clickButton()"
+  [disabled]="disableButton"
+  >{{ buttonText }}</ion-button
+>

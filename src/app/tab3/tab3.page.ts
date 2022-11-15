@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { element } from 'protractor';
+import { Component, HostListener } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 // import { TranslateConfigService } from '../translate-config.service';
 import { PopoverController, Platform } from '@ionic/angular';
@@ -137,9 +138,12 @@ export class Tab3Page {
         this.tooltipsTranslate = val;
       });
   }
-  addItem(newItem) {
-    console.log('newItem::::::', newItem);
-
-    // this.items.push(newItem);
+  disableValue;
+  addItem(event) {
+    // alert('helooo' + !event);
+    console.log('event::::::', event);
+    this.disableValue = event;
+    console.log('this.disableValue::::::', this.disableValue);
+    return event;
   }
 }
