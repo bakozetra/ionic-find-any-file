@@ -1,12 +1,27 @@
-<ion-item>
-  <ion-label>Categories</ion-label>
-  <ion-select multiple="true" title="Categories">
-    <ion-select-option value="bacon">Dailies</ion-select-option>
-    <ion-select-option value="olives">Trascript</ion-select-option>
-    <ion-select-option value="xcheese">Review</ion-select-option>
-    <ion-select-option value="peppers">Export</ion-select-option>
-  </ion-select>
-</ion-item>
+<ion-button id="hover-trigger">Categories</ion-button>
+<ion-popover trigger="hover-trigger" triggerAction="hover">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <a href="/"
+          ><ion-checkbox slot="start"></ion-checkbox> <span>Dailies</span></a
+        >
+      </ion-list>
+      <ion-list>
+        <a href="/">
+          <ion-checkbox slot="start"></ion-checkbox>
+          Trascript
+        </a></ion-list
+      >
+      <ion-list>
+        <a href="/"><ion-checkbox slot="start"></ion-checkbox> Review </a>
+      </ion-list>
+      <ion-list>
+        <a href="/"><ion-checkbox slot="start"> </ion-checkbox> Export</a>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
 
 <!-- <ion-menu contentId="main-content">
   <ion-header>

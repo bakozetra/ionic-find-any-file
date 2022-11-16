@@ -1,0 +1,26 @@
+a {
+  text-decoration: none;
+}
+ion-content {
+    background: linear-gradient(128.11deg, #2D2E35 6.67%, #242928 97.78%);
+border-radius: 5px;
+}
+ion-list {
+    background: linear-gradient(128.11deg, #2D2E35 6.67%, #242928 97.78%);
+border-radius: 5px;
+}
+ion-content::part(background) {
+    background: linear-gradient(128.11deg, #2D2E35 6.67%, #242928 97.78%);
+border-radius: 5px;
+}
+ion-checkbox::part(container){
+    background: linear-gradient(130.46deg, #26272B 12.58%, #34393F 93.19%);
+box-shadow: -5px -5px 20px #40464E, 4px 3px 19px #0D0E0F;
+border: none;
+--size : 1px;
+}
+ion-chekbox {
+    --size:1px;
+    /* --background-checked:red; */
+
+}
