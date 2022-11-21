@@ -1,13 +1,15 @@
 a {
   text-decoration: none;
+  color: #5C756E;
+  text-transform: uppercase;
 }
 ion-content {
     background: linear-gradient(128.11deg, #2D2E35 6.67%, #242928 97.78%);
-border-radius: 5px;
+/* border-radius: 5px; */
 }
 ion-list {
     background: linear-gradient(128.11deg, #2D2E35 6.67%, #242928 97.78%);
-border-radius: 5px;
+/* border-radius: 5px; */
 }
 ion-content::part(background) {
     background: linear-gradient(128.11deg, #2D2E35 6.67%, #242928 97.78%);
@@ -18,9 +20,36 @@ ion-checkbox::part(container){
 box-shadow: -5px -5px 20px #40464E, 4px 3px 19px #0D0E0F;
 border: none;
 --size : 1px;
+margin-right: 1rem;
+--checkmark-color:#5C756E;
+--checkmark-width:2px;
+--checkmark-height:2px;
+
+
 }
 ion-chekbox {
     --size:1px;
     /* --background-checked:red; */
+}
+span {
+    padding-left: 1rem;
+}
+.checkbox-checked .checkbox-inner { 
+    position: absolute;
+    top: 9px; 
+    left: 13px; 
+    height: 11px; 
+    width: 5 px
+    ; }
 
+ion-button {
+    --background: none;
+    outline: none;
+    --box-shadow: none;
+    --color: #5C756E;
+
+
+}
+ion-button::part(native) {
+    padding: 0;
 }

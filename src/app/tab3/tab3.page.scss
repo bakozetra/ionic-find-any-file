@@ -34,3 +34,11 @@ span {
         padding-top: 2rem;
     }
 }
+
+.checkbox-checked .checkbox-inner {
+    position: absolute;
+    top: 9px;
+    left: 13px;
+    height: 11px;
+    width: 5 px;
+}

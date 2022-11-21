@@ -120,6 +120,7 @@ export class Tab2Page implements OnInit {
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
     e.stopPropagation();
+    // console.log('e::::::stopPropagation', e);
     const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
     )?.innerHTML;
@@ -208,8 +209,14 @@ export class Tab2Page implements OnInit {
 
   resize(e) {
     // console.log('e::::::resize', e);
+    console.log('e?.column?.name::::::', e?.column);
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
+      this.ignoreFitContent.forEach((test) => {
+        if (test === e.column.name) {
+          console.log('test === e.column.name::::::', test === e.column.name);
+        }
+      });
       const resizedCol = this.columns.find((c) => {
         // console.log('c.name === e.column.name::::::', c.name === e.column.name);
         return c.name === e.column.name;
@@ -294,24 +301,30 @@ export class Tab2Page implements OnInit {
     console.log('adjustColumnMinWidth::::::');
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
-    // const test = element.getElementsByTagName('datatable-header');
-    // document.getElement('datatable-header').style
     const headerelement = document.querySelector<HTMLElement>('#container');
     headerelement.style.scrollSnapType = 'x';
     let columnsWidth = {};
-    // this.ignoreFitContent.forEach((val) => {
-    //   console.log('val::::::', val);
-    // });
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
+      console.log('cells::::::', cells);
       for (let k = 0; k < cells.length; k++) {
+        console.log('this.columns[k].name::::::', this.columns[k].name);
+        this.ignoreFitContent.forEach((test) => {
+          console.log('test::::::ignoreFitContent', test);
+          if (test === this.columns[k].name) {
+            return;
+          }
+        });
+        console.log(
+          'this.ignoreFitContent.has(this.columns[k].name)::::::',
+          this.ignoreFitContent.has(this.columns[k].name)
+        );
         if (this.ignoreFitContent.has(this.columns[k].name)) {
           return;
         }
-
         const cell = cells[k];
+        console.log('cell::::::', cell);
         const cellSizer = cell.children[0].children[0].children[0].lastChild;
-        // console.log('cellSizer::::::', cellSizer);
         try {
           var range = document.createRange();
           range?.selectNode(cellSizer);
@@ -324,46 +337,42 @@ export class Tab2Page implements OnInit {
           const newColumnWidth = Math.max(currentColunWidth, rect);
           columnsWidth[k] = newColumnWidth;
           this.columns[k].minWidth = newColumnWidth;
-          // console.log(
-          //   'this.columns[k].minWidth::::::',
-          //   this.columns[k].minWidth
-          // );
         } catch (e) {
           console.log('e::getting width error::::', e);
         }
       }
     }
-    const element1 = document.getElementById('container');
-    console.log('element1::::::', element1);
-    let lastTouchY;
+    // const element1 = document.getElementById('container');
+    // // console.log('element1::::::', element1);
+    // let lastTouchY;
 
-    element1.addEventListener('touchstart', (event) => {
-      console.log('event::::::element1', event);
-      if (event.touches.length === 1) {
-        event.preventDefault();
-        lastTouchY = event.touches[0].clientX;
-      }
-    });
+    // element1.addEventListener('touchstart', (event) => {
+    //   // console.log('event::::::element1', event);
+    //   if (event.touches.length === 1) {
+    //     event.preventDefault();
+    //     lastTouchY = event.touches[0].clientX;
+    //   }
+    // });
 
-    element1.addEventListener('touchmove', (event) => {
-      console.log('event::::::touchmove', event);
-      console.log('event.touches.length::::::', event.touches.length);
-      if (event.touches.length === 1) {
-        // event.preventDefault();
-        console.log('lastTouchY::::::', lastTouchY);
-        const delta = lastTouchY - event.touches[0].clientX;
-        console.log('event.touches[0].clientX::::::', event.touches[0].clientX);
-        console.log('delta::::::', delta);
-        lastTouchY = event.touches[0].clientX;
-        element.scrollLeft += delta;
-        console.log(element.scrollTo);
-      }
-    });
+    // element1.addEventListener('touchmove', (event) => {
+    //   // console.log('event::::::touchmove', event);
+    //   // console.log('event.touches.length::::::', event.touches.length);
+    //   if (event.touches.length === 1) {
+    //     // event.preventDefault();
+    //     // console.log('lastTouchY::::::', lastTouchY);
+    //     const delta = lastTouchY - event.touches[0].clientX;
+    //     // console.log('event.touches[0].clientX::::::', event.touches[0].clientX);
+    //     // console.log('delta::::::', delta);
+    //     lastTouchY = event.touches[0].clientX;
+    //     element.scrollLeft += delta;
+    //     // console.log(element.scrollTo);
+    //   }
+    // });
     // console.log('columnsWidth::::::', columnsWidth);
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log('event::::::drop', event);
+    // console.log('event::::::drop', event);
     const arr = this.array_move(
       this.columns,
       event.previousIndex,
@@ -376,7 +385,7 @@ export class Tab2Page implements OnInit {
   //   console.log('event::::::onDragMoved', event);
   // }
   test(e) {
-    console.log('e::::::test', e);
+    // console.log('e::::::test', e);
   }
   // @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
   //   console.log('event::::::onMousemove', event);
