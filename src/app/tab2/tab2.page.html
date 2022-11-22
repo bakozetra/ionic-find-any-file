@@ -51,7 +51,7 @@
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
         [minWidth]="column.minWidth"
-        [width]="0"
+        [width]="column?.width"
         [canAutoResize]="true"
         [flexGrow]="0"
         id="class3"
@@ -107,6 +107,8 @@
               [src]="value"
               style="width: 100%"
               [class]="this.rowHeight === undefined ? '' : 'heightResize'"
+              (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
+              *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
             />
           </div>
           <div *ngIf="column.name !== 'Image'">

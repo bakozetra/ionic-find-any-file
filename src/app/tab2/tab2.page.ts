@@ -31,10 +31,10 @@ export interface Data {
   movies: string;
 }
 const INITIALCOLUMNS = [
-  { name: 'Name', hidden: false, minWidth: 0 },
-  { name: 'Company', hidden: false, minWidth: 0 },
-  { name: 'Genre', hidden: false, minWidth: 0 },
-  { name: 'Image', hidden: false, minWidth: 0 },
+  { name: 'Name', hidden: false, minWidth: 0, width: 0 },
+  { name: 'Company', hidden: false, minWidth: 0, width: 0 },
+  { name: 'Genre', hidden: false, minWidth: 0, width: 0 },
+  { name: 'Image', hidden: false, minWidth: 0, width: 0 },
 ];
 @Component({
   selector: 'app-tab2',
@@ -67,10 +67,10 @@ export class Tab2Page implements OnInit {
   ) {
     this.tempColumns = INITIALCOLUMNS;
     this.columns = [
-      { name: 'Name', hidden: false, minWidth: 0 },
-      { name: 'Company', hidden: false, minWidth: 0 },
-      { name: 'Genre', hidden: false, minWidth: 0 },
-      { name: 'Image', hidden: false, minWidth: 0 },
+      { name: 'Name', hidden: false, minWidth: 0, width: 0 },
+      { name: 'Company', hidden: false, minWidth: 0, width: 0 },
+      { name: 'Genre', hidden: false, minWidth: 0, width: 0 },
+      { name: 'Image', hidden: false, minWidth: 0, width: 0 },
     ];
     this.ngxResizeWatcherDirective = NgxResizeWatcherDirective;
   }
@@ -312,6 +312,8 @@ export class Tab2Page implements OnInit {
         this.ignoreFitContent.forEach((test) => {
           console.log('test::::::ignoreFitContent', test);
           if (test === this.columns[k].name) {
+            columnsWidth = { 0: 0, 1: 0, 2: 0 };
+            console.log('columnsWidth::::::columnsWidth', columnsWidth);
             return;
           }
         });
@@ -330,6 +332,7 @@ export class Tab2Page implements OnInit {
           range?.selectNode(cellSizer);
           var rect = range.getBoundingClientRect().width;
           range.detach();
+          console.log('k::::::', k);
           if (!(k in columnsWidth)) {
             columnsWidth = { ...columnsWidth, [k]: 0 };
           }
@@ -337,11 +340,13 @@ export class Tab2Page implements OnInit {
           const newColumnWidth = Math.max(currentColunWidth, rect);
           columnsWidth[k] = newColumnWidth;
           this.columns[k].minWidth = newColumnWidth;
+          this.columns[k].width = newColumnWidth;
         } catch (e) {
           console.log('e::getting width error::::', e);
         }
       }
     }
+    console.log('columnsWidth::::::', columnsWidth);
     // const element1 = document.getElementById('container');
     // // console.log('element1::::::', element1);
     // let lastTouchY;
