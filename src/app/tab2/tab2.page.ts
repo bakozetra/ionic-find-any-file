@@ -120,7 +120,6 @@ export class Tab2Page implements OnInit {
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
     e.stopPropagation();
-    // console.log('e::::::stopPropagation', e);
     const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
     )?.innerHTML;
@@ -160,7 +159,6 @@ export class Tab2Page implements OnInit {
   getDataCoumnChanges(): any {
     let localJSON = this.tempColumns;
     const localData = this.getlocatChanges();
-    // console.log('localData::::::', localData);
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
@@ -169,7 +167,6 @@ export class Tab2Page implements OnInit {
   getDataRowChanges(): any {
     let localJSON = this.tempColumns;
     const localData = this.getLocalStorageRow();
-    // console.log('localData::::::', localData);
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
@@ -201,7 +198,6 @@ export class Tab2Page implements OnInit {
     } else {
       this.rowHeight = undefined;
     }
-    // console.log('this.rowHeight::::::down', this.rowHeight);
   }
 
   setLocalStorageSort(data) {
@@ -209,30 +205,18 @@ export class Tab2Page implements OnInit {
   }
 
   resize(e) {
-    // console.log('e::::::resize', e);
-    console.log('e?.column?.name::::::', e?.column);
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
-      this.ignoreFitContent.forEach((test) => {
-        if (test === e.column.name) {
-          console.log('test === e.column.name::::::', test === e.column.name);
-        }
-      });
       const resizedCol = this.columns.find((c) => {
-        // console.log('c.name === e.column.name::::::', c.name === e.column.name);
         return c.name === e.column.name;
       });
       resizedCol.minWidth = 0;
-      // const headerelement = document.getElementById(e.column.name);
-      // // console.log('headerelement::::::', headerelement);
-      const element = this.elementRef.nativeElement as HTMLElement;
-      const rows = element.getElementsByTagName('datatable-body-row');
       const allHeaders = document.querySelectorAll<HTMLElement>(
         '.datatable-header-cell'
       );
       allHeaders.forEach((header) => {
         if (header.innerText.trim() === e.column.name) {
-          console.log('headerelement::::::currentHeaderElement', header);
+          // console.log('headerelement::::::currentHeaderElement', header);
           resizedCol.width = header?.clientWidth;
         }
       });
@@ -304,14 +288,10 @@ export class Tab2Page implements OnInit {
     console.log('adjustColumnMinWidth::::::');
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
-    // const headerelement = document.querySelector<HTMLElement>('#container');
-    // headerelement.style.scrollSnapType = 'x';
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
-      console.log('cells::::::', cells);
       for (let k = 0; k < cells.length; k++) {
-        console.log('this.columns[k].name::::::', this.columns[k].name);
         this.ignoreFitContent.forEach((test) => {
           if (test === this.columns[k].name) {
             return;
@@ -341,7 +321,7 @@ export class Tab2Page implements OnInit {
         }
       }
     }
-    console.log('columnsWidth::::::', columnsWidth);
+    // console.log('columnsWidth::::::', columnsWidth);
     // const element1 = document.getElementById('container');
     // // console.log('element1::::::', element1);
     // let lastTouchY;
