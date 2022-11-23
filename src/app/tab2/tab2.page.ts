@@ -132,6 +132,7 @@ export class Tab2Page implements OnInit {
       });
       resizedCol.minWidth = 0;
     }
+    console.log('this.columns::::::HostListener', this.columns);
   }
 
   setLocalStorageChages(data) {
@@ -222,11 +223,20 @@ export class Tab2Page implements OnInit {
         return c.name === e.column.name;
       });
       resizedCol.minWidth = 0;
-      // console.log('e.column.width::::::', e.column.width);
+      // const headerelement = document.getElementById(e.column.name);
+      // // console.log('headerelement::::::', headerelement);
+      const element = this.elementRef.nativeElement as HTMLElement;
+      const rows = element.getElementsByTagName('datatable-body-row');
+      const allHeaders = document.querySelectorAll<HTMLElement>(
+        '.datatable-header-cell'
+      );
+      allHeaders.forEach((header) => {
+        if (header.innerText.trim() === e.column.name) {
+          console.log('headerelement::::::currentHeaderElement', header);
+          resizedCol.width = header?.clientWidth;
+        }
+      });
     }
-    // this.ignoreFitContent.forEach((value) => {
-    //   console.log('value::::::resize', value);
-    // });
   }
 
   updateFilter(e) {
@@ -246,7 +256,6 @@ export class Tab2Page implements OnInit {
     return localJSON;
   }
   setLocalStorageDrag(data) {
-    // console.log('data::::::setLocalStorageDrag', data);
     return localStorage.setItem('drag', JSON.stringify(data));
   }
 
@@ -257,7 +266,6 @@ export class Tab2Page implements OnInit {
   getDataRowDrag(): any {
     let localJSON = this.tempColumns;
     const localData = this.getLocalStoragDrag();
-    // console.log('localData::::::', localData);
     if (localData && localData != null) {
       localJSON = JSON.parse(localData);
     }
@@ -268,18 +276,13 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageSort(event.sorts);
   }
   rearrange(event) {
-    // console.log('event::::::rearrange', event);
-    // console.log('event.prevValue::::::', event.prevValue);
-    // console.log('event.newValue::::::', event.newValue);
     const arr = this.array_move(this.columns, event.prevValue, event.newValue);
     this.setLocalStorageDrag(arr);
   }
 
   array_move(arr, old_index, new_index) {
     if (new_index >= arr.length) {
-      // console.log('new_index::::::', new_index);
       var k = new_index - arr.length + 1;
-      // console.log('k::::::', k);
       while (k--) {
         arr.push(undefined);
       }
@@ -301,8 +304,8 @@ export class Tab2Page implements OnInit {
     console.log('adjustColumnMinWidth::::::');
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
-    const headerelement = document.querySelector<HTMLElement>('#container');
-    headerelement.style.scrollSnapType = 'x';
+    // const headerelement = document.querySelector<HTMLElement>('#container');
+    // headerelement.style.scrollSnapType = 'x';
     let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
@@ -310,22 +313,14 @@ export class Tab2Page implements OnInit {
       for (let k = 0; k < cells.length; k++) {
         console.log('this.columns[k].name::::::', this.columns[k].name);
         this.ignoreFitContent.forEach((test) => {
-          console.log('test::::::ignoreFitContent', test);
           if (test === this.columns[k].name) {
-            columnsWidth = { 0: 0, 1: 0, 2: 0 };
-            console.log('columnsWidth::::::columnsWidth', columnsWidth);
             return;
           }
         });
-        console.log(
-          'this.ignoreFitContent.has(this.columns[k].name)::::::',
-          this.ignoreFitContent.has(this.columns[k].name)
-        );
         if (this.ignoreFitContent.has(this.columns[k].name)) {
           return;
         }
         const cell = cells[k];
-        console.log('cell::::::', cell);
         const cellSizer = cell.children[0].children[0].children[0].lastChild;
         try {
           var range = document.createRange();
