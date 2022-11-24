@@ -57,8 +57,8 @@
         id="{{column.name}}"
         [draggable]="true"
         style="overflow-y: auto"
+        [canAutoResize]="false"
       >
-        <!-- [canAutoResize]="false" -->
         <ng-template
           let-column="column"
           let-sort="sortFn"
@@ -105,10 +105,7 @@
             <img
               [attr.aria-label]="value"
               [src]="value"
-              style="width: 100%"
-              [class]="this.rowHeight === undefined ? '' : 'heightResize'"
-              (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
-              *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
+              style="height: 100%; width: 100%"
             />
           </div>
           <div *ngIf="column.name !== 'Image'">
