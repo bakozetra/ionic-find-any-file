@@ -193,10 +193,19 @@ export class Tab2Page implements OnInit {
   }
 
   toggleRow(e) {
+    const element = (width, height) => {
+      this.rows.map((val, index) => {
+        const imagelement = document.getElementById(index);
+        imagelement.style.width = width;
+        imagelement.style.height = height;
+      });
+    };
     if (e.detail.checked) {
-      this.rowHeight = '80px';
+      this.rowHeight = '5rem';
+      element('auto', '5rem');
     } else {
       this.rowHeight = undefined;
+      element('100%', '100%');
     }
   }
 
