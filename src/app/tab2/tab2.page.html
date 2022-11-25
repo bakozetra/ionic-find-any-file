@@ -15,8 +15,8 @@
 <div>
   <ion-item>
     <ion-toggle
-      [checked]="this.rowHeight"
-      (ionChange)="toggleRow($event)"
+      [checked]="this.togglecheck[0].ischecked"
+      (ionChange)="toggleRow($event , this.togglecheck[0].ischecked)"
     ></ion-toggle>
     <ion-label>Row Height resizing</ion-label>
   </ion-item>
@@ -32,7 +32,7 @@
       [columnMode]="'force'"
       [headerHeight]="50"
       [footerHeight]="50"
-      [rowHeight]=" this.rowHeight == undefined? 'auto' : this.rowHeight"
+      [rowHeight]=" this.togglecheck[0].ischecked == true ? this.rowHeight : 'auto'"
       (sort)="onSort($event)"
       [sorts]="this.sortOrder"
       (reorder)="rearrange($event)"
