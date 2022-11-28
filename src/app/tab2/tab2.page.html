@@ -63,11 +63,14 @@
           let-column="column"
           let-sort="sortFn"
           ngx-datatable-header-template
-          *ngIf="iosPlaform || mobilePlatforme ||
-          ipadPlatform else deskTop "
         >
           <datatable-scroller>
-            <span style="height: 100px" class="datatable-header-cell-wrapper">
+            <span
+              style="height: 100px"
+              class="datatable-header-cell-wrapper"
+              *ngIf="iosPlaform || mobilePlatforme ||
+          ipadPlatform"
+            >
               <span
                 class="datatable-header-cell-label draggable example-box"
                 (click)="sort($event)"
@@ -78,18 +81,32 @@
                 {{ column.name }}
               </span>
             </span>
+            <span
+              style="height: 100px"
+              class="datatable-header-cell-wrapper"
+              *ngIf="desktopPlatforme"
+            >
+              <span
+                class="datatable-header-cell-label draggable"
+                (click)="sort($event)"
+                [attr.aria-label]="column.name"
+                (cdkDragStarted)="test($event)"
+              >
+                {{ column.name }}
+              </span>
+            </span>
           </datatable-scroller>
         </ng-template>
-        <ng-template #deskTop>
-          <span style="height: 100px" class="datatable-header-cell-wrapper">
-            <span
-              class="datatable-header-cell-label draggable"
-              (click)="sort($event)"
-              [attr.aria-label]="column.name"
-            >
-              {{ column.name }}
-            </span>
+        <!-- <ng-template #deskTop>
+           <span style="height: 100px" class="datatable-header-cell-wrapper"> 
+          <span
+            class="datatable-header-cell-label draggable"
+            (click)="sort($event)"
+            [attr.aria-label]="column.name"
+          >
+            {{ column.name }}
           </span>
+         </span>
           <ng-template #Image>
             <span
               class="datatable-header-cell-label draggable"
@@ -98,7 +115,7 @@
               {{ column.name }}
             </span>
           </ng-template>
-        </ng-template>
+        </ng-template> -->
         <ng-template
           let-value="value"
           let-row="row"
