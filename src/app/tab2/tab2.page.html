@@ -58,6 +58,7 @@
         [draggable]="true"
         style="overflow-y: auto"
         [canAutoResize]="false"
+        [sortable]="column.name=='Image'? false : true"
       >
         <ng-template
           let-column="column"
@@ -127,9 +128,11 @@
             <img
               [attr.aria-label]="value"
               [src]="value"
-              style="height: 100%"
               [id]="rowIndex"
+              [style]="{height:'100%', width:imageWidth + 'px'}"
             />
+            <!-- [style]="{{height: 100%; width: {{imageWidth}}}" -->
+            <!-- [style]="'height:100%'" -->
           </div>
           <div *ngIf="column.name !== 'Image'">
             <div

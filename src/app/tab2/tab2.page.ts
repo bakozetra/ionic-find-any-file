@@ -214,7 +214,7 @@ export class Tab2Page implements OnInit {
       this.togglecheck[0].ischecked = false;
       checked = this.togglecheck[0].ischecked;
       this.rowHeight = undefined;
-      this.element('100%', '100%');
+      this.element('auto', '100%');
       this.setLocalStoragetoggleRow(this.togglecheck);
     } else {
       this.togglecheck[0].ischecked = true;
@@ -243,7 +243,7 @@ export class Tab2Page implements OnInit {
   setLocalStorageSort(data) {
     return localStorage.setItem('sorting', JSON.stringify(data));
   }
-
+  imageWidth: string;
   resize(e) {
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
@@ -257,7 +257,19 @@ export class Tab2Page implements OnInit {
       allHeaders.forEach((header) => {
         if (header.innerText.trim() === e.column.name) {
           resizedCol.width = header?.clientWidth;
+          console.log('resizedCol.width::::::resize', resizedCol.width);
+          if (e.column.name === 'Image') {
+            console.log('header?.clientWidth::::::', header?.clientWidth);
+            this.imageWidth = header?.clientWidth as unknown as string;
+            console.log('this.imageWidth::::::', this.imageWidth);
+          }
         }
+        // if (e.column.name == 'Image') {
+        //   if (header.innerText.trim() === e.column.name) {
+        //     resizedCol.width = header?.clientWidth;
+        // this.element('100%', 'auto');
+        //   }
+        // }
       });
     }
     if (this.togglecheck[0].ischecked) {
@@ -356,7 +368,6 @@ export class Tab2Page implements OnInit {
           const currentColunWidth = columnsWidth[k];
           if (rect < 100) {
             rect = 100;
-            // console.log('rect::::::rect', rect);
           }
           const newColumnWidth = Math.max(currentColunWidth, rect);
           console.log('newColumnWidth::::::newColumnWidth', newColumnWidth);
@@ -383,9 +394,5 @@ export class Tab2Page implements OnInit {
   test(e) {
     // console.log('e::::::test', e);
   }
-  // @HostListener('mousemove', ['$event']) onMousemove(event: MouseEvent) {
-  //   console.log('event::::::onMousemove', event);
-  //   // window.scrollTo(document.body.scrollLeft + (curXPos - e.pageX);
-  // }
   currentlyLoadedPage = 0;
 }
