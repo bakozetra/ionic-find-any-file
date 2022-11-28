@@ -63,14 +63,11 @@
           let-column="column"
           let-sort="sortFn"
           ngx-datatable-header-template
+          *ngIf="iosPlaform || mobilePlatforme ||
+          ipadPlatform else deskTop "
         >
           <datatable-scroller>
-            <span
-              style="height: 100px"
-              class="datatable-header-cell-wrapper"
-              *ngIf="iosPlaform || mobilePlatforme ||
-          ipadPlatform else deskTop "
-            >
+            <span style="height: 100px" class="datatable-header-cell-wrapper">
               <span
                 class="datatable-header-cell-label draggable example-box"
                 (click)="sort($event)"
@@ -93,6 +90,14 @@
               {{ column.name }}
             </span>
           </span>
+          <ng-template #Image>
+            <span
+              class="datatable-header-cell-label draggable"
+              [attr.aria-label]="column.name"
+            >
+              {{ column.name }}
+            </span>
+          </ng-template>
         </ng-template>
         <ng-template
           let-value="value"
@@ -105,7 +110,7 @@
             <img
               [attr.aria-label]="value"
               [src]="value"
-              style="height: 100%; width: 100%"
+              style="height: 100%"
               [id]="rowIndex"
             />
           </div>
