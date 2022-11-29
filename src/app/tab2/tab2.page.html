@@ -113,14 +113,15 @@
               [style]="{height:'100%', width:imageWidth + 'px'}"
             />
           </div>
+
           <div
             *ngIf="column.name !== 'Image' && iosPlaform || mobilePlatforme ||
           ipadPlatform "
           >
             <div
               style="white-space: pre"
-              (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
-              *ngIf="!editing[rowIndex + '-' + column.name | lowercase] "
+              (click)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
+              *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
               [draggable]="true"
             >
@@ -129,7 +130,28 @@
             <textarea
               autofocus
               (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
-              *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
+              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
+              type="text"
+              [value]="value"
+              [ngStyle]="{width:'100%', minHeight:'auto'}"
+            >
+            </textarea>
+          </div>
+          <div *ngIf="column.name !== 'Image' && desktopPlatforme">
+            <div
+              style="white-space: pre"
+              (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
+              *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
+              [attr.aria-label]="value"
+              [draggable]="true"
+            >
+              {{value}}
+            </div>
+
+            <textarea
+              autofocus
+              (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
+              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
               type="text"
               [value]="value"
               [ngStyle]="{width:'100%', minHeight:'auto'}"
