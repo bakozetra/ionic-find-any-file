@@ -139,7 +139,7 @@ export class Tab2Page implements OnInit {
     }
     console.log('this.ischecked::::::', this.togglecheck[0].ischecked);
     if (this.togglecheck[0].ischecked) {
-      this.element('5rem', 'auto');
+      this.getElementWidth('5rem', 'auto');
     }
   }
 
@@ -182,7 +182,8 @@ export class Tab2Page implements OnInit {
     return localJSON;
   }
 
-  toggleme(toggleName) {
+  toggleColumn(toggleName, event) {
+    console.log('event::::::toggleme', event);
     const updateColumns = this.columnVisibility.map((columnName) => {
       if (columnName.name === toggleName) {
         columnName.hidden = !columnName.hidden;
@@ -200,12 +201,11 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageColumnVisibility(updateColumns);
     this.setLocalStorageDrag(updateColumns);
   }
-  // checked;
-  element(width, height) {
+  getElementWidth(width, height) {
     this.rows.map((val, index) => {
-      const imagelement = document.getElementById(index);
-      imagelement.style.width = width;
-      imagelement.style.height = height;
+      const imagElement = document.getElementById(index);
+      imagElement.style.width = width;
+      imagElement.style.height = height;
     });
   }
 
@@ -215,16 +215,16 @@ export class Tab2Page implements OnInit {
       checked = this.togglecheck[0].ischecked;
       this.rowHeight = undefined;
       console.log('imageWidth::::::toggleRow', this.imageWidth);
-      const widthImg =
+      const imgwidth =
         this.imageWidth === undefined ? 'auto' : this.imageWidth + 'px';
-      this.element(widthImg, '100%');
+      this.getElementWidth(imgwidth, '100%');
       this.setLocalStoragetoggleRow(this.togglecheck);
     } else {
       this.togglecheck[0].ischecked = true;
       checked = this.togglecheck[0].ischecked;
       console.log('imageWidth::::::toggleRowelse', this.imageWidth);
       this.rowHeight = '5rem';
-      this.element('5rem', 'auto');
+      this.getElementWidth('5rem', 'auto');
       this.setLocalStoragetoggleRow(this.togglecheck);
     }
   }
@@ -268,16 +268,10 @@ export class Tab2Page implements OnInit {
             console.log('this.imageWidth::::::', this.imageWidth);
           }
         }
-        // if (e.column.name == 'Image') {
-        //   if (header.innerText.trim() === e.column.name) {
-        //     resizedCol.width = header?.clientWidth;
-        // this.element('100%', 'auto');
-        //   }
-        // }
       });
     }
     if (this.togglecheck[0].ischecked) {
-      this.element('5rem', 'auto');
+      this.getElementWidth('5rem', 'auto');
     }
   }
 
@@ -330,7 +324,6 @@ export class Tab2Page implements OnInit {
       }
     }
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-
     return arr;
   }
 
@@ -345,7 +338,7 @@ export class Tab2Page implements OnInit {
   adjustColumnMinWidth() {
     console.log('adjustColumnMinWidth::::::');
     if (this.togglecheck[0].ischecked) {
-      this.element('5rem', 'auto');
+      this.getElementWidth('5rem', 'auto');
     }
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
@@ -386,17 +379,30 @@ export class Tab2Page implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    // console.log('event::::::drop', event);
     const arr = this.array_move(
       this.columns,
       event.previousIndex,
       event.currentIndex
     );
     this.setLocalStorageDrag(arr);
-    // console.log('window.scrollY ::::::', window.scrollY);
   }
   test(e) {
     // console.log('e::::::test', e);
   }
   currentlyLoadedPage = 0;
 }
+
+//  const allHeaders = document.querySelectorAll<HTMLElement>(
+// '.datatable-header-cell'
+// );
+// allHeaders.forEach((header) => {
+//   if (header.innerText.trim() === e.column.name) {
+//     resizedCol.width = header?.clientWidth;
+//     console.log('resizedCol.width::::::resize', resizedCol.width);
+//     if (e.column.name === 'Image') {
+//       console.log('header?.clientWidth::::::', header?.clientWidth);
+//       this.imageWidth = header?.clientWidth as unknown as string;
+//       console.log('this.imageWidth::::::', this.imageWidth);
+//     }
+//   }
+// });

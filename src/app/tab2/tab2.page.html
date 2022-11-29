@@ -7,7 +7,7 @@
   <ion-item *ngFor="let toogle of columnVisibility">
     <ion-toggle
       [checked]="toogle.hidden"
-      (ionChange)="toggleme(toogle.name)"
+      (ionChange)="toggleColumn(toogle.name, $event )"
     ></ion-toggle>
     <ion-label> Hide {{toogle.name}}</ion-label>
   </ion-item>
@@ -98,25 +98,6 @@
             </span>
           </datatable-scroller>
         </ng-template>
-        <!-- <ng-template #deskTop>
-           <span style="height: 100px" class="datatable-header-cell-wrapper"> 
-          <span
-            class="datatable-header-cell-label draggable"
-            (click)="sort($event)"
-            [attr.aria-label]="column.name"
-          >
-            {{ column.name }}
-          </span>
-         </span>
-          <ng-template #Image>
-            <span
-              class="datatable-header-cell-label draggable"
-              [attr.aria-label]="column.name"
-            >
-              {{ column.name }}
-            </span>
-          </ng-template>
-        </ng-template> -->
         <ng-template
           let-value="value"
           let-row="row"
@@ -131,10 +112,11 @@
               [id]="rowIndex"
               [style]="{height:'100%', width:imageWidth + 'px'}"
             />
-            <!-- [style]="{{height: 100%; width: {{imageWidth}}}" -->
-            <!-- [style]="'height:100%'" -->
           </div>
-          <div *ngIf="column.name !== 'Image'">
+          <div
+            *ngIf="column.name !== 'Image' && iosPlaform || mobilePlatforme ||
+          ipadPlatform "
+          >
             <div
               style="white-space: pre"
               (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
