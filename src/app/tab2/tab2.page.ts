@@ -214,11 +214,15 @@ export class Tab2Page implements OnInit {
       this.togglecheck[0].ischecked = false;
       checked = this.togglecheck[0].ischecked;
       this.rowHeight = undefined;
-      this.element('auto', '100%');
+      console.log('imageWidth::::::toggleRow', this.imageWidth);
+      const widthImg =
+        this.imageWidth === undefined ? 'auto' : this.imageWidth + 'px';
+      this.element(widthImg, '100%');
       this.setLocalStoragetoggleRow(this.togglecheck);
     } else {
       this.togglecheck[0].ischecked = true;
       checked = this.togglecheck[0].ischecked;
+      console.log('imageWidth::::::toggleRowelse', this.imageWidth);
       this.rowHeight = '5rem';
       this.element('5rem', 'auto');
       this.setLocalStoragetoggleRow(this.togglecheck);
