@@ -130,6 +130,7 @@ export class Tab2Page implements OnInit {
       '.datatable-header-cell-label'
     )?.innerHTML;
 
+    console.log('columnName::::::HostListener', columnName);
     if (columnName !== undefined) {
       this.ignoreFitContent.add(columnName?.trim());
       const resizedCol = this.columns?.find((c) => {
@@ -139,7 +140,7 @@ export class Tab2Page implements OnInit {
     }
     console.log('this.ischecked::::::', this.togglecheck[0].ischecked);
     if (this.togglecheck[0].ischecked) {
-      this.getElementWidth('5rem', 'auto');
+      this.element('5rem', 'auto');
     }
   }
 
@@ -201,11 +202,11 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageColumnVisibility(updateColumns);
     this.setLocalStorageDrag(updateColumns);
   }
-  getElementWidth(width, height) {
+  element(width, height) {
     this.rows.map((val, index) => {
-      const imagElement = document.getElementById(index);
-      imagElement.style.width = width;
-      imagElement.style.height = height;
+      const imagelement = document.getElementById(index);
+      imagelement.style.width = width;
+      imagelement.style.height = height;
     });
   }
 
@@ -217,14 +218,14 @@ export class Tab2Page implements OnInit {
       console.log('imageWidth::::::toggleRow', this.imageWidth);
       const imgwidth =
         this.imageWidth === undefined ? 'auto' : this.imageWidth + 'px';
-      this.getElementWidth(imgwidth, '100%');
+      this.element(imgwidth, '100%');
       this.setLocalStoragetoggleRow(this.togglecheck);
     } else {
       this.togglecheck[0].ischecked = true;
       checked = this.togglecheck[0].ischecked;
       console.log('imageWidth::::::toggleRowelse', this.imageWidth);
       this.rowHeight = '5rem';
-      this.getElementWidth('5rem', 'auto');
+      this.element('5rem', 'auto');
       this.setLocalStoragetoggleRow(this.togglecheck);
     }
   }
@@ -271,7 +272,7 @@ export class Tab2Page implements OnInit {
       });
     }
     if (this.togglecheck[0].ischecked) {
-      this.getElementWidth('5rem', 'auto');
+      this.element('5rem', 'auto');
     }
   }
 
@@ -338,36 +339,53 @@ export class Tab2Page implements OnInit {
   adjustColumnMinWidth() {
     console.log('adjustColumnMinWidth::::::');
     if (this.togglecheck[0].ischecked) {
-      this.getElementWidth('5rem', 'auto');
+      this.element('5rem', 'auto');
     }
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
+    console.log('columnsWidth::::::columnsWidthcolumnsWidth', columnsWidth);
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
+      console.log('cells::::::cellscells', cells);
       for (let k = 0; k < cells.length; k++) {
+        console.log('k ::::::k ', k);
+        this.ignoreFitContent.forEach((a) => {});
         if (this.ignoreFitContent.has(this.columns[k].name)) {
           return;
         }
         const cell = cells[k];
-        const cellSizer = cell.children[0].children[0].children[0].lastChild;
+        console.log('cell::::::', cell);
+        const cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
+        console.log('cellSizer::::::', cellSizer);
         try {
           var range = document.createRange();
           range?.selectNode(cellSizer);
+          console.log('range::::::range', range);
           var rect = range.getBoundingClientRect().width;
-          range.detach();
           console.log('rect::::::', rect);
           console.log('k::::::', k);
-          console.log('columnsWidth::::::columnsWidth', columnsWidth);
+          // console.log('columnsWidth::::::columnsWidth', columnsWidth);
+          console.log('!(k in columnsWidth)::::::', !(k in columnsWidth));
           if (!(k in columnsWidth)) {
+            console.log('k::::::columnsWidth', k);
             columnsWidth = { ...columnsWidth, [k]: 0 };
           }
           const currentColunWidth = columnsWidth[k];
+          // console.log('rect::::::', rect);
+          console.log('columnsWidth::::::', columnsWidth);
+
+          // console.log('rect < 100::::::', rect < 100);
           if (rect < 100) {
             rect = 100;
           }
+          range.detach();
+
+          console.log('currentColunWidth::::::', currentColunWidth);
+          console.log('rect::::::currentColunWidth', rect);
           const newColumnWidth = Math.max(currentColunWidth, rect);
           console.log('newColumnWidth::::::newColumnWidth', newColumnWidth);
+          console.log('columnsWidth[k]::::::', columnsWidth[k]);
           columnsWidth[k] = newColumnWidth;
           this.columns[k].minWidth = newColumnWidth;
           this.columns[k].width = newColumnWidth;
@@ -391,18 +409,3 @@ export class Tab2Page implements OnInit {
   }
   currentlyLoadedPage = 0;
 }
-
-//  const allHeaders = document.querySelectorAll<HTMLElement>(
-// '.datatable-header-cell'
-// );
-// allHeaders.forEach((header) => {
-//   if (header.innerText.trim() === e.column.name) {
-//     resizedCol.width = header?.clientWidth;
-//     console.log('resizedCol.width::::::resize', resizedCol.width);
-//     if (e.column.name === 'Image') {
-//       console.log('header?.clientWidth::::::', header?.clientWidth);
-//       this.imageWidth = header?.clientWidth as unknown as string;
-//       console.log('this.imageWidth::::::', this.imageWidth);
-//     }
-//   }
-// });
