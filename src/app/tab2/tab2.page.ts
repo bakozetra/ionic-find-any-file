@@ -127,10 +127,14 @@ export class Tab2Page implements OnInit {
     console.log('e::::::HostListener', e);
     e.stopPropagation();
     const elementclassName = e.srcElement.className;
-    // const elementclassNameDiv = e.srcElement.className;
+    console.log('elementclassName::::::', elementclassName);
     if (
       elementclassName === 'datatable-header-cell-label draggable' ||
-      elementclassName === 'textarea_editing'
+      elementclassName === 'sort-btn datatable-icon-up sort-asc' ||
+      elementclassName === 'datatable-icon-down sort-btn sort-desc' ||
+      elementclassName === 'datatable-icon-sort-unset sort-btn' ||
+      elementclassName === 'sort-btn datatable-icon-down sort-desc' ||
+      elementclassName === 'datatable-header-cell-template-wrap'
     ) {
       return;
     }
@@ -352,13 +356,10 @@ export class Tab2Page implements OnInit {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     let columnsWidth = {};
-    console.log('columnsWidth::::::columnsWidthcolumnsWidth', columnsWidth);
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
       console.log('cells::::::cellscells', cells);
       for (let k = 0; k < cells.length; k++) {
-        console.log('k ::::::k ', k);
-        this.ignoreFitContent.forEach((a) => {});
         if (this.ignoreFitContent.has(this.columns[k].name)) {
           return;
         }
@@ -392,11 +393,9 @@ export class Tab2Page implements OnInit {
           console.log('currentColunWidth::::::', currentColunWidth);
           console.log('rect::::::currentColunWidth', rect);
           const newColumnWidth = Math.max(currentColunWidth, rect);
-          console.log('newColumnWidth::::::newColumnWidth', newColumnWidth);
-          console.log('columnsWidth[k]::::::', columnsWidth[k]);
           columnsWidth[k] = newColumnWidth;
           this.columns[k].minWidth = newColumnWidth;
-          this.columns[k].width = newColumnWidth;
+          this.columns[k].width = this.columns[k].minWidth;
         } catch (e) {
           console.log('e::getting width error::::', e);
         }
