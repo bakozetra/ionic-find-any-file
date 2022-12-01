@@ -127,7 +127,11 @@ export class Tab2Page implements OnInit {
     console.log('e::::::HostListener', e);
     e.stopPropagation();
     const elementclassName = e.srcElement.className;
-    if (elementclassName === 'datatable-header-cell-label draggable') {
+    // const elementclassNameDiv = e.srcElement.className;
+    if (
+      elementclassName === 'datatable-header-cell-label draggable' ||
+      elementclassName === 'textarea_editing'
+    ) {
       return;
     }
     const columnName = e?.target?.parentNode?.querySelector(
