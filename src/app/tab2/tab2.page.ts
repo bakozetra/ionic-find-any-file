@@ -124,8 +124,12 @@ export class Tab2Page implements OnInit {
   }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
-    console.log('this.rowHeight::::::HostListener', this.rowHeight);
+    console.log('e::::::HostListener', e);
     e.stopPropagation();
+    const elementclassName = e.srcElement.className;
+    if (elementclassName === 'datatable-header-cell-label draggable') {
+      return;
+    }
     const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
     )?.innerHTML;
@@ -363,6 +367,7 @@ export class Tab2Page implements OnInit {
           range?.selectNode(cellSizer);
           console.log('range::::::range', range);
           var rect = range.getBoundingClientRect().width;
+          range.detach();
           console.log('rect::::::', rect);
           console.log('k::::::', k);
           // console.log('columnsWidth::::::columnsWidth', columnsWidth);
@@ -379,7 +384,6 @@ export class Tab2Page implements OnInit {
           if (rect < 100) {
             rect = 100;
           }
-          range.detach();
 
           console.log('currentColunWidth::::::', currentColunWidth);
           console.log('rect::::::currentColunWidth', rect);
@@ -393,6 +397,7 @@ export class Tab2Page implements OnInit {
           console.log('e::getting width error::::', e);
         }
       }
+      console.log('columnsWidth::::::out', columnsWidth);
     }
   }
 
