@@ -70,7 +70,7 @@
               style="height: 100px"
               class="datatable-header-cell-wrapper"
               *ngIf="iosPlaform || mobilePlatforme ||
-          ipadPlatform"
+               ipadPlatform"
             >
               <span
                 class="datatable-header-cell-label draggable example-box"
@@ -131,9 +131,44 @@
               type="text"
               [value]="value"
               [ngStyle]="{width:'100%', minHeight:'auto'}"
-              ngClass="textarea_editing"
             >
             </textarea>
+            <!-- <div
+              style="white-space: pre"
+              contenteditable="true"
+              *ngIf="editing[rowIndex + '-' + column.name | lowercase]"
+            >
+              {{value}}
+            </div> -->
+            <!-- [attr.aria-label]="value" -->
+            <!-- (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true" -->
+            <!-- <textarea
+              [draggable]="true"
+              autofocus
+              type="text"
+              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
+              [ngStyle]="{width:'100%', minHeight:'auto'}"
+            >
+              {{value}}
+            </textarea> -->
+            <!-- editingUpdate($event) -->
+            <!-- contenteditable="true" -->
+            <!-- (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)" -->
+            <!-- </div> -->
+            <!-- [ngStyle]="{width:'100%', minHeight:'auto'}" -->
+            <!-- (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
+              *ngIf="editing[rowIndex + '-' + column.name |lowercase] " -->
+
+            <!-- <div
+              contenteditable="true"
+              autofocus
+              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
+              type="text"
+              (keyup)="updateValue($event, column.name.toLowerCase() , rowIndex)"
+            >
+              {{value}}
+            </div> -->
+            <!-- [ngStyle]="{width:'100%', minHeight:'auto', resize: none}" -->
           </div>
           <!-- <div *ngIf="column.name !== 'Image' && desktopPlatforme">
             <div
