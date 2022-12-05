@@ -54,6 +54,7 @@ export class Tab2Page implements OnInit {
   sortOrder = [];
   public columnVisibility;
   public ignoreFitContent = new Set([]);
+  columnsWidth = {};
 
   editing = {};
   ngxResizeWatcherDirective;
@@ -116,7 +117,7 @@ export class Tab2Page implements OnInit {
   }
 
   @HostListener('scroll') onScrollHost(e: Event): void {
-    console.log('this.getYPosition(e)', this.getYPosition(e));
+    // console.log('this.getYPosition(e)', this.getYPosition(e));
   }
 
   getYPosition(e: Event): number {
@@ -124,10 +125,8 @@ export class Tab2Page implements OnInit {
   }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
-    console.log('e::::::HostListener', e);
     e.stopPropagation();
     const elementclassName = e.srcElement.className;
-    console.log('elementclassName::::::', elementclassName);
     if (
       elementclassName === 'datatable-header-cell-label draggable' ||
       elementclassName === 'sort-btn datatable-icon-up sort-asc' ||
@@ -150,7 +149,6 @@ export class Tab2Page implements OnInit {
       });
       resizedCol.minWidth = 0;
     }
-    console.log('this.ischecked::::::', this.togglecheck[0].ischecked);
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
     }
@@ -196,7 +194,6 @@ export class Tab2Page implements OnInit {
   }
 
   toggleColumn(toggleName, event) {
-    console.log('event::::::toggleme', event);
     const updateColumns = this.columnVisibility.map((columnName) => {
       if (columnName.name === toggleName) {
         columnName.hidden = !columnName.hidden;
@@ -213,6 +210,7 @@ export class Tab2Page implements OnInit {
 
     this.setLocalStorageColumnVisibility(updateColumns);
     this.setLocalStorageDrag(updateColumns);
+    console.log('columnsWidth::::::', this.columnsWidth);
   }
   element(width, height) {
     this.rows.map((val, index) => {
@@ -227,7 +225,6 @@ export class Tab2Page implements OnInit {
       this.togglecheck[0].ischecked = false;
       checked = this.togglecheck[0].ischecked;
       this.rowHeight = undefined;
-      console.log('imageWidth::::::toggleRow', this.imageWidth);
       const imgwidth =
         this.imageWidth === undefined ? 'auto' : this.imageWidth + 'px';
       this.element(imgwidth, '100%');
@@ -235,7 +232,6 @@ export class Tab2Page implements OnInit {
     } else {
       this.togglecheck[0].ischecked = true;
       checked = this.togglecheck[0].ischecked;
-      console.log('imageWidth::::::toggleRowelse', this.imageWidth);
       this.rowHeight = '5rem';
       this.element('5rem', 'auto');
       this.setLocalStoragetoggleRow(this.togglecheck);
@@ -274,11 +270,8 @@ export class Tab2Page implements OnInit {
       allHeaders.forEach((header) => {
         if (header.innerText.trim() === e.column.name) {
           resizedCol.width = header?.clientWidth;
-          console.log('resizedCol.width::::::resize', resizedCol.width);
           if (e.column.name === 'Image') {
-            console.log('header?.clientWidth::::::', header?.clientWidth);
             this.imageWidth = header?.clientWidth as unknown as string;
-            console.log('this.imageWidth::::::', this.imageWidth);
           }
         }
       });
@@ -289,7 +282,7 @@ export class Tab2Page implements OnInit {
   }
 
   updateFilter(e) {
-    console.log('e::::::', e);
+    // console.log('e::::::', e);
   }
 
   getLocalStoragSort() {
@@ -340,7 +333,7 @@ export class Tab2Page implements OnInit {
     return arr;
   }
 
-  updateValue(event, cell, rowIndex) {
+  updateValue(event, cell?, rowIndex?) {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
@@ -349,58 +342,45 @@ export class Tab2Page implements OnInit {
   }
 
   adjustColumnMinWidth() {
-    console.log('adjustColumnMinWidth::::::');
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
     }
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
-    let columnsWidth = {};
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
-      console.log('cells::::::cellscells', cells);
       for (let k = 0; k < cells.length; k++) {
         if (this.ignoreFitContent.has(this.columns[k].name)) {
           return;
         }
         const cell = cells[k];
-        console.log('cell::::::', cell);
         const cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
-        console.log('cellSizer::::::', cellSizer);
         try {
-          var range = document.createRange();
+          var range = document?.createRange();
+          console.log('range::::::', range);
           range?.selectNode(cellSizer);
-          console.log('range::::::range', range);
+          console.log(
+            'range?.selectNode(cellSizer)::::::',
+            range?.selectNode(cellSizer)
+          );
           var rect = range.getBoundingClientRect().width;
           range.detach();
-          console.log('rect::::::', rect);
-          console.log('k::::::', k);
-          // console.log('columnsWidth::::::columnsWidth', columnsWidth);
-          console.log('!(k in columnsWidth)::::::', !(k in columnsWidth));
-          if (!(k in columnsWidth)) {
-            console.log('k::::::columnsWidth', k);
-            columnsWidth = { ...columnsWidth, [k]: 0 };
+          if (!(k in this.columnsWidth)) {
+            this.columnsWidth = { ...this.columnsWidth, [k]: 0 };
           }
-          const currentColunWidth = columnsWidth[k];
-          // console.log('rect::::::', rect);
-          console.log('columnsWidth::::::', columnsWidth);
+          const currentColunWidth = this.columnsWidth[k];
 
-          // console.log('rect < 100::::::', rect < 100);
           if (rect < 100) {
             rect = 100;
           }
-
-          console.log('currentColunWidth::::::', currentColunWidth);
-          console.log('rect::::::currentColunWidth', rect);
           const newColumnWidth = Math.max(currentColunWidth, rect);
-          columnsWidth[k] = newColumnWidth;
+          this.columnsWidth[k] = newColumnWidth;
           this.columns[k].minWidth = newColumnWidth;
           this.columns[k].width = this.columns[k].minWidth;
         } catch (e) {
           console.log('e::getting width error::::', e);
         }
       }
-      console.log('columnsWidth::::::out', columnsWidth);
     }
   }
 

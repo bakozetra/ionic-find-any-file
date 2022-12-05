@@ -132,65 +132,9 @@
               [value]="value"
               [ngStyle]="{width:'100%', minHeight:'auto'}"
             >
+            {{value}}
             </textarea>
-            <!-- <div
-              style="white-space: pre"
-              contenteditable="true"
-              *ngIf="editing[rowIndex + '-' + column.name | lowercase]"
-            >
-              {{value}}
-            </div> -->
-            <!-- [attr.aria-label]="value" -->
-            <!-- (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true" -->
-            <!-- <textarea
-              [draggable]="true"
-              autofocus
-              type="text"
-              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
-              [ngStyle]="{width:'100%', minHeight:'auto'}"
-            >
-              {{value}}
-            </textarea> -->
-            <!-- editingUpdate($event) -->
-            <!-- contenteditable="true" -->
-            <!-- (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)" -->
-            <!-- </div> -->
-            <!-- [ngStyle]="{width:'100%', minHeight:'auto'}" -->
-            <!-- (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
-              *ngIf="editing[rowIndex + '-' + column.name |lowercase] " -->
-
-            <!-- <div
-              contenteditable="true"
-              autofocus
-              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
-              type="text"
-              (keyup)="updateValue($event, column.name.toLowerCase() , rowIndex)"
-            >
-              {{value}}
-            </div> -->
-            <!-- [ngStyle]="{width:'100%', minHeight:'auto', resize: none}" -->
           </div>
-          <!-- <div *ngIf="column.name !== 'Image' && desktopPlatforme">
-            <div
-              style="white-space: pre"
-              (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
-              *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
-              [attr.aria-label]="value"
-              [draggable]="true"
-            >
-              {{value}}
-            </div>
-
-            <textarea
-              autofocus
-              (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
-              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
-              type="text"
-              [value]="value"
-              [ngStyle]="{width:'100%', minHeight:'auto'}"
-            >
-            </textarea>
-          </div> -->
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
