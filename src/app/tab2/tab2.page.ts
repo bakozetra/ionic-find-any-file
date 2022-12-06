@@ -339,12 +339,14 @@ export class Tab2Page implements OnInit {
     this.rows = [...this.rows];
     this.setLocalStorageRow(this.rows);
     this.ignoreFitContent = new Set([]);
+    this.adjustColumnMinWidth(true);
   }
 
-  adjustColumnMinWidth() {
+  adjustColumnMinWidth(fresh = false) {
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
     }
+
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     for (let i = 0; i < rows.length; i++) {
@@ -355,6 +357,9 @@ export class Tab2Page implements OnInit {
         }
         const cell = cells[k];
         const cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
+        const columnName = this.columns[k].name;
+        console.log('columnName::::::', columnName);
+        console.log('cellSizer::::::', cellSizer);
         try {
           var range = document?.createRange();
           console.log('range::::::', range);
@@ -364,19 +369,38 @@ export class Tab2Page implements OnInit {
             range?.selectNode(cellSizer)
           );
           var rect = range.getBoundingClientRect().width;
+          console.log('rect::::::', rect, cellSizer);
           range.detach();
-          if (!(k in this.columnsWidth)) {
-            this.columnsWidth = { ...this.columnsWidth, [k]: 0 };
+          if (!(columnName in this.columnsWidth)) {
+            this.columnsWidth = { ...this.columnsWidth, [columnName]: 0 };
           }
-          const currentColunWidth = this.columnsWidth[k];
+
+          const currentColunWidth =
+            fresh && i === 0 ? 0 : this.columnsWidth[columnName];
 
           if (rect < 100) {
             rect = 100;
           }
+
           const newColumnWidth = Math.max(currentColunWidth, rect);
-          this.columnsWidth[k] = newColumnWidth;
-          this.columns[k].minWidth = newColumnWidth;
-          this.columns[k].width = this.columns[k].minWidth;
+          this.columnsWidth[columnName] = newColumnWidth;
+          let currrentColumnIndex;
+          const currrentColumn = this.columns.find((col, index) => {
+            if (col.name === columnName) {
+              currrentColumnIndex = index;
+              console.log('index::::::', index);
+              return true;
+            } else {
+              return false;
+            }
+            // return col.name === columnName;
+          });
+          console.log('currrentColumn::::::', currrentColumn);
+          this.columns[currrentColumnIndex].minWidth = newColumnWidth;
+          this.columns[currrentColumnIndex].width =
+            this.columns[currrentColumnIndex].minWidth;
+          this.columns = this.columns;
+          console.log('this.columns::::::this.columns', this.columns);
         } catch (e) {
           console.log('e::getting width error::::', e);
         }
