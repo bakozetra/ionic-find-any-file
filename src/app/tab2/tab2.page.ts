@@ -354,9 +354,9 @@ export class Tab2Page implements OnInit {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
-    this.setLocalStorageRow(this.rows);
     this.ignoreFitContent = new Set([]);
     this.adjustColumnMinWidth(true);
+    this.setLocalStorageRow(this.rows);
   }
 
   adjustColumnMinWidth(fresh = false) {
