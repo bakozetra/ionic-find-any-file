@@ -154,6 +154,23 @@ export class Tab2Page implements OnInit {
     }
   }
 
+
+  touchtime = 0;
+  clickMe(rowIndex, cell) {
+    if (this.touchtime == 0) {
+        this.touchtime = new Date().getTime();
+    } else {
+        if (((new Date().getTime()) - this.touchtime) < 800) {
+          if(this.iosPlaform || this.ipadPlatform) {
+            this.editing[rowIndex + '-' + cell] = true;
+            this.touchtime = 0;
+          }
+        } else {
+            this.touchtime = new Date().getTime();
+        }
+    }
+  }
+
   setLocalStorageChages(data) {
     return localStorage.setItem('column-data', JSON.stringify(data));
   }

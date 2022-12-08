@@ -118,6 +118,7 @@
             <div
               style="white-space: pre"
               (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
+              (click)="clickMe(rowIndex, column.name.toLowerCase())"
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
               [draggable]="true"
