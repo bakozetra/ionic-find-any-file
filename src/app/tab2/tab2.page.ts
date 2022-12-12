@@ -1,30 +1,15 @@
-import { ItemReorderEventDetail, Platform } from '@ionic/angular';
-import { element } from 'protractor';
+import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import {
-  CdkDragDrop,
-  CdkDragMove,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   Component,
   ViewEncapsulation,
   OnInit,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
   NgZone,
   ElementRef,
   HostListener,
-  OnDestroy,
-  AfterViewChecked,
-  AfterViewInit,
 } from '@angular/core';
-import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
-import {
-  forceFillColumnWidths,
-  adjustColumnWidths,
-} from '@swimlane/ngx-datatable';
+
 import { NgxResizeWatcherDirective } from './checkerDirective.service';
 
 export interface Data {
@@ -43,9 +28,6 @@ const INITIALCOLUMNS = [
   encapsulation: ViewEncapsulation.None,
 })
 export class Tab2Page implements OnInit {
-  onChange($event: any) {
-    console.log('$event::::::onChange', $event);
-  }
   public data: Data;
   public columns: any;
   public tempColumns: any;
@@ -116,10 +98,6 @@ export class Tab2Page implements OnInit {
     });
   }
 
-  @HostListener('scroll') onScrollHost(e: Event): void {
-    // console.log('this.getYPosition(e)', this.getYPosition(e));
-  }
-
   getYPosition(e: Event): number {
     return (e.target as Element).scrollTop;
   }
@@ -141,7 +119,6 @@ export class Tab2Page implements OnInit {
       '.datatable-header-cell-label'
     )?.innerHTML;
 
-    console.log('columnName::::::HostListener', columnName);
     if (columnName !== undefined) {
       this.ignoreFitContent.add(columnName?.trim());
       const resizedCol = this.columns?.find((c) => {
@@ -154,20 +131,19 @@ export class Tab2Page implements OnInit {
     }
   }
 
-
   touchtime = 0;
-  clickMe(rowIndex, cell) {
+  onDoubleclick(rowIndex, cell) {
     if (this.touchtime == 0) {
-        this.touchtime = new Date().getTime();
+      this.touchtime = new Date().getTime();
     } else {
-        if (((new Date().getTime()) - this.touchtime) < 800) {
-          if(this.iosPlaform || this.ipadPlatform) {
-            this.editing[rowIndex + '-' + cell] = true;
-            this.touchtime = 0;
-          }
-        } else {
-            this.touchtime = new Date().getTime();
+      if (new Date().getTime() - this.touchtime < 800) {
+        if (this.iosPlaform || this.ipadPlatform) {
+          this.editing[rowIndex + '-' + cell] = true;
+          this.touchtime = 0;
         }
+      } else {
+        this.touchtime = new Date().getTime();
+      }
     }
   }
 
@@ -222,12 +198,14 @@ export class Tab2Page implements OnInit {
       const isHidden = this.columnVisibility.find(
         (visibilityCol) => visibilityCol.name === colomnName
       ).hidden;
+      if (isHidden == false) {
+        this.adjustColumnMinWidth(true);
+      }
       return !isHidden;
     });
 
     this.setLocalStorageColumnVisibility(updateColumns);
     this.setLocalStorageDrag(updateColumns);
-    console.log('columnsWidth::::::', this.columnsWidth);
   }
   element(width, height) {
     this.rows.map((val, index) => {
@@ -280,6 +258,7 @@ export class Tab2Page implements OnInit {
       const resizedCol = this.columns.find((c) => {
         return c.name === e.column.name;
       });
+      this.adjustColumnMinWidth(true);
       resizedCol.minWidth = 0;
       const allHeaders = document.querySelectorAll<HTMLElement>(
         '.datatable-header-cell'
@@ -287,6 +266,7 @@ export class Tab2Page implements OnInit {
       allHeaders.forEach((header) => {
         if (header.innerText.trim() === e.column.name) {
           resizedCol.width = header?.clientWidth;
+          this.columnsWidth[e.column.name] = header?.clientWidth;
           if (e.column.name === 'Image') {
             this.imageWidth = header?.clientWidth as unknown as string;
           }
@@ -296,10 +276,6 @@ export class Tab2Page implements OnInit {
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
     }
-  }
-
-  updateFilter(e) {
-    // console.log('e::::::', e);
   }
 
   getLocalStoragSort() {
@@ -375,18 +351,10 @@ export class Tab2Page implements OnInit {
         const cell = cells[k];
         const cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
         const columnName = this.columns[k].name;
-        console.log('columnName::::::', columnName);
-        console.log('cellSizer::::::', cellSizer);
         try {
           var range = document?.createRange();
-          console.log('range::::::', range);
           range?.selectNode(cellSizer);
-          console.log(
-            'range?.selectNode(cellSizer)::::::',
-            range?.selectNode(cellSizer)
-          );
           var rect = range.getBoundingClientRect().width;
-          console.log('rect::::::', rect, cellSizer);
           range.detach();
           if (!(columnName in this.columnsWidth)) {
             this.columnsWidth = { ...this.columnsWidth, [columnName]: 0 };
@@ -405,19 +373,16 @@ export class Tab2Page implements OnInit {
           const currrentColumn = this.columns.find((col, index) => {
             if (col.name === columnName) {
               currrentColumnIndex = index;
-              console.log('index::::::', index);
               return true;
             } else {
               return false;
             }
             // return col.name === columnName;
           });
-          console.log('currrentColumn::::::', currrentColumn);
           this.columns[currrentColumnIndex].minWidth = newColumnWidth;
           this.columns[currrentColumnIndex].width =
             this.columns[currrentColumnIndex].minWidth;
           this.columns = this.columns;
-          console.log('this.columns::::::this.columns', this.columns);
         } catch (e) {
           console.log('e::getting width error::::', e);
         }
