@@ -187,6 +187,7 @@ export class Tab2Page implements OnInit {
   }
 
   toggleColumn(toggleName, event) {
+    console.log('event::::::', event);
     const updateColumns = this.columnVisibility.map((columnName) => {
       if (columnName.name === toggleName) {
         columnName.hidden = !columnName.hidden;
@@ -253,6 +254,7 @@ export class Tab2Page implements OnInit {
   }
   imageWidth: string;
   resize(e) {
+    console.log('e::::::', e);
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
       const resizedCol = this.columns.find((c) => {
@@ -267,11 +269,13 @@ export class Tab2Page implements OnInit {
         if (header.innerText.trim() === e.column.name) {
           resizedCol.width = header?.clientWidth;
           this.columnsWidth[e.column.name] = header?.clientWidth;
+          console.log('this.columnsWidth::::::resize', this.columnsWidth);
           if (e.column.name === 'Image') {
             this.imageWidth = header?.clientWidth as unknown as string;
           }
         }
       });
+      console.log('allHeaders::::::', allHeaders);
     }
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
@@ -366,7 +370,7 @@ export class Tab2Page implements OnInit {
           if (rect < 100) {
             rect = 100;
           }
-
+          console.log('this.columnsWidth::::::', this.columnsWidth);
           const newColumnWidth = Math.max(currentColunWidth, rect);
           this.columnsWidth[columnName] = newColumnWidth;
           let currrentColumnIndex;
@@ -377,7 +381,6 @@ export class Tab2Page implements OnInit {
             } else {
               return false;
             }
-            // return col.name === columnName;
           });
           this.columns[currrentColumnIndex].minWidth = newColumnWidth;
           this.columns[currrentColumnIndex].width =
@@ -387,6 +390,7 @@ export class Tab2Page implements OnInit {
           console.log('e::getting width error::::', e);
         }
       }
+      console.log('this.columnsWidth::::::', this.columnsWidth);
     }
   }
 
