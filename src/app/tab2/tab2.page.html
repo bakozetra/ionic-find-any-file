@@ -50,7 +50,7 @@
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
         [minWidth]="column.minWidth"
-        [width]="column.width"
+        [width]="column.name === 'Image'&& imageWidth === undefined ? 277 :column.width"
         [canAutoResize]="true"
         [flexGrow]="0"
         id="{{column.name}}"

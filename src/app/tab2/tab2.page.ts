@@ -346,7 +346,7 @@ export class Tab2Page implements OnInit {
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
     }
-
+    console.log('imageWidth::::::', this.imageWidth);
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     for (let i = 0; i < rows.length; i++) {
