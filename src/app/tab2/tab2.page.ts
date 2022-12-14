@@ -82,6 +82,10 @@ export class Tab2Page implements OnInit {
         this.rows = res.movies;
       });
     }
+    console.log(
+      '!this.getLocalStorageColumnVisibility()::::::',
+      !this.getLocalStorageColumnVisibility()
+    );
     if (!this.getLocalStorageColumnVisibility()) {
       this.setLocalStorageColumnVisibility(INITIALCOLUMNS);
       this.columnVisibility = JSON.parse(JSON.stringify(INITIALCOLUMNS));
@@ -199,12 +203,11 @@ export class Tab2Page implements OnInit {
       const isHidden = this.columnVisibility.find(
         (visibilityCol) => visibilityCol.name === colomnName
       ).hidden;
-      if (isHidden == false) {
-        this.adjustColumnMinWidth(true);
-      }
       return !isHidden;
     });
 
+    // to remove the column name inside of the content
+    this.ignoreFitContent = new Set([]);
     this.setLocalStorageColumnVisibility(updateColumns);
     this.setLocalStorageDrag(updateColumns);
   }
@@ -260,7 +263,6 @@ export class Tab2Page implements OnInit {
       const resizedCol = this.columns.find((c) => {
         return c.name === e.column.name;
       });
-      this.adjustColumnMinWidth(true);
       resizedCol.minWidth = 0;
       const allHeaders = document.querySelectorAll<HTMLElement>(
         '.datatable-header-cell'
@@ -268,6 +270,8 @@ export class Tab2Page implements OnInit {
       allHeaders.forEach((header) => {
         if (header.innerText.trim() === e.column.name) {
           resizedCol.width = header?.clientWidth;
+          console.log('header?.clientWidth::::::', header?.clientWidth);
+          console.log('e.column.name::::::', e.column.name);
           this.columnsWidth[e.column.name] = header?.clientWidth;
           console.log('this.columnsWidth::::::resize', this.columnsWidth);
           if (e.column.name === 'Image') {
@@ -275,7 +279,6 @@ export class Tab2Page implements OnInit {
           }
         }
       });
-      console.log('allHeaders::::::', allHeaders);
     }
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
@@ -353,8 +356,12 @@ export class Tab2Page implements OnInit {
           return;
         }
         const cell = cells[k];
+        console.log('cell::::::', cell);
         const cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
         const columnName = this.columns[k].name;
+        if (columnName === 'Image') {
+          const cellSizer1 = cell.children[0]?.children[0]?.children[0];
+        }
         try {
           var range = document?.createRange();
           range?.selectNode(cellSizer);
@@ -373,6 +380,12 @@ export class Tab2Page implements OnInit {
           console.log('this.columnsWidth::::::', this.columnsWidth);
           const newColumnWidth = Math.max(currentColunWidth, rect);
           this.columnsWidth[columnName] = newColumnWidth;
+
+          console.log(
+            'this.columnsWidth[columnName]::::::',
+            this.columnsWidth[columnName]
+          );
+
           let currrentColumnIndex;
           const currrentColumn = this.columns.find((col, index) => {
             if (col.name === columnName) {
@@ -382,9 +395,21 @@ export class Tab2Page implements OnInit {
               return false;
             }
           });
+          console.log('currrentColumn::::::', currrentColumn);
+          console.log(
+            'currrentColumn::::::JSON',
+            JSON.stringify(currrentColumn),
+            currrentColumn
+          );
+          console.log('this.columns::::::', JSON.stringify(this.columns));
+
           this.columns[currrentColumnIndex].minWidth = newColumnWidth;
-          this.columns[currrentColumnIndex].width =
-            this.columns[currrentColumnIndex].minWidth;
+          console.log(
+            'this.columns[currrentColumnIndex].minWidth::::::',
+            this.columns[currrentColumnIndex].minWidth
+          );
+          this.columns[currrentColumnIndex].width = newColumnWidth;
+          console.log('newColumnWidth::::::', newColumnWidth);
           this.columns = this.columns;
         } catch (e) {
           console.log('e::getting width error::::', e);
