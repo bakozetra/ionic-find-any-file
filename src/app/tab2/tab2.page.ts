@@ -37,12 +37,12 @@ export class Tab2Page implements OnInit {
   public columnVisibility;
   public ignoreFitContent = new Set([]);
   columnsWidth = {};
-
   editing = {};
   ngxResizeWatcherDirective;
   rowHeight;
-
   togglecheck = [{ ischecked: false }];
+  touchtime = 0;
+  imageWidth: string;
 
   constructor(
     private http: HttpClient,
@@ -82,10 +82,6 @@ export class Tab2Page implements OnInit {
         this.rows = res.movies;
       });
     }
-    console.log(
-      '!this.getLocalStorageColumnVisibility()::::::',
-      !this.getLocalStorageColumnVisibility()
-    );
     if (!this.getLocalStorageColumnVisibility()) {
       this.setLocalStorageColumnVisibility(INITIALCOLUMNS);
       this.columnVisibility = JSON.parse(JSON.stringify(INITIALCOLUMNS));
@@ -102,40 +98,10 @@ export class Tab2Page implements OnInit {
     });
   }
 
-  getYPosition(e: Event): number {
-    return (e.target as Element).scrollTop;
-  }
+  // getYPosition(e: Event): number {
+  //   return (e.target as Element).scrollTop;
+  // }
 
-  @HostListener('pointerdown', ['$event']) onPointerDown(e) {
-    e.stopPropagation();
-    const elementclassName = e.srcElement.className;
-    if (
-      elementclassName === 'datatable-header-cell-label draggable' ||
-      elementclassName === 'sort-btn datatable-icon-up sort-asc' ||
-      elementclassName === 'datatable-icon-down sort-btn sort-desc' ||
-      elementclassName === 'datatable-icon-sort-unset sort-btn' ||
-      elementclassName === 'sort-btn datatable-icon-down sort-desc' ||
-      elementclassName === 'datatable-header-cell-template-wrap'
-    ) {
-      return;
-    }
-    const columnName = e?.target?.parentNode?.querySelector(
-      '.datatable-header-cell-label'
-    )?.innerHTML;
-
-    if (columnName !== undefined) {
-      this.ignoreFitContent.add(columnName?.trim());
-      const resizedCol = this.columns?.find((c) => {
-        return c?.name.trim() === columnName?.trim();
-      });
-      resizedCol.minWidth = 0;
-    }
-    if (this.togglecheck[0].ischecked) {
-      this.element('5rem', 'auto');
-    }
-  }
-
-  touchtime = 0;
   onDoubleclick(rowIndex, cell) {
     if (this.touchtime == 0) {
       this.touchtime = new Date().getTime();
@@ -151,47 +117,7 @@ export class Tab2Page implements OnInit {
     }
   }
 
-  setLocalStorageChages(data) {
-    return localStorage.setItem('column-data', JSON.stringify(data));
-  }
-  setLocalStorageRow(data) {
-    return localStorage.setItem('row-data', JSON.stringify(data));
-  }
-
-  setLocalStorageColumnVisibility(data) {
-    return localStorage.setItem('column-visibility', JSON.stringify(data));
-  }
-
-  getLocalStorageColumnVisibility() {
-    return JSON.parse(localStorage.getItem('column-visibility'));
-  }
-
-  getLocalStorageRow() {
-    return localStorage.getItem('row-data');
-  }
-  getlocatChanges() {
-    return localStorage.getItem('column-data');
-  }
-
-  getDataCoumnChanges(): any {
-    let localJSON = this.tempColumns;
-    const localData = this.getlocatChanges();
-    if (localData && localData != null) {
-      localJSON = JSON.parse(localData);
-    }
-    return localJSON;
-  }
-  getDataRowChanges(): any {
-    let localJSON = this.tempColumns;
-    const localData = this.getLocalStorageRow();
-    if (localData && localData != null) {
-      localJSON = JSON.parse(localData);
-    }
-    return localJSON;
-  }
-
   toggleColumn(toggleName, event) {
-    console.log('event::::::', event);
     const updateColumns = this.columnVisibility.map((columnName) => {
       if (columnName.name === toggleName) {
         columnName.hidden = !columnName.hidden;
@@ -205,12 +131,13 @@ export class Tab2Page implements OnInit {
       ).hidden;
       return !isHidden;
     });
-
     // to remove the column name inside of the content
     this.ignoreFitContent = new Set([]);
     this.setLocalStorageColumnVisibility(updateColumns);
     this.setLocalStorageDrag(updateColumns);
   }
+
+  // Resizing row image function
   element(width, height) {
     this.rows.map((val, index) => {
       const imagelement = document.getElementById(index);
@@ -237,46 +164,25 @@ export class Tab2Page implements OnInit {
     }
   }
 
-  setLocalStoragetoggleRow(data) {
-    return localStorage.setItem('resize-row', JSON.stringify(data));
-  }
-  gettoggleRowChanges() {
-    return localStorage.getItem('resize-row');
-  }
-  getToggleRow(): any {
-    let localJSON = this.tempColumns;
-    const localData = this.gettoggleRowChanges();
-    if (localData && localData != null) {
-      localJSON = JSON.parse(localData);
-    }
-    return localJSON;
-  }
+  resizingColumn(e) {
+    const allHeaders = document.querySelectorAll<HTMLElement>(
+      '.datatable-header-cell'
+    );
 
-  setLocalStorageSort(data) {
-    return localStorage.setItem('sorting', JSON.stringify(data));
-  }
-  imageWidth: string;
-  resize(e) {
-    console.log('e::::::', e);
     if (e?.column?.name) {
       this.ignoreFitContent.add(e.column.name);
       const resizedCol = this.columns.find((c) => {
         return c.name === e.column.name;
       });
       resizedCol.minWidth = 0;
-      const allHeaders = document.querySelectorAll<HTMLElement>(
-        '.datatable-header-cell'
-      );
       allHeaders.forEach((header) => {
         if (header.innerText.trim() === e.column.name) {
           resizedCol.width = header?.clientWidth;
-          console.log('header?.clientWidth::::::', header?.clientWidth);
-          console.log('e.column.name::::::', e.column.name);
           this.columnsWidth[e.column.name] = header?.clientWidth;
-          console.log('this.columnsWidth::::::resize', this.columnsWidth);
           if (e.column.name === 'Image') {
             this.imageWidth = header?.clientWidth as unknown as string;
           }
+          // this.setLocalStorageColumnWidth(this.columnsWidth);
         }
       });
     }
@@ -285,39 +191,11 @@ export class Tab2Page implements OnInit {
     }
   }
 
-  getLocalStoragSort() {
-    return localStorage.getItem('sorting');
-  }
-
-  getDataRowSort(): any {
-    let localJSON = this.tempColumns;
-    const localData = this.getLocalStoragSort();
-    if (localData && localData != null) {
-      localJSON = JSON.parse(localData);
-    }
-    return localJSON;
-  }
-  setLocalStorageDrag(data) {
-    return localStorage.setItem('drag', JSON.stringify(data));
-  }
-
-  getLocalStoragDrag() {
-    return localStorage.getItem('drag');
-  }
-
-  getDataRowDrag(): any {
-    let localJSON = this.tempColumns;
-    const localData = this.getLocalStoragDrag();
-    if (localData && localData != null) {
-      localJSON = JSON.parse(localData);
-    }
-    return localJSON;
-  }
-
-  onSort(event) {
+  onSortColumn(event) {
     this.setLocalStorageSort(event.sorts);
   }
-  rearrange(event) {
+
+  reorderColumn(event) {
     const arr = this.array_move(this.columns, event.prevValue, event.newValue);
     this.setLocalStorageDrag(arr);
   }
@@ -333,7 +211,7 @@ export class Tab2Page implements OnInit {
     return arr;
   }
 
-  updateValue(event, cell?, rowIndex?) {
+  updateCellValue(event, cell?, rowIndex?) {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
@@ -342,80 +220,90 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageRow(this.rows);
   }
 
-  adjustColumnMinWidth(fresh = false) {
+  @HostListener('pointerdown', ['$event']) onPointerDown(e) {
+    e.stopPropagation();
+    const elementclassName = e.srcElement.className;
+    const columnName = e?.target?.parentNode?.querySelector(
+      '.datatable-header-cell-label'
+    )?.innerHTML;
+
+    if (
+      elementclassName === 'datatable-header-cell-label draggable' ||
+      elementclassName === 'sort-btn datatable-icon-up sort-asc' ||
+      elementclassName === 'datatable-icon-down sort-btn sort-desc' ||
+      elementclassName === 'datatable-icon-sort-unset sort-btn' ||
+      elementclassName === 'sort-btn datatable-icon-down sort-desc' ||
+      elementclassName === 'datatable-header-cell-template-wrap'
+    ) {
+      return;
+    }
+    if (columnName !== undefined) {
+      this.ignoreFitContent.add(columnName?.trim());
+      const resizedCol = this.columns?.find((c) => {
+        return c?.name.trim() === columnName?.trim();
+      });
+      resizedCol.minWidth = 0;
+    }
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
     }
-    console.log('imageWidth::::::', this.imageWidth);
+  }
+
+  createRangeCell(cellSizer, columnName, fresh, i) {
+    try {
+      var range = document?.createRange();
+      range?.selectNode(cellSizer);
+      var rect = range.getBoundingClientRect().width;
+      range.detach();
+      if (!(columnName in this.columnsWidth)) {
+        this.columnsWidth = { ...this.columnsWidth, [columnName]: 0 };
+      }
+      const currentColunWidth =
+        fresh && i === 0 ? 0 : this.columnsWidth[columnName];
+
+      if (rect < 100) {
+        rect = 100;
+      }
+      const newColumnWidth = Math.max(currentColunWidth, rect);
+      this.columnsWidth[columnName] = newColumnWidth;
+      let currrentColumnIndex;
+      const currrentColumn = this.columns.find((col, index) => {
+        if (col.name === columnName) {
+          currrentColumnIndex = index;
+          return true;
+        } else {
+          return false;
+        }
+      });
+      this.columns[currrentColumnIndex].minWidth = newColumnWidth;
+      this.columns[currrentColumnIndex].width = newColumnWidth;
+      this.columns = this.columns;
+      console.log('this.columnsWidth::::::', this.columnsWidth);
+    } catch (e) {
+      console.log('e::getting width error::::', e);
+    }
+  }
+
+  adjustColumnMinWidth(fresh = false) {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
+    if (this.togglecheck[0].ischecked) {
+      this.element('5rem', 'auto');
+    }
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
+
       for (let k = 0; k < cells.length; k++) {
-        if (this.ignoreFitContent.has(this.columns[k].name)) {
-          return;
-        }
-        const cell = cells[k];
-        console.log('cell::::::', cell);
-        const cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
-        const columnName = this.columns[k].name;
-        if (columnName === 'Image') {
-          const cellSizer1 = cell.children[0]?.children[0]?.children[0];
-        }
-        try {
-          var range = document?.createRange();
-          range?.selectNode(cellSizer);
-          var rect = range.getBoundingClientRect().width;
-          range.detach();
-          if (!(columnName in this.columnsWidth)) {
-            this.columnsWidth = { ...this.columnsWidth, [columnName]: 0 };
+        if (!this.ignoreFitContent.has(this.columns[k].name)) {
+          const cell = cells[k];
+          let cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
+          const columnName = this.columns[k].name;
+          if (columnName === 'Image') {
+            cellSizer = cell.children[0]?.children[0]?.children[0];
           }
-
-          const currentColunWidth =
-            fresh && i === 0 ? 0 : this.columnsWidth[columnName];
-
-          if (rect < 100) {
-            rect = 100;
-          }
-          console.log('this.columnsWidth::::::', this.columnsWidth);
-          const newColumnWidth = Math.max(currentColunWidth, rect);
-          this.columnsWidth[columnName] = newColumnWidth;
-
-          console.log(
-            'this.columnsWidth[columnName]::::::',
-            this.columnsWidth[columnName]
-          );
-
-          let currrentColumnIndex;
-          const currrentColumn = this.columns.find((col, index) => {
-            if (col.name === columnName) {
-              currrentColumnIndex = index;
-              return true;
-            } else {
-              return false;
-            }
-          });
-          console.log('currrentColumn::::::', currrentColumn);
-          console.log(
-            'currrentColumn::::::JSON',
-            JSON.stringify(currrentColumn),
-            currrentColumn
-          );
-          console.log('this.columns::::::', JSON.stringify(this.columns));
-
-          this.columns[currrentColumnIndex].minWidth = newColumnWidth;
-          console.log(
-            'this.columns[currrentColumnIndex].minWidth::::::',
-            this.columns[currrentColumnIndex].minWidth
-          );
-          this.columns[currrentColumnIndex].width = newColumnWidth;
-          console.log('newColumnWidth::::::', newColumnWidth);
-          this.columns = this.columns;
-        } catch (e) {
-          console.log('e::getting width error::::', e);
+          this.createRangeCell(cellSizer, columnName, fresh, i);
         }
       }
-      console.log('this.columnsWidth::::::', this.columnsWidth);
     }
   }
 
@@ -430,5 +318,83 @@ export class Tab2Page implements OnInit {
   test(e) {
     // console.log('e::::::test', e);
   }
-  currentlyLoadedPage = 0;
+
+  // localStorage for Row-data
+  setLocalStorageRow(data) {
+    return localStorage.setItem('row-data', JSON.stringify(data));
+  }
+  getLocalStorageRow() {
+    return localStorage.getItem('row-data');
+  }
+  getDataRowChanges(): any {
+    let localJSON = this.tempColumns;
+    const localData = this.getLocalStorageRow();
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+
+  // Loacal storage for column visibility
+  setLocalStorageColumnVisibility(data) {
+    return localStorage.setItem('column-visibility', JSON.stringify(data));
+  }
+  getLocalStorageColumnVisibility() {
+    return JSON.parse(localStorage.getItem('column-visibility'));
+  }
+
+  // Local storage for resizing row
+  setLocalStoragetoggleRow(data) {
+    return localStorage.setItem('resize-row', JSON.stringify(data));
+  }
+  gettoggleRowChanges() {
+    return localStorage.getItem('resize-row');
+  }
+  getToggleRow(): any {
+    let localJSON = this.tempColumns;
+    const localData = this.gettoggleRowChanges();
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+
+  // Local Storage for sorting
+  setLocalStorageSort(data) {
+    return localStorage.setItem('sorting', JSON.stringify(data));
+  }
+  getLocalStoragSort() {
+    return localStorage.getItem('sorting');
+  }
+  getDataRowSort(): any {
+    let localJSON = this.tempColumns;
+    const localData = this.getLocalStoragSort();
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+
+  // Local storage for dragging
+  setLocalStorageDrag(data) {
+    return localStorage.setItem('drag', JSON.stringify(data));
+  }
+  getLocalStoragDrag() {
+    return localStorage.getItem('drag');
+  }
+  getDataRowDrag(): any {
+    let localJSON = this.tempColumns;
+    const localData = this.getLocalStoragDrag();
+    if (localData && localData != null) {
+      localJSON = JSON.parse(localData);
+    }
+    return localJSON;
+  }
+  // Saving column width in Local storage
+  setLocalStorageColumnWidth(data) {
+    return localStorage.setItem('column-width', JSON.stringify(data));
+  }
+  getLocalStorageColumnWidth() {
+    return JSON.parse(localStorage.getItem('column-width'));
+  }
 }

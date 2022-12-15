@@ -33,11 +33,11 @@
       [headerHeight]="50"
       [footerHeight]="50"
       [rowHeight]=" this.togglecheck[0].ischecked == true ? this.rowHeight : 'auto'"
-      (sort)="onSort($event)"
+      (sort)="onSortColumn($event)"
       [sorts]="this.sortOrder"
-      (reorder)="rearrange($event)"
+      (reorder)="reorderColumn($event)"
       [scrollbarH]="true"
-      (resize)="resize($event)"
+      (resize)="resizingColumn($event)"
       [swapColumns]="true"
       (cdkObserveContent)="adjustColumnMinWidth()"
       cdkDropList
@@ -50,7 +50,7 @@
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
         [minWidth]="column.minWidth"
-        [width]="column.name === 'Image'&& imageWidth === undefined ? 277 :column.width"
+        [width]="column.name === 'Image'? imageWidth === undefined ? 277 : imageWidth  :column.width"
         [canAutoResize]="true"
         [flexGrow]="0"
         id="{{column.name}}"
@@ -59,6 +59,7 @@
         [canAutoResize]="false"
         [sortable]="column.name=='Image'? false : true"
       >
+        <!-- column.name === 'Image'? imageWidth === undefined ? column.width : imageWidth  : -->
         <ng-template
           let-column="column"
           let-sort="sortFn"
@@ -109,7 +110,7 @@
               [attr.aria-label]="value"
               [src]="value"
               [id]="rowIndex"
-              [style]="{height:'100%', width:imageWidth + 'px'}"
+              [style]="{height:'100%', width:imageWidth + 'px' }"
             />
           </div>
 
@@ -126,7 +127,7 @@
             </div>
             <textarea
               autofocus
-              (blur)="updateValue($event, column.name.toLowerCase() , rowIndex)"
+              (blur)="updateCellValue($event, column.name.toLowerCase() , rowIndex)"
               *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
               type="text"
               [value]="value"
