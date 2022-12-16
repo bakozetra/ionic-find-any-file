@@ -101,6 +101,14 @@ export class Tab2Page implements OnInit {
   // getYPosition(e: Event): number {
   //   return (e.target as Element).scrollTop;
   // }
+  onSortColumn(event) {
+    this.setLocalStorageSort(event.sorts);
+  }
+
+  reorderColumn(event) {
+    const arr = this.array_move(this.columns, event.prevValue, event.newValue);
+    this.setLocalStorageDrag(arr);
+  }
 
   onDoubleclick(rowIndex, cell) {
     if (this.touchtime == 0) {
@@ -114,6 +122,24 @@ export class Tab2Page implements OnInit {
       } else {
         this.touchtime = new Date().getTime();
       }
+    }
+  }
+
+  toggleRow(e, checked) {
+    if (!e.detail.checked) {
+      this.togglecheck[0].ischecked = false;
+      checked = this.togglecheck[0].ischecked;
+      this.rowHeight = undefined;
+      const imgwidth =
+        this.imageWidth === undefined ? 'auto' : this.imageWidth + 'px';
+      this.element(imgwidth, '100%');
+      this.setLocalStoragetoggleRow(this.togglecheck);
+    } else {
+      this.togglecheck[0].ischecked = true;
+      checked = this.togglecheck[0].ischecked;
+      this.rowHeight = '5rem';
+      this.element('5rem', 'auto');
+      this.setLocalStoragetoggleRow(this.togglecheck);
     }
   }
 
@@ -146,24 +172,6 @@ export class Tab2Page implements OnInit {
     });
   }
 
-  toggleRow(e, checked) {
-    if (!e.detail.checked) {
-      this.togglecheck[0].ischecked = false;
-      checked = this.togglecheck[0].ischecked;
-      this.rowHeight = undefined;
-      const imgwidth =
-        this.imageWidth === undefined ? 'auto' : this.imageWidth + 'px';
-      this.element(imgwidth, '100%');
-      this.setLocalStoragetoggleRow(this.togglecheck);
-    } else {
-      this.togglecheck[0].ischecked = true;
-      checked = this.togglecheck[0].ischecked;
-      this.rowHeight = '5rem';
-      this.element('5rem', 'auto');
-      this.setLocalStoragetoggleRow(this.togglecheck);
-    }
-  }
-
   resizingColumn(e) {
     const allHeaders = document.querySelectorAll<HTMLElement>(
       '.datatable-header-cell'
@@ -182,22 +190,12 @@ export class Tab2Page implements OnInit {
           if (e.column.name === 'Image') {
             this.imageWidth = header?.clientWidth as unknown as string;
           }
-          // this.setLocalStorageColumnWidth(this.columnsWidth);
         }
       });
     }
     if (this.togglecheck[0].ischecked) {
       this.element('5rem', 'auto');
     }
-  }
-
-  onSortColumn(event) {
-    this.setLocalStorageSort(event.sorts);
-  }
-
-  reorderColumn(event) {
-    const arr = this.array_move(this.columns, event.prevValue, event.newValue);
-    this.setLocalStorageDrag(arr);
   }
 
   array_move(arr, old_index, new_index) {
@@ -215,7 +213,6 @@ export class Tab2Page implements OnInit {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
-    // this.ignoreFitContent = new Set([]);
     this.adjustColumnMinWidth(true);
     this.setLocalStorageRow(this.rows);
   }
@@ -274,6 +271,7 @@ export class Tab2Page implements OnInit {
           return false;
         }
       });
+
       return { newColumnWidth, currrentColumnIndex };
     } catch (e) {
       console.log('e::getting width error::::', e);
@@ -292,6 +290,7 @@ export class Tab2Page implements OnInit {
       for (let k = 0; k < cells.length; k++) {
         if (!this.ignoreFitContent.has(this.columns[k].name)) {
           const cell = cells[k];
+
           let cellSizer = cell.children[0]?.children[0]?.children[0]?.lastChild;
           const columnName = this.columns[k].name;
           if (columnName === 'Image') {
@@ -307,6 +306,7 @@ export class Tab2Page implements OnInit {
           this.columns[currrentColumnIndex].minWidth = newColumnWidth;
           this.columns[currrentColumnIndex].width = newColumnWidth;
           this.columns = this.columns;
+          // this.setLocalStorageColumnVisibility(columnImageWidth);
         }
       }
     }
@@ -320,10 +320,22 @@ export class Tab2Page implements OnInit {
     );
     this.setLocalStorageDrag(arr);
   }
-  test(e) {
-    // console.log('e::::::test', e);
-  }
 
+  // // cloumn storage
+  // setLocalStorageColumn(data) {
+  //   return localStorage.setItem('column-data', JSON.stringify(data));
+  // }
+  // getLocalStorageColumn() {
+  //   return localStorage.getItem('column-data');
+  // }
+  // getDataColumnChanges(): any {
+  //   let localJSON = this.tempColumns;
+  //   const localData = this.getLocalStorageColumn();
+  //   if (localData && localData != null) {
+  //     localJSON = JSON.parse(localData);
+  //   }
+  //   return localJSON;
+  // }
   // localStorage for Row-data
   setLocalStorageRow(data) {
     return localStorage.setItem('row-data', JSON.stringify(data));

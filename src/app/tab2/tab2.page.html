@@ -50,7 +50,7 @@
         [prop]="column.name |lowercase"
         *ngFor="let column of columns"
         [minWidth]="column.minWidth"
-        [width]="column.name === 'Image'? imageWidth === undefined ? 277 : imageWidth  :column.width"
+        [width]="column.name === 'Image'? imageWidth  :column.width"
         [canAutoResize]="true"
         [flexGrow]="0"
         id="{{column.name}}"
@@ -59,7 +59,6 @@
         [canAutoResize]="false"
         [sortable]="column.name=='Image'? false : true"
       >
-        <!-- column.name === 'Image'? imageWidth === undefined ? column.width : imageWidth  : -->
         <ng-template
           let-column="column"
           let-sort="sortFn"
@@ -76,7 +75,6 @@
                 class="datatable-header-cell-label draggable example-box"
                 (click)="sort($event)"
                 [attr.aria-label]="column.name"
-                (cdkDragStarted)="test($event)"
                 cdkDrag
               >
                 {{ column.name }}
@@ -91,7 +89,6 @@
                 class="datatable-header-cell-label draggable"
                 (click)="sort($event)"
                 [attr.aria-label]="column.name"
-                (cdkDragStarted)="test($event)"
               >
                 {{ column.name }}
               </span>
