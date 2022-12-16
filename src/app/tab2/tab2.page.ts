@@ -215,7 +215,7 @@ export class Tab2Page implements OnInit {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
-    this.ignoreFitContent = new Set([]);
+    // this.ignoreFitContent = new Set([]);
     this.adjustColumnMinWidth(true);
     this.setLocalStorageRow(this.rows);
   }
@@ -265,9 +265,8 @@ export class Tab2Page implements OnInit {
         rect = 100;
       }
       const newColumnWidth = Math.max(currentColunWidth, rect);
-      this.columnsWidth[columnName] = newColumnWidth;
       let currrentColumnIndex;
-      const currrentColumn = this.columns.find((col, index) => {
+      this.columns.find((col, index) => {
         if (col.name === columnName) {
           currrentColumnIndex = index;
           return true;
@@ -275,10 +274,7 @@ export class Tab2Page implements OnInit {
           return false;
         }
       });
-      this.columns[currrentColumnIndex].minWidth = newColumnWidth;
-      this.columns[currrentColumnIndex].width = newColumnWidth;
-      this.columns = this.columns;
-      console.log('this.columnsWidth::::::', this.columnsWidth);
+      return { newColumnWidth, currrentColumnIndex };
     } catch (e) {
       console.log('e::getting width error::::', e);
     }
@@ -301,7 +297,16 @@ export class Tab2Page implements OnInit {
           if (columnName === 'Image') {
             cellSizer = cell.children[0]?.children[0]?.children[0];
           }
-          this.createRangeCell(cellSizer, columnName, fresh, i);
+          const { newColumnWidth, currrentColumnIndex } = this.createRangeCell(
+            cellSizer,
+            columnName,
+            fresh,
+            i
+          );
+          this.columnsWidth[columnName] = newColumnWidth;
+          this.columns[currrentColumnIndex].minWidth = newColumnWidth;
+          this.columns[currrentColumnIndex].width = newColumnWidth;
+          this.columns = this.columns;
         }
       }
     }
