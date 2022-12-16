@@ -107,7 +107,7 @@
               [attr.aria-label]="value"
               [src]="value"
               [id]="rowIndex"
-              [style]="{height:'100%', width:imageWidth + 'px' }"
+              [style]="{height: this.styleCSS.innerHeight , width:imageWidth + 'px' }"
             />
           </div>
 
@@ -128,7 +128,7 @@
               *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
               type="text"
               [value]="value"
-              [ngStyle]="{width:'100%', minHeight:'auto'}"
+              [ngStyle]="{width: this.styleCSS.textAreaWidth , minHeight: this.styleCSS.textAreaMinHight}"
             >
             {{value}}
             </textarea>

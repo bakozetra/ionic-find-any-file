@@ -21,6 +21,7 @@ const INITIALCOLUMNS = [
   { name: 'Genre', hidden: false, minWidth: 0, width: 0 },
   { name: 'Image', hidden: false, minWidth: 0, width: 0 },
 ];
+
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -43,6 +44,14 @@ export class Tab2Page implements OnInit {
   togglecheck = [{ ischecked: false }];
   touchtime = 0;
   imageWidth: string;
+  styleCSS = {
+    innerHeight: '100%',
+    innerWidth: 'auto',
+    rowHeigt: '5rem',
+    height: '100%',
+    textAreaWidth: '100%',
+    textAreaMinHight: 'auto',
+  };
 
   constructor(
     private http: HttpClient,
@@ -131,14 +140,16 @@ export class Tab2Page implements OnInit {
       checked = this.togglecheck[0].ischecked;
       this.rowHeight = undefined;
       const imgwidth =
-        this.imageWidth === undefined ? 'auto' : this.imageWidth + 'px';
-      this.element(imgwidth, '100%');
+        this.imageWidth === undefined
+          ? this.styleCSS.innerWidth
+          : this.imageWidth + 'px';
+      this.element(imgwidth, this.styleCSS.innerHeight);
       this.setLocalStoragetoggleRow(this.togglecheck);
     } else {
       this.togglecheck[0].ischecked = true;
       checked = this.togglecheck[0].ischecked;
-      this.rowHeight = '5rem';
-      this.element('5rem', 'auto');
+      this.rowHeight = this.styleCSS.rowHeigt;
+      this.element(this.rowHeight, this.styleCSS.innerWidth);
       this.setLocalStoragetoggleRow(this.togglecheck);
     }
   }
@@ -194,7 +205,7 @@ export class Tab2Page implements OnInit {
       });
     }
     if (this.togglecheck[0].ischecked) {
-      this.element('5rem', 'auto');
+      this.element(this.styleCSS.rowHeigt, this.styleCSS.innerWidth);
     }
   }
 
@@ -242,7 +253,7 @@ export class Tab2Page implements OnInit {
       resizedCol.minWidth = 0;
     }
     if (this.togglecheck[0].ischecked) {
-      this.element('5rem', 'auto');
+      this.element(this.styleCSS.rowHeigt, this.styleCSS.innerWidth);
     }
   }
 
@@ -282,7 +293,7 @@ export class Tab2Page implements OnInit {
     const element = this.elementRef.nativeElement as HTMLElement;
     const rows = element.getElementsByTagName('datatable-body-row');
     if (this.togglecheck[0].ischecked) {
-      this.element('5rem', 'auto');
+      this.element(this.styleCSS.rowHeigt, this.styleCSS.innerWidth);
     }
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('datatable-body-cell');
