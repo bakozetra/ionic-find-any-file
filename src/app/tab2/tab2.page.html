@@ -23,7 +23,7 @@
 </div>
 
 <ion-content>
-  <div class="ion-padding" style="width: 100%; overflow: overlay">
+  <div class="ion-padding" style="height: 100%; width: 100%">
     <ngx-datatable
       class="material server-scrolling-demo"
       [limit]="8"
@@ -32,7 +32,7 @@
       [columnMode]="'force'"
       [headerHeight]="50"
       [footerHeight]="50"
-      [rowHeight]=" this.togglecheck[0].ischecked == true ? this.rowHeight : 'auto'"
+      [rowHeight]=" this.togglecheck[0].ischecked == true ? this.rowHeight : '100%'"
       (sort)="onSortColumn($event)"
       [sorts]="this.sortOrder"
       (reorder)="reorderColumn($event)"

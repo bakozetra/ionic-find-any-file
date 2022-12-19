@@ -151,3 +151,34 @@
 textarea {
     background-color: white;
 }
+
+.ngx-datatable .datatable-body .datatable-scroll {
+    overflow-y: scroll;
+    // padding-bottom: 1rem;
+    height: 65vh;
+    width: auto;
+    position: inherit;
+    // width: -webkit-fill-available;
+    // overflow-x: scroll;
+}
+
+.ngx-datatable.scroll-horz .datatable-body {
+    padding-right: 1rem;
+    overflow-x: scroll !important;
+}
+// .ngx-datatable.scroll-vertical .datatable-body {
+//     overflow-y: scroll !important;
+//     padding-bottom: 1rem;
+//     height: 65vh;
+//     width: -webkit-fill-available;
+// }
+// ngx-datatable {
+//     max-height: 70vh;
+//     overflow-y: scroll;
+// // }
+ion-content::part(scroll) {
+    // width: 100%;
+}
+.datatable-body {
+    width: 100%;
+}
