@@ -55,7 +55,6 @@
         [flexGrow]="0"
         id="{{column.name}}"
         [draggable]="true"
-        style="overflow-y: auto"
         [canAutoResize]="false"
         [sortable]="column.name=='Image'? false : true"
       >
@@ -114,7 +113,7 @@
           <div *ngIf="column.name !== 'Image'">
             <div
               style="white-space: pre"
-              (dblclick)="editing[rowIndex + '-' + column.name.toLowerCase()] = true"
+              (dblclick)="onEdit($event, rowIndex, column.name.toLowerCase())"
               (click)="onDoubleclick(rowIndex, column.name.toLowerCase())"
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
@@ -123,12 +122,14 @@
               {{value}}
             </div>
             <textarea
-              autofocus
+              autofocus="true"
+              [rows]="this.togglecheck[0].ischecked? 2 : 4"
               (blur)="updateCellValue($event, column.name.toLowerCase() , rowIndex)"
               *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
               type="text"
               [value]="value"
               [ngStyle]="{width: this.styleCSS.textAreaWidth , minHeight: this.styleCSS.textAreaMinHight}"
+              [id]="rowIndex + '-' + column.name.toLowerCase()"
             >
             {{value}}
             </textarea>

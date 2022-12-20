@@ -1,88 +1,4 @@
-// // // .class1 {
-// // //     background-color: aqua;
-// // //     color: red;
-// // //     width: 0;
-// // // }
-// // .ngx-datatable .datatable-header-cell {
-// //     // max-width: 250px;
-// //     // width: 220px;
-// // }
-// // .datatable-body-cell .sort-active {
-// //     // max-width: fit-content;
-// // }
-
-// // img {
-// //     max-width: none;
-// // }
-
-// // // :host ::ng-deep {
-// // //     .datatable-row-wrapper {
-// // //         width: fit-content;
-
-// // //         .datatable-row-detail {
-// // //             height: 100% !important;
-// // //         }
-// // //     }
-// // // }
-// // .datatable-header-cell-wrapper {
-// //     // width: 30;
-// //     width: fit-content;
-// // }
-// // .class1 {
-// //     width: fit-content !important;
-// //     height: 100% !important;
-// // }
-// // background-color: red;
-// .class2 {
-//     // width: fit-content !important;
-// }
-
-// .test34 {
-//     // white-space: pre-line;
-//     // white-space: normal;
-//     // span::after {
-//     //     content: "\n";
-//     //     white-space: pre;
-//     // }
-// }
-// // .datatable-scroller {
-// //     width: 100% !important;
-// // }
-// .datatable-body-cell {
-//     // padding: 0 !important;
-//     // background-color: red;
-//     // width: auto;
-// }
-// // .class3 {
-// //     width: auto;
-// // // }
-// // .datatable-body-row,
-// // .datatable-scroll {
-// //     max-width: 100%;
-// //     min-width: 100%;
-// // }
-
-// .datatable-scroll {
-//     display: inherit !important;
-// }
-// .heightResize {
-//     height: 80px;
-// }
-
-// .example-list {
-//     width: 1000px;
-//     max-width: 100%;
-//     border: solid 1px #ccc;
-//     min-height: 60px;
-//     display: flex;
-//     flex-direction: row;
-//     background: white;
-//     border-radius: 4px;
-//     overflow: hidden;
-// }
-
 .example-box {
-    // border-right: solid 1px #ccc;
     color: rgba(0, 0, 0, 0.87);
     flex-direction: row;
     align-items: center;
@@ -93,9 +9,6 @@
     flex-basis: 0;
     overflow-x: scroll !important;
 }
-// display: flex;
-// font-size: 14px;
-// background: white;
 
 .cdk-drag-preview {
     box-sizing: border-box;
@@ -117,25 +30,6 @@
     border: none;
 }
 
-// .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-//     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-// }
-
-// .draggable {
-//     overflow-y: auto !important;
-// }
-
-// .isBrowserView .scroll-bar-indicator {
-//     display: none;
-// }
-
-// .ngx-datatable.scroll-vertical .datatable-body {
-//     overflow-y: scroll !important;
-// }
-
-// .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
-//     overflow-x: auto;
-// }
 .ngx-datatable.material .datatable-header {
     overflow: overlay;
 }
@@ -150,34 +44,26 @@
 
 textarea {
     background-color: white;
+    outline: none;
+    padding: 4px;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 12px;
 }
 
 .ngx-datatable .datatable-body .datatable-scroll {
-    overflow-y: scroll;
-    // padding-bottom: 1rem;
+    overflow-y: auto;
     height: 65vh;
-    width: auto;
     position: inherit;
-    // width: -webkit-fill-available;
-    // overflow-x: scroll;
+    width: fit-content;
 }
-
 .ngx-datatable.scroll-horz .datatable-body {
-    padding-right: 1rem;
     overflow-x: scroll !important;
 }
-// .ngx-datatable.scroll-vertical .datatable-body {
-//     overflow-y: scroll !important;
-//     padding-bottom: 1rem;
-//     height: 65vh;
-//     width: -webkit-fill-available;
-// }
-// ngx-datatable {
-//     max-height: 70vh;
-//     overflow-y: scroll;
-// // }
+
 ion-content::part(scroll) {
-    // width: 100%;
+    overflow: hidden;
 }
 .datatable-body {
     width: 100%;
