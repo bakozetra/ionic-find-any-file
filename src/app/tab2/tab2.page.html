@@ -121,7 +121,7 @@
             >
               {{value}}
             </div>
-            <div>
+            <div class="container_edit">
               <textarea
                 autofocus
                 [rows]="this.togglecheck[0].ischecked? 2 : 4"
@@ -135,26 +135,28 @@
             {{value}}
             </textarea
               >
-              <!-- <div>
+              <div class="content-edit">
                 <ion-button
                   *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
-                  (click)="onResetEdit(column.name.toLowerCase() , rowIndex)"
                 >
+                  <!-- (click)="updateCellValue($event, column.name.toLowerCase() , rowIndex)" -->
                   <ion-icon
-                    name="save-outline"
-                    size="large"
                     slot="icon-only"
+                    size="small"
+                    src="../../assets/icon/close-outline.svg"
+                  ></ion-icon
+                ></ion-button>
+                <ion-button
+                  *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
+                >
+                  <!-- (click)="onResetEdit(column.name.toLowerCase() , rowIndex)" -->
+                  <ion-icon
+                    slot="icon-only"
+                    size="small"
+                    src="../../assets/icon/save-outline.svg"
                   ></ion-icon>
                 </ion-button>
-
-                <ion-button
-                  (click)="updateCellValue($event, column.name.toLowerCase() , rowIndex)"
-                  *ngIf="editing[rowIndex + '-' + column.name |lowercase]
-                  "
-                  [value]="value"
-                  >Apply</ion-button
-                >
-              </div> -->
+              </div>
             </div>
           </div>
         </ng-template>

@@ -173,7 +173,9 @@ export class Tab2Page implements OnInit {
 
   // Resizing row image function
   element(width, height) {
-    this.rows.map((val, index) => {
+    console.log('this.rows::::::', this.rows);
+    this.rows?.map((val, index) => {
+      console.log('val::::::val', val);
       const imagelement = document.getElementById(index);
       imagelement.style.width = width;
       imagelement.style.height = height;
@@ -347,22 +349,6 @@ export class Tab2Page implements OnInit {
     console.log('event::::::onTextAreaFocused', event);
   }
 
-  // // cloumn storage
-  // setLocalStorageColumn(data) {
-  //   return localStorage.setItem('column-data', JSON.stringify(data));
-  // }
-  // getLocalStorageColumn() {
-  //   return localStorage.getItem('column-data');
-  // }
-  // getDataColumnChanges(): any {
-  //   let localJSON = this.tempColumns;
-  //   const localData = this.getLocalStorageColumn();
-  //   if (localData && localData != null) {
-  //     localJSON = JSON.parse(localData);
-  //   }
-  //   return localJSON;
-  // }
-  // localStorage for Row-data
   setLocalStorageRow(data) {
     return localStorage.setItem('row-data', JSON.stringify(data));
   }

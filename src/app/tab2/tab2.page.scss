@@ -50,11 +50,12 @@ textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 12px;
+    margin-bottom: 20px;
 }
 
 .ngx-datatable .datatable-body .datatable-scroll {
     overflow-y: auto;
-    height: 65vh;
+    height: 64vh;
     position: inherit;
     width: fit-content;
 }
@@ -73,21 +74,30 @@ textarea {
 .ngx-datatable .datatable-body .datatable-scroll {
     -ms-overflow-style: none;
 }
-// ion-content::part(scroll) {
-//     overflow: hidden;
-// }
+ion-content::part(scroll) {
+    overflow: hidden;
+}
 .datatable-body {
     width: 100%;
 }
 ion-button::part(native) {
     padding: 0;
-    // --background: #535353;
     box-shadow: none;
-    // --background-hover: none;
+    --background: none;
     padding: 0;
 }
 ion-button {
     --background-activated: none;
+}
+ion-icon {
+    color: grey;
+}
+.container_edit {
+    position: relative;
+}
+.content-edit {
+    position: absolute;
+    bottom: 0;
 }
 @media only screen and (max-width: 600px) {
     .ngx-datatable .datatable-body .datatable-scroll {
