@@ -1,4 +1,4 @@
-.example-box {
+.column-header {
     color: rgba(0, 0, 0, 0.87);
     flex-direction: row;
     align-items: center;
@@ -58,13 +58,42 @@ textarea {
     position: inherit;
     width: fit-content;
 }
+
 .ngx-datatable.scroll-horz .datatable-body {
+    padding-right: 1rem;
     overflow-x: scroll !important;
 }
 
-ion-content::part(scroll) {
-    overflow: hidden;
+.ngx-datatable .datatable-body .datatable-scroll::-webkit-scrollbar {
+    width: 0 !important;
 }
+.ngx-datatable .datatable-body .datatable-scroll {
+    overflow: -moz-scrollbars-none;
+}
+.ngx-datatable .datatable-body .datatable-scroll {
+    -ms-overflow-style: none;
+}
+// ion-content::part(scroll) {
+//     overflow: hidden;
+// }
 .datatable-body {
     width: 100%;
+}
+ion-button::part(native) {
+    padding: 0;
+    // --background: #535353;
+    box-shadow: none;
+    // --background-hover: none;
+    padding: 0;
+}
+ion-button {
+    --background-activated: none;
+}
+@media only screen and (max-width: 600px) {
+    .ngx-datatable .datatable-body .datatable-scroll {
+        overflow-y: auto;
+        height: 56vh;
+        position: inherit;
+        width: fit-content;
+    }
 }

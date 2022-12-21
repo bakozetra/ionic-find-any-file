@@ -71,7 +71,7 @@
                ipadPlatform"
             >
               <span
-                class="datatable-header-cell-label draggable example-box"
+                class="datatable-header-cell-label draggable column-header"
                 (click)="sort($event)"
                 [attr.aria-label]="column.name"
                 cdkDrag
@@ -113,7 +113,7 @@
           <div *ngIf="column.name !== 'Image'">
             <div
               style="white-space: pre"
-              (dblclick)="onEdit($event, rowIndex, column.name.toLowerCase())"
+              (dblclick)="onEdit(rowIndex, column.name.toLowerCase())"
               (click)="onDoubleclick(rowIndex, column.name.toLowerCase())"
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
@@ -121,18 +121,41 @@
             >
               {{value}}
             </div>
-            <textarea
-              autofocus="true"
-              [rows]="this.togglecheck[0].ischecked? 2 : 4"
-              (blur)="updateCellValue($event, column.name.toLowerCase() , rowIndex)"
-              *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
-              type="text"
-              [value]="value"
-              [ngStyle]="{width: this.styleCSS.textAreaWidth , minHeight: this.styleCSS.textAreaMinHight}"
-              [id]="rowIndex + '-' + column.name.toLowerCase()"
-            >
+            <div>
+              <textarea
+                autofocus
+                [rows]="this.togglecheck[0].ischecked? 2 : 4"
+                (blur)="updateCellValue($event, column.name.toLowerCase() , rowIndex)"
+                *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
+                type="text"
+                [value]="value"
+                [ngStyle]="{width: this.styleCSS.textAreaWidth , minHeight: this.styleCSS.textAreaMinHight}"
+                [id]="'editBox'"
+              >
             {{value}}
-            </textarea>
+            </textarea
+              >
+              <!-- <div>
+                <ion-button
+                  *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
+                  (click)="onResetEdit(column.name.toLowerCase() , rowIndex)"
+                >
+                  <ion-icon
+                    name="save-outline"
+                    size="large"
+                    slot="icon-only"
+                  ></ion-icon>
+                </ion-button>
+
+                <ion-button
+                  (click)="updateCellValue($event, column.name.toLowerCase() , rowIndex)"
+                  *ngIf="editing[rowIndex + '-' + column.name |lowercase]
+                  "
+                  [value]="value"
+                  >Apply</ion-button
+                >
+              </div> -->
+            </div>
           </div>
         </ng-template>
       </ngx-datatable-column>

@@ -107,9 +107,6 @@ export class Tab2Page implements OnInit {
     });
   }
 
-  // getYPosition(e: Event): number {
-  //   return (e.target as Element).scrollTop;
-  // }
   onSortColumn(event) {
     this.setLocalStorageSort(event.sorts);
   }
@@ -221,9 +218,6 @@ export class Tab2Page implements OnInit {
   }
 
   updateCellValue(event, cellTile?, rowIndex?) {
-    console.log('cell::::::', cellTile);
-    console.log('rowIndex::::::', rowIndex);
-    console.log('event::::::', event);
     this.editing[rowIndex + '-' + cellTile] = false;
     console.log(
       'this.editing[rowIndex +  - + cellTile]::::::',
@@ -235,6 +229,9 @@ export class Tab2Page implements OnInit {
     this.adjustColumnMinWidth(true);
     this.setLocalStorageRow(this.rows);
   }
+  onResetEdit(cellTile?, rowIndex?) {
+    this.editing[rowIndex + '-' + cellTile] = false;
+  }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
     e.stopPropagation();
@@ -242,7 +239,6 @@ export class Tab2Page implements OnInit {
     const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
     )?.innerHTML;
-    // console.log('e::::::', e);
     if (
       elementclassName === 'datatable-header-cell-label draggable' ||
       elementclassName === 'sort-btn datatable-icon-up sort-asc' ||
@@ -252,13 +248,6 @@ export class Tab2Page implements OnInit {
       elementclassName === 'datatable-header-cell-template-wrap'
     ) {
       return;
-    }
-    if (e.target.localName === 'textarea') {
-      // e.target.clientHeight.style.height = '5px';
-      // e.target.clientHeight.style.height =
-      //   e.target.clientHeight.style.height.scrollHeight + 'px';
-      console.log('clientHeight::::::', e.target.clientHeight);
-      console.log(e.target.localName);
     }
     if (columnName !== undefined) {
       this.ignoreFitContent.add(columnName?.trim());
@@ -347,22 +336,12 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageDrag(arr);
   }
 
-  focused;
-  onEdit(element, rowIndex, column) {
-    console.log('element::::::onEdit', element);
-    console.log(
-      '!editing[rowIndex +  + column.name | lowercase]::::::',
-      !this.editing[rowIndex + '-' + column.name]
-    );
+  @HostListener('dblclick', ['$event']) onDblClick(event) {
+    document.getElementById('editBox')?.focus();
+  }
+
+  onEdit(rowIndex, column) {
     this.editing[rowIndex + '-' + column] = true;
-    for (const value of Object.values(this.editing)) {
-      console.log('value::::::', value);
-      if (value === true) {
-        if (this.editing[rowIndex + '-' + column] === false) {
-          return;
-        }
-      }
-    }
   }
   onTextAreaFocused(event) {
     console.log('event::::::onTextAreaFocused', event);
