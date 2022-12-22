@@ -118,6 +118,7 @@
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
               [draggable]="true"
+              id="'text_value'"
             >
               {{value}}
             </div>
@@ -125,7 +126,7 @@
               <textarea
                 autofocus
                 [rows]="this.togglecheck[0].ischecked? 2 : 4"
-                (blur)="updateCellValue($event, column.name.toLowerCase() , rowIndex)"
+                (input)="onHandleChange($event, column.name.toLowerCase() , rowIndex)"
                 *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
                 type="text"
                 [value]="value"
@@ -138,8 +139,8 @@
               <div class="content-edit">
                 <ion-button
                   *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
+                  (click)="onReset(rowIndex,column.name.toLowerCase())"
                 >
-                  <!-- (click)="updateCellValue($event, column.name.toLowerCase() , rowIndex)" -->
                   <ion-icon
                     slot="icon-only"
                     size="small"
@@ -147,9 +148,10 @@
                   ></ion-icon
                 ></ion-button>
                 <ion-button
+                  (click)="updateCellValue($event, column.name.toLowerCase(), rowIndex)"
                   *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
+                  [value]="value"
                 >
-                  <!-- (click)="onResetEdit(column.name.toLowerCase() , rowIndex)" -->
                   <ion-icon
                     slot="icon-only"
                     size="small"

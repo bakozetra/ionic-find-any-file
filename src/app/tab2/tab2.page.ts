@@ -43,6 +43,7 @@ export class Tab2Page implements OnInit {
   rowHeight;
   togglecheck = [{ ischecked: false }];
   touchtime = 0;
+  isTextareaOpen = false;
   imageWidth: string;
   styleCSS = {
     innerHeight: '100%',
@@ -221,16 +222,16 @@ export class Tab2Page implements OnInit {
 
   updateCellValue(event, cellTile?, rowIndex?) {
     this.editing[rowIndex + '-' + cellTile] = false;
-    console.log(
-      'this.editing[rowIndex +  - + cellTile]::::::',
-      this.editing[rowIndex + '-' + cellTile]
-    );
-    console.log('this.editing::::::', this.editing);
     this.rows[rowIndex][cellTile] = event.target.value;
     this.rows = [...this.rows];
     this.adjustColumnMinWidth(true);
     this.setLocalStorageRow(this.rows);
   }
+
+  onHandleChange(event, cellTile?, rowIndex?) {
+    this.rows[rowIndex][cellTile] = event.target.value;
+  }
+
   onResetEdit(cellTile?, rowIndex?) {
     this.editing[rowIndex + '-' + cellTile] = false;
   }
@@ -342,11 +343,12 @@ export class Tab2Page implements OnInit {
     document.getElementById('editBox')?.focus();
   }
 
+  onReset(rowIndex, column) {
+    console.log('rowIndex::::::', rowIndex);
+    this.editing[rowIndex + '-' + column] = false;
+  }
   onEdit(rowIndex, column) {
     this.editing[rowIndex + '-' + column] = true;
-  }
-  onTextAreaFocused(event) {
-    console.log('event::::::onTextAreaFocused', event);
   }
 
   setLocalStorageRow(data) {
