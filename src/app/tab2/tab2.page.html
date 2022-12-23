@@ -27,7 +27,7 @@
     <ngx-datatable
       class="material server-scrolling-demo"
       [limit]="8"
-      [rows]="rows"
+      [rows]="allTableData"
       [columns]="columns"
       [columnMode]="'force'"
       [headerHeight]="50"
@@ -113,7 +113,7 @@
           <div *ngIf="column.name !== 'Image'">
             <div
               style="white-space: pre"
-              (dblclick)="onEdit(rowIndex, column.name.toLowerCase())"
+              (dblclick)="onEdit(rowIndex, column.name.toLowerCase(), $event)"
               (click)="onDoubleclick(rowIndex, column.name.toLowerCase())"
               *ngIf="!editing[rowIndex + '-' + column.name | lowercase]"
               [attr.aria-label]="value"
@@ -122,24 +122,24 @@
             >
               {{value}}
             </div>
-            <div class="container_edit">
+            <form class="container_edit">
               <textarea
                 autofocus
+                (change)="onHandleChange($event, column.name.toLowerCase() , rowIndex)"
                 [rows]="this.togglecheck[0].ischecked? 2 : 4"
-                (input)="onHandleChange($event, column.name.toLowerCase() , rowIndex)"
-                *ngIf="editing[rowIndex + '-' + column.name |lowercase] "
+                *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
                 type="text"
                 [value]="value"
                 [ngStyle]="{width: this.styleCSS.textAreaWidth , minHeight: this.styleCSS.textAreaMinHight}"
                 [id]="'editBox'"
               >
-            {{value}}
-            </textarea
-              >
+              {{value}}
+              </textarea>
               <div class="content-edit">
                 <ion-button
                   *ngIf="editing[rowIndex + '-' + column.name |lowercase]"
-                  (click)="onReset(rowIndex,column.name.toLowerCase())"
+                  (click)="onResetEdit(rowIndex,column.name.toLowerCase(),$event)"
+                  [value]="value"
                 >
                   <ion-icon
                     slot="icon-only"
@@ -159,7 +159,7 @@
                   ></ion-icon>
                 </ion-button>
               </div>
-            </div>
+            </form>
           </div>
         </ng-template>
       </ngx-datatable-column>

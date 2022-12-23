@@ -32,7 +32,7 @@ export class Tab2Page implements OnInit {
   public data: Data;
   public columns: any;
   public tempColumns: any;
-  public rows: any;
+  public allTableData: any;
   public sort: any;
   sortOrder = [];
   public columnVisibility;
@@ -45,6 +45,8 @@ export class Tab2Page implements OnInit {
   touchtime = 0;
   isTextareaOpen = false;
   imageWidth: string;
+  previousAllTableData = [];
+  editedTarget;
   styleCSS = {
     innerHeight: '100%',
     innerWidth: 'auto',
@@ -86,10 +88,10 @@ export class Tab2Page implements OnInit {
     }
 
     if (this.getLocalStorageRow() !== null) {
-      this.rows = JSON.parse(this.getLocalStorageRow());
+      this.allTableData = JSON.parse(this.getLocalStorageRow());
     } else {
       this.http.get<Data>('../../assets/movies.json').subscribe((res) => {
-        this.rows = res.movies;
+        this.allTableData = res.movies;
       });
     }
     if (!this.getLocalStorageColumnVisibility()) {
@@ -117,13 +119,13 @@ export class Tab2Page implements OnInit {
     this.setLocalStorageDrag(arr);
   }
 
-  onDoubleclick(rowIndex, cell) {
+  onDoubleclick(rowIndex, cellTile) {
     if (this.touchtime == 0) {
       this.touchtime = new Date().getTime();
     } else {
       if (new Date().getTime() - this.touchtime < 800) {
         if (this.iosPlaform || this.ipadPlatform) {
-          this.editing[rowIndex + '-' + cell] = true;
+          this.onEdit(rowIndex, cellTile);
           this.touchtime = 0;
         }
       } else {
@@ -174,9 +176,7 @@ export class Tab2Page implements OnInit {
 
   // Resizing row image function
   element(width, height) {
-    console.log('this.rows::::::', this.rows);
-    this.rows?.map((val, index) => {
-      console.log('val::::::val', val);
+    this.allTableData?.map((val, index) => {
       const imagelement = document.getElementById(index);
       imagelement.style.width = width;
       imagelement.style.height = height;
@@ -222,22 +222,58 @@ export class Tab2Page implements OnInit {
 
   updateCellValue(event, cellTile?, rowIndex?) {
     this.editing[rowIndex + '-' + cellTile] = false;
-    this.rows[rowIndex][cellTile] = event.target.value;
-    this.rows = [...this.rows];
+    this.allTableData[rowIndex][cellTile] = event.target.value;
+    this.allTableData = [...this.allTableData];
+    this.previousAllTableData = this.allTableData;
     this.adjustColumnMinWidth(true);
-    this.setLocalStorageRow(this.rows);
+    this.setLocalStorageRow(this.previousAllTableData);
+  }
+
+  onResetEdit(rowIndex, cellTile, event) {
+    this.editing[rowIndex + '-' + cellTile] = false;
+    if (this.previousAllTableData[rowIndex][cellTile] !== event.target.value)
+      this.allTableData[rowIndex][cellTile] =
+        this.previousAllTableData[rowIndex][cellTile];
+    this.adjustColumnMinWidth(true);
+    this.setLocalStorageRow(this.allTableData);
   }
 
   onHandleChange(event, cellTile?, rowIndex?) {
-    this.rows[rowIndex][cellTile] = event.target.value;
+    this.previousAllTableData = JSON.parse(JSON.stringify(this.allTableData));
+    this.allTableData[rowIndex][cellTile] = event.target.value;
   }
 
-  onResetEdit(cellTile?, rowIndex?) {
-    this.editing[rowIndex + '-' + cellTile] = false;
+  onEdit(rowIndex, column, event?) {
+    this.resetAllEdit();
+    this.editedTarget = event.target.parentNode;
+    this.editing[rowIndex + '-' + column] = true;
+  }
+
+  closeAllEditFields(e) {
+    const isSameAsEditedTarget =
+      e.target.parentNode.classList.contains('container_edit');
+    const isSameAsButtonTarget =
+      e.target.parentNode.classList.contains('content-edit');
+    const shouldCloseEdit = isSameAsButtonTarget || isSameAsEditedTarget;
+    if (!shouldCloseEdit) {
+      this.resetAllEdit();
+    }
+  }
+
+  resetAllEdit() {
+    if (this.previousAllTableData.length) {
+      this.allTableData = this.previousAllTableData;
+    }
+    this.editing = {};
+  }
+
+  @HostListener('dblclick', ['$event']) onDblClick(event) {
+    document.getElementById('editBox')?.focus();
   }
 
   @HostListener('pointerdown', ['$event']) onPointerDown(e) {
     e.stopPropagation();
+    this.closeAllEditFields(e);
     const elementclassName = e.srcElement.className;
     const columnName = e?.target?.parentNode?.querySelector(
       '.datatable-header-cell-label'
@@ -252,6 +288,7 @@ export class Tab2Page implements OnInit {
     ) {
       return;
     }
+
     if (columnName !== undefined) {
       this.ignoreFitContent.add(columnName?.trim());
       const resizedCol = this.columns?.find((c) => {
@@ -324,7 +361,6 @@ export class Tab2Page implements OnInit {
           this.columns[currrentColumnIndex].minWidth = newColumnWidth;
           this.columns[currrentColumnIndex].width = newColumnWidth;
           this.columns = this.columns;
-          // this.setLocalStorageColumnVisibility(columnImageWidth);
         }
       }
     }
@@ -337,18 +373,6 @@ export class Tab2Page implements OnInit {
       event.currentIndex
     );
     this.setLocalStorageDrag(arr);
-  }
-
-  @HostListener('dblclick', ['$event']) onDblClick(event) {
-    document.getElementById('editBox')?.focus();
-  }
-
-  onReset(rowIndex, column) {
-    console.log('rowIndex::::::', rowIndex);
-    this.editing[rowIndex + '-' + column] = false;
-  }
-  onEdit(rowIndex, column) {
-    this.editing[rowIndex + '-' + column] = true;
   }
 
   setLocalStorageRow(data) {
